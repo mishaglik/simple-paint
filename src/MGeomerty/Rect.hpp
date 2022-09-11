@@ -1,5 +1,5 @@
-#ifndef MGEOMETRY_RECT_HPP
-#define MGEOMETRY_RECT_HPP
+#ifndef MGEOMERTY_RECT_HPP
+#define MGEOMERTY_RECT_HPP
 
 namespace mgm{
 
@@ -8,6 +8,7 @@ struct Rect{
     num_t x, y, w, h;
 };
 
-}
+typedef Rect<unsigned> Rect4u;
 
-#endif
+}
+#endif /* MGEOMERTY_RECT_HPP */

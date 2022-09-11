@@ -12,6 +12,9 @@ set(VP_SOURCE_DIR
 
 set(VP_SOURCES
     ${VP_SOURCE_DIR}/main.cpp
+    ${VP_SOURCE_DIR}/CoordinateSystem.cpp
+    ${VP_SOURCE_DIR}/VectorPlot.cpp
+    ${VP_SOURCE_DIR}/Application.cpp
 )
 
 set(VP_LIBS
@@ -20,9 +23,9 @@ set(VP_LIBS
 )
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    add_compile_options(-Weverything -Wno-c++98-compat -Wno-c++98-compat-pedantic)
+    add_compile_options(-Weverything -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-padded)
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    add_compile_options(-Wall -Wextra)
+    add_compile_options(-Wall -Wextra -Wno-error=padded)
 endif()
 
 foreach(lib ${VP_LIBS})

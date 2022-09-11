@@ -33,6 +33,10 @@ struct ColorARGB{
     ColorARGB(uint32_t col) : color(col) {}
 };
 
+namespace Colors {
+    const uint32_t White = 0xFFFFFFFF;
+}
+
 class Window{
     Window_* wp_;
 public:
@@ -41,12 +45,12 @@ public:
 
     void resize(uint32_t width, uint32_t height);
     void drawText    (const char* text);
-    Event pollEvent();
+    bool pollEvent(Event& event);
 
-    void drawLine    (Point p1, Point p2, ColorARGB color = 0);
-    void drawPoint   (Point p, ColorARGB color = 0);
-    void drawRect    (const Rect& rect, ColorARGB color = 0);
-    void drawTexture ();
+    void drawLine    (Point p1, Point p2, ColorARGB color = 0) const;
+    void drawPoint   (Point p, ColorARGB color = 0) const ; 
+    void drawRect    (const Rect& rect, ColorARGB color = 0) const;
+    void drawTexture () const;
     void clear(ColorARGB color = ColorARGB(0,0,0,0));
     void show();
     void hide();

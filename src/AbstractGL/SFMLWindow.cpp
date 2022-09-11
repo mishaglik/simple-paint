@@ -5,6 +5,7 @@
 #include <SFML/System/Vector2.hpp>
 #include <cstdint>
 #include <cassert>
+#include <iostream>
 
 namespace aGL {
 
@@ -56,8 +57,7 @@ void Window::update(){
     wp_->display();
 }
 
-void Window::drawLine(Point p1, Point p2, ColorARGB color){
-    // sf::VertexArray lines(sf::PrimitiveType::LinesStrip ,2);
+void Window::drawLine(Point p1, Point p2, ColorARGB color) const{
     sf::Vertex lines[2] = {};
     lines[0].position = sf::Vector2f(static_cast<float>(p1.x), static_cast<float>(p1.y));
     lines[1].position = sf::Vector2f(static_cast<float>(p2.x), static_cast<float>(p2.y));
@@ -67,9 +67,9 @@ void Window::drawLine(Point p1, Point p2, ColorARGB color){
     wp_->draw(lines, 2, sf::Lines);
 }
 
-void Window::drawRect(const Rect& rect, ColorARGB color){
-    sf::RectangleShape sfRect(sf::Vector2f(rect.w, rect.h));
-    sfRect.setPosition(rect.x, rect.y);
+void Window::drawRect(const Rect& rect, ColorARGB color) const{
+    sf::RectangleShape sfRect(sf::Vector2f(static_cast<float>(rect.w), static_cast<float>(rect.h)));
+    sfRect.setPosition(static_cast<float>(rect.x), static_cast<float>(rect.y));
     sfRect.setFillColor(sf::Color(color.color));
     wp_->draw(sfRect);
 }
@@ -79,15 +79,16 @@ void Window::drawRect(const Rect& rect, ColorARGB color){
 
 
 
-Event Window::pollEvent(){
-    sf::Event event;
-    if(wp_->pollEvent(event)){
-        if(event.type == sf::Event::Closed){
-            return Event{EventType::Exit};
+bool Window::pollEvent(Event& event){
+    sf::Event sfEvent;
+    if(wp_->pollEvent(sfEvent)){
+        if(sfEvent.type == sf::Event::Closed){
+            event.type = EventType::Exit;
         }
-        return Event{EventType::Other};
+        else event.type = EventType::Other;  
+        return true;
     }
-    return Event{EventType::NoEvent};
+    return false;
 }
 
 }
