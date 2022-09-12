@@ -64,29 +64,28 @@ int Application::exec(){
 }
 
 int Application::handleEvent(const aGL::Event& event){
-    if(event.type == aGL::EventType::Exit){
+    if(event.type == aGL::EventType::Quit){
         state_ = AppState::Stopping;
         return 1;
     }
 
-    if(event.type == aGL::EventType::Press){
-        if(mgm::contains(exitButton->getRect(), event.data.pt)){
+    if(event.type == aGL::EventType::MouseButtonPressed){
+        if(mgm::contains(exitButton->getRect(), event.mbed.point)){
             // exitButton->handleEvent(event);
             quit(event);
         }
-        if(mgm::contains(resetButton->getRect(), event.data.pt)){
+        if(mgm::contains(resetButton->getRect(), event.mbed.point)){
             // exitButton->handleEvent(event);
             reset(event);
         }
-        if(mgm::contains(plotRotator_->getRect(), event.data.pt)){
+        if(mgm::contains(plotRotator_->getRect(), event.mbed.point)){
             plotRotator_->handleEvent(event);
         }
-        if(mgm::contains(raycaster_->getRect(), event.data.pt)){
+        if(mgm::contains(raycaster_->getRect(), event.mbed.point)){
             raycaster_->handleEvent(event);
         }
         return 1;
     }
-
     return 0;
 }
 

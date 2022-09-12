@@ -64,9 +64,9 @@ void Raycaster::addAngle(double angle){
 }
 
 int Raycaster::handleEvent(const aGL::Event& event){
-    if(event.type == aGL::EventType::Press){
+    if(event.type == aGL::EventType::MouseButtonPressed){
         double z = light_.z;
-        light_ = cs_.rTransform(event.data.pt);
+        light_ = cs_.rTransform(event.mbed.point);
         light_.x *= 5;
         light_.y *= 5;
         light_.z = z;

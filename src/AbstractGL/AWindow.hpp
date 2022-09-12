@@ -3,27 +3,12 @@
 #include <cstdint>
 #include <MGeomerty/Geometry.hpp>
 #include "Color.hpp"
+#include "Event.hpp"
 
 namespace aGL {
 
 using Point = mgm::Point2u;
 using Rect  = mgm::Rect2<unsigned>;
-
-enum class EventType{
-    NoEvent,
-    Exit,
-    Press,
-    Other,
-};
-
-class Event{
-public:
-    EventType type;
-    union{
-        Point pt;
-    } data;
-};
-
 
 class Window_;
 

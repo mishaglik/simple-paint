@@ -82,20 +82,96 @@ void Window::drawPoint(Point p, Color color) const {
     wp_->draw(&vertex, 1, sf::Points);
 }
 
+
+static MouseButtonEventData::MouseButton getMouseButton(sf::Mouse::Button button){
+    switch (button) {
+
+    case sf::Mouse::Left:
+        return MouseButtonEventData::MouseButton::Left;
+    case sf::Mouse::Right:
+        return MouseButtonEventData::MouseButton::Right;
+    case sf::Mouse::Middle:
+        return MouseButtonEventData::MouseButton::Middle;
+    case sf::Mouse::XButton1:
+    case sf::Mouse::XButton2:
+    case sf::Mouse::ButtonCount:
+        return MouseButtonEventData::MouseButton::Other;
+    }
+    assert(0 && "Wrong switch");
+}
+
+
 bool Window::pollEvent(Event& event){
     sf::Event sfEvent;
     if(wp_->pollEvent(sfEvent)){
-        if(sfEvent.type == sf::Event::Closed){
-            event.type = EventType::Exit;
+        switch (sfEvent.type) {
+
+        case sf::Event::KeyPressed:
+            event.type = EventType::KeyPressedEvent;
+            event.ked = *reinterpret_cast<KeyEventData*>(&sfEvent.key); // I'm personally created very simmilar to SFML prototypes, so I've decided to make reinterperter cast.
+            break;
+
+        case sf::Event::KeyReleased:
+            event.type = EventType::KeyReleasedEvent;
+            event.ked = *reinterpret_cast<KeyEventData*>(&sfEvent.key);
+            break;
+
+        case sf::Event::Closed:
+            event.type = EventType::Quit;
+            break;
+            
+        case sf::Event::MouseWheelScrolled:
+            event.type = EventType::MouseWheeled;
+            event.mwed.delta = sfEvent.mouseWheel.delta;
+            event.mwed.point = {
+                                static_cast<uint32_t>(sfEvent.mouseWheel.x),
+                                static_cast<uint32_t>(sfEvent.mouseWheel.y)
+                               };
+            break;
+
+        case sf::Event::MouseButtonPressed:
+            event.type = EventType::MouseButtonPressed;
+            event.mbed.button = getMouseButton(sfEvent.mouseButton.button);
+            event.mbed.point = {
+                                static_cast<uint32_t>(sfEvent.mouseButton.x),
+                                static_cast<uint32_t>(sfEvent.mouseButton.y)
+                               };
+            break;
+        case sf::Event::MouseButtonReleased:
+            event.type = EventType::MouseButtonReleased;
+            event.mbed.button = getMouseButton(sfEvent.mouseButton.button);
+            event.mbed.point = {
+                                static_cast<uint32_t>(sfEvent.mouseButton.x),
+                                static_cast<uint32_t>(sfEvent.mouseButton.y)
+                               };
+            break;
+        case sf::Event::MouseMoved:
+            event.type = EventType::MouseMoved;
+            event.mmed.point = {
+                                static_cast<uint32_t>(sfEvent.mouseMove.x),
+                                static_cast<uint32_t>(sfEvent.mouseMove.y)
+                               };
+            break;
+        case sf::Event::MouseWheelMoved:
+        case sf::Event::Resized:
+        case sf::Event::LostFocus:
+        case sf::Event::GainedFocus:
+        case sf::Event::TextEntered:
+        case sf::Event::MouseEntered:
+        case sf::Event::MouseLeft:
+        case sf::Event::JoystickButtonPressed:
+        case sf::Event::JoystickButtonReleased:
+        case sf::Event::JoystickMoved:
+        case sf::Event::JoystickConnected:
+        case sf::Event::JoystickDisconnected:
+        case sf::Event::TouchBegan:
+        case sf::Event::TouchMoved:
+        case sf::Event::TouchEnded:
+        case sf::Event::SensorChanged:
+        case sf::Event::Count:
+            event.type = EventType::Other;
+          break;
         }
-        else if (sfEvent.type == sf::Event::MouseButtonPressed){
-            event.type = EventType::Press;
-            event.data.pt = {
-                static_cast<unsigned int>(sfEvent.mouseButton.x),
-                static_cast<unsigned int>(sfEvent.mouseButton.y)
-            };
-        }
-        else event.type = EventType::Other;  
         return true;
     }
     return false;

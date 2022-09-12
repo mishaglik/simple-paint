@@ -71,8 +71,8 @@ void VectorPlot::addAngle(double a){
 }
 
 int VectorPlot::handleEvent(const aGL::Event& event){
-    if(event.type == aGL::EventType::Press){
-        vec_ = rTransform(event.data.pt) - startPoint_;
+    if(event.type == aGL::EventType::MouseButtonPressed){
+        vec_ = rTransform(event.mbed.point) - startPoint_;
         angle_ = 0;
         return 0;
     }
