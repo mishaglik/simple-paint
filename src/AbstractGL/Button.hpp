@@ -9,6 +9,9 @@ class Button : public Widget{
 
     const char* text_ = nullptr;
     ev_func_t eventFunction_ = nullptr;
+    bool pressed_ = false;
+    Color defaultColor = 0x232323ff;
+    Color pressedColor = 0x353535ff;
 public:
     Button(const char* text, uint32_t x, uint32_t y);
 

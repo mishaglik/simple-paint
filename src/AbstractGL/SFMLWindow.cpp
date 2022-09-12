@@ -156,8 +156,18 @@ bool Window::pollEvent(Event& event){
                                 static_cast<uint32_t>(sfEvent.mouseMove.y)
                                };
             break;
-        case sf::Event::MouseWheelMoved:
         case sf::Event::Resized:
+        {
+            sf::View view = wp_->getDefaultView();
+            view.setSize({
+                    static_cast<float>(sfEvent.size.width),
+                    static_cast<float>(sfEvent.size.height)
+            });
+            view.reset(sf::FloatRect(0, 0, static_cast<float>(sfEvent.size.width), static_cast<float>(sfEvent.size.height)));
+            wp_->setView(view);
+        }
+            break;
+        case sf::Event::MouseWheelMoved:
         case sf::Event::LostFocus:
         case sf::Event::GainedFocus:
         case sf::Event::TextEntered:

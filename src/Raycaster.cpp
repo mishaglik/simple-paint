@@ -64,14 +64,23 @@ void Raycaster::addAngle(double angle){
 }
 
 int Raycaster::handleEvent(const aGL::Event& event){
-    if(event.type == aGL::EventType::MouseButtonPressed){
+    if((event.type == aGL::EventType::MouseButtonPressed && event.mbed.button == aGL::MouseButton::Left && mgm::contains(rect_, event.mbed.point)) ||
+                                                             ((captured && event.type == aGL::EventType::MouseMoved && contains(rect_, event.mmed.point)))){
         double z = light_.z;
-        light_ = cs_.rTransform(event.mbed.point);
+        light_ = cs_.rTransform(event.type == aGL::EventType::MouseMoved ? event.mmed.point : event.mbed.point);
         light_.x *= 5;
         light_.y *= 5;
         light_.z = z;
         angle_ = 0;
+        captured = true;
+    }
+
+    if(captured && event.type == aGL::EventType::MouseButtonReleased && event.mbed.button == aGL::MouseButton::Left){
+        captured = false;
     }
     return 1;
 }
 
+void Raycaster::update(){
+    if(!captured) addAngle(speed_);   
+}

@@ -16,7 +16,8 @@ void VectorPlot::drawForeground(const aGL::Window* window){
     mgm::Vector2f vec = rotate(vec_, angle_);
 
     finPoint += vec;
-    window->drawLine(transform(startPoint_), transform(finPoint) ,0xFF0000FF);
+
+    window->drawLine(transform(startPoint_), transform(finPoint), aGL::Colors::Red);
 
     mgm::Point2f pt = finPoint;
 
@@ -71,10 +72,29 @@ void VectorPlot::addAngle(double a){
 }
 
 int VectorPlot::handleEvent(const aGL::Event& event){
-    if(event.type == aGL::EventType::MouseButtonPressed){
+    if(event.type == aGL::EventType::MouseButtonPressed && mgm::contains(aGL::Widget::rect_, event.mbed.point)){
         vec_ = rTransform(event.mbed.point) - startPoint_;
         angle_ = 0;
+        captured = true;
         return 0;
     }
+
+    if(captured && event.type == aGL::EventType::MouseMoved && mgm::contains(aGL::Widget::rect_, event.mmed.point)){
+        if(mgm::contains(aGL::Widget::rect_, event.mbed.point)){
+            vec_ = rTransform(event.mmed.point) - startPoint_;
+        }
+    }
+    
+    if(captured && event.type == aGL::EventType::MouseButtonReleased){
+        captured = false;
+    }
     return 1;
+}
+
+void VectorPlot::update(){
+    if(!captured) addAngle(speed_);
+}
+
+void VectorPlot::setSpeed(double speed){
+    speed_ = speed;
 }

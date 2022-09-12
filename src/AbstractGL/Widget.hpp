@@ -18,6 +18,7 @@ public:
     virtual int handleEvent(const Event&){ return 1;}
 
     virtual void render(const Window &window);
+    virtual void update() {}
     
     const Rect& getRect() {return rect_;}
 

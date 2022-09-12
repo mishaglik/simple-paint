@@ -13,16 +13,28 @@ void Button::setEventFunction(ev_func_t handler){
 }
 
 int Button::handleEvent(const Event& event){
-    if(eventFunction_){
-        eventFunction_(event);
-        return 0;
+    if(event.type == EventType::MouseButtonPressed && event.mbed.button == MouseButton::Left &&
+                                                                        mgm::contains(rect_, event.mbed.point  )){
+        pressed_ = true;
     }
-    return 1;
+
+    if(pressed_ && event.type == EventType::MouseButtonReleased && event.mbed.button == MouseButton::Left){
+        pressed_ = false;
+        return mgm::contains(rect_, event.mbed.point);
+    }
+    return 0;
 }
 
 void Button::render(const Window &window){
-    window.drawRect(rect_, Colors::DGray);
+    window.drawRect(rect_, pressed_ ? pressedColor : defaultColor);
+    
+    window.drawLine(rect_.getCornerLL(), rect_.getCornerLM(), Colors::LGray);
+    window.drawLine(rect_.getCornerLM(), rect_.getCornerMM(), Colors::LGray);
+    window.drawLine(rect_.getCornerMM(), rect_.getCornerML(), Colors::LGray);
+    window.drawLine(rect_.getCornerML(), rect_.getCornerLL(), Colors::LGray);
+
     Point pt = {rect_.x + rect_.w / 5, rect_.y};
+    
     window.drawText(text_, pt, 0xFF0000FF);
 }
 

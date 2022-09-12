@@ -55,8 +55,8 @@ inline Point3f rotateZ(const Point3f& v, double a){
         };
 }
 
-
-inline bool contains(const Rect2u& rect, const Point2u& pt){
+template<typename num_t>
+inline bool contains(const Rect2<num_t>& rect, const Point2<num_t>& pt){
     return 
         pt.x >= rect.x              &&
         pt.x <= rect.x + rect.w     &&

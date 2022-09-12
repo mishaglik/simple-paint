@@ -43,14 +43,16 @@ int Application::exec(){
             handleEvent(event);
         }
         window_->clear(0x999999FF);
+
         plotRotator_->render(*window_); //TODO: change signature to window* 
-        raycaster_ ->render(*window_);  //TODO: change signature to window* 
-        exitButton ->render(*window_);
-        resetButton->render(*window_);
-        window_->update();
+        raycaster_  ->render(*window_);  
+        exitButton  ->render(*window_);
+        resetButton ->render(*window_);
         
-        plotRotator_->addAngle(0.03);
+        
         raycaster_  ->addAngle(0.03);
+        plotRotator_->update();
+        window_->update();
 
         sf::sleep(sf::milliseconds(std::max(0, 16 - fpsTimer.getElapsedTime().asMilliseconds())));
         if(!++i){
@@ -69,23 +71,12 @@ int Application::handleEvent(const aGL::Event& event){
         return 1;
     }
 
-    if(event.type == aGL::EventType::MouseButtonPressed){
-        if(mgm::contains(exitButton->getRect(), event.mbed.point)){
-            // exitButton->handleEvent(event);
-            quit(event);
-        }
-        if(mgm::contains(resetButton->getRect(), event.mbed.point)){
-            // exitButton->handleEvent(event);
-            reset(event);
-        }
-        if(mgm::contains(plotRotator_->getRect(), event.mbed.point)){
-            plotRotator_->handleEvent(event);
-        }
-        if(mgm::contains(raycaster_->getRect(), event.mbed.point)){
-            raycaster_->handleEvent(event);
-        }
-        return 1;
-    }
+    if(resetButton->handleEvent(event)) reset(event);
+    if(exitButton ->handleEvent(event)) quit (event);
+
+    plotRotator_->handleEvent(event);
+    raycaster_  ->handleEvent(event);
+
     return 0;
 }
 
