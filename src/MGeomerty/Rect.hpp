@@ -4,11 +4,12 @@
 namespace mgm{
 
 template<typename num_t> 
-struct Rect{
+struct Rect2{
     num_t x, y, w, h;
 };
 
-typedef Rect<unsigned> Rect4u;
+typedef Rect2<unsigned> Rect2u;
 
 }
+
 #endif /* MGEOMERTY_RECT_HPP */

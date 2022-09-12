@@ -17,9 +17,12 @@ public:
     
     virtual int handleEvent(const Event& event){return 1;}
 
-    const Rect& getRect() {return rect_;}
-    
     virtual void render(const Window &window){}
+    
+    const Rect& getRect() {return rect_;}
+
+    Widget(const Widget&) = delete;
+    Widget& operator=(const Widget&) = delete;
 };
 
 }

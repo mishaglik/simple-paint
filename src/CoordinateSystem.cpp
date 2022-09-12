@@ -7,3 +7,10 @@ mgm::Point2u CoordSystem::transform(const mgm::Point2f &point){
         static_cast<unsigned>((point.y + offset_.y) * scaleY_) + rect_.y
     };
 }
+
+mgm::Point2f CoordSystem::rTransform(const mgm::Point2u &point){
+    return {
+        ((point.x - rect_.x) / scaleX_) - offset_.x,
+        ((point.y - rect_.y) / scaleY_) - offset_.y
+    };
+}

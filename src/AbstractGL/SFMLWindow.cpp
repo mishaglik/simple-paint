@@ -1,7 +1,9 @@
 #include "SFMLWindow.hpp"
 #include "AWindow.hpp"
 #include <SFML/Graphics/Color.hpp>
+#include <SFML/Graphics/PrimitiveType.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/Vertex.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <cstdint>
 #include <cassert>
@@ -42,13 +44,14 @@ void Window::clear(ColorARGB color){
     wp_->clear(sf::Color(color.color));
 }
 
-void Window::drawText(const char* text){
+void Window::drawText(const char* text, Point pt, ColorARGB color) const{
     sf::Font font;
     if (!font.loadFromFile("/home/gms/progs++/vecplot/FreeMono.otf")){
         assert(0);
     }
     sf::Text txt(text, font);
-    txt.setPosition(300, 400);
+    txt.setFillColor(sf::Color(color.color));
+    txt.setPosition({static_cast<float>(pt.x), static_cast<float>(pt.y)});
     wp_->draw(txt);
     return;
 }
@@ -74,16 +77,23 @@ void Window::drawRect(const Rect& rect, ColorARGB color) const{
     wp_->draw(sfRect);
 }
     
-    void drawPoint   ();
-    void drawTexture ();
-
-
+void Window::drawPoint(Point p, ColorARGB color) const {
+    sf::Vertex vertex({(float)p.x, (float)p.y}, sf::Color(color.color));
+    wp_->draw(&vertex, 1, sf::Points);
+}
 
 bool Window::pollEvent(Event& event){
     sf::Event sfEvent;
     if(wp_->pollEvent(sfEvent)){
         if(sfEvent.type == sf::Event::Closed){
             event.type = EventType::Exit;
+        }
+        else if (sfEvent.type == sf::Event::MouseButtonPressed){
+            event.type = EventType::Press;
+            event.data.pt = {
+                static_cast<unsigned int>(sfEvent.mouseButton.x),
+                static_cast<unsigned int>(sfEvent.mouseButton.y)
+            };
         }
         else event.type = EventType::Other;  
         return true;

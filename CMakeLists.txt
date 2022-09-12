@@ -15,6 +15,7 @@ set(VP_SOURCES
     ${VP_SOURCE_DIR}/CoordinateSystem.cpp
     ${VP_SOURCE_DIR}/VectorPlot.cpp
     ${VP_SOURCE_DIR}/Application.cpp
+    ${VP_SOURCE_DIR}/Raycaster.cpp
 )
 
 set(VP_LIBS
