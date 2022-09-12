@@ -40,17 +40,17 @@ void Window::hide(){
     wp_->setVisible(false);
 }
 
-void Window::clear(ColorARGB color){
-    wp_->clear(sf::Color(color.color));
+void Window::clear(Color color){
+    wp_->clear(sf::Color(color));
 }
 
-void Window::drawText(const char* text, Point pt, ColorARGB color) const{
+void Window::drawText(const char* text, Point pt, Color color) const{
     sf::Font font;
     if (!font.loadFromFile("/home/gms/progs++/vecplot/FreeMono.otf")){
         assert(0);
     }
     sf::Text txt(text, font);
-    txt.setFillColor(sf::Color(color.color));
+    txt.setFillColor(sf::Color(color));
     txt.setPosition({static_cast<float>(pt.x), static_cast<float>(pt.y)});
     wp_->draw(txt);
     return;
@@ -60,25 +60,25 @@ void Window::update(){
     wp_->display();
 }
 
-void Window::drawLine(Point p1, Point p2, ColorARGB color) const{
+void Window::drawLine(Point p1, Point p2, Color color) const{
     sf::Vertex lines[2] = {};
     lines[0].position = sf::Vector2f(static_cast<float>(p1.x), static_cast<float>(p1.y));
     lines[1].position = sf::Vector2f(static_cast<float>(p2.x), static_cast<float>(p2.y));
 
-    lines[0].color = lines[1].color = sf::Color(color.color);
+    lines[0].color = lines[1].color = sf::Color(color);
 
     wp_->draw(lines, 2, sf::Lines);
 }
 
-void Window::drawRect(const Rect& rect, ColorARGB color) const{
+void Window::drawRect(const Rect& rect, Color color) const{
     sf::RectangleShape sfRect(sf::Vector2f(static_cast<float>(rect.w), static_cast<float>(rect.h)));
     sfRect.setPosition(static_cast<float>(rect.x), static_cast<float>(rect.y));
-    sfRect.setFillColor(sf::Color(color.color));
+    sfRect.setFillColor(sf::Color(color));
     wp_->draw(sfRect);
 }
     
-void Window::drawPoint(Point p, ColorARGB color) const {
-    sf::Vertex vertex({(float)p.x, (float)p.y}, sf::Color(color.color));
+void Window::drawPoint(Point p, Color color) const {
+    sf::Vertex vertex({(float) p.x, (float)p.y}, sf::Color(color));
     wp_->draw(&vertex, 1, sf::Points);
 }
 

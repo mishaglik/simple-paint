@@ -3,7 +3,7 @@
 #include "Raycaster.hpp"
 #include "VectorPlot.hpp"
 #include <SFML/System/Sleep.hpp>
-#include <SFML/System/Time.hpp>
+#include <SFML/System/Clock.hpp>
 #include <iostream>
 
 Application::Application(){
@@ -33,7 +33,11 @@ int Application::exec(){
     }
     state_ = AppState::Running;
 
+    sf::Clock fpsCounter;
+    uint8_t i = 0;
     while (state_ == AppState::Running) {
+        sf::Clock fpsTimer;
+
         aGL::Event event;
         while(window_->pollEvent(event)){
             handleEvent(event);
@@ -43,12 +47,16 @@ int Application::exec(){
         raycaster_ ->render(*window_);  //TODO: change signature to window* 
         exitButton ->render(*window_);
         resetButton->render(*window_);
-        // plotClicked_->render(*window_);
         window_->update();
         
-        sf::sleep(sf::milliseconds(10));
-        plotRotator_->addAngle(0.01);
-        raycaster_->addAngle(0.01);
+        plotRotator_->addAngle(0.03);
+        raycaster_  ->addAngle(0.03);
+
+        sf::sleep(sf::milliseconds(std::max(0, 16 - fpsTimer.getElapsedTime().asMilliseconds())));
+        if(!++i){
+            std::cerr << "FPS: " << 256000. / fpsCounter.getElapsedTime().asMilliseconds() << '\n';
+            fpsCounter.restart();
+        }
     }
     
     state_ = AppState::Stopped;

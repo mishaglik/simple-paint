@@ -20,7 +20,7 @@ void Raycaster::render(const aGL::Window& window){
     for(uint32_t x = rect_.x; x < rect_.x + rect_.w; ++x){
         for(uint32_t y = rect_.y; y < rect_.y + rect_.h; ++y){
             mgm::Point3f ballPoint = cs_.rTransform({x, y});
-            aGL::ColorARGB color = 0x00000000;        
+            aGL::Color color = aGL::Colors::Transparent;        
             
             if(ballPoint.x * ballPoint.x + ballPoint.y * ballPoint.y <= 1){
                 ballPoint.z = 1 - mgm::radiusLen(ballPoint);
@@ -48,10 +48,10 @@ void Raycaster::render(const aGL::Window& window){
 
 
 
-                color.r_ = ligthness;
-                color.g_ = ligthness;
-                color.b_ = ligthness;
-                color.a_ = 0xFF;
+                color.r(ligthness);
+                color.g(ligthness);
+                color.b(ligthness);
+                color.a(0xFF);
             }
 
             window.drawPoint({x,y}, color);

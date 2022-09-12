@@ -13,8 +13,9 @@ struct Point2{
 template<typename num_t>
 struct Point3{
     num_t x, y, z;
-    Point3(num_t x, num_t y, num_t z) : x(x), y(y), z(z) {}
+    Point3(num_t _x, num_t _y, num_t _z) : x(_x), y(_y), z(_z) {}
     Point3(const Point2<num_t>& pt) : x(pt.x), y(pt.y), z(0) {}
+    Point3(const Point2<num_t>& pt, num_t _z) : x(pt.x), y(pt.y), z(_z) {}
 };
 
 typedef Point2<double>   Point2f;
