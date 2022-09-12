@@ -15,7 +15,7 @@ public:
 
     virtual ~Widget() {}
     
-    virtual int handleEvent(const Event& event){ return 1;}
+    virtual int handleEvent(const Event&){ return 1;}
 
     virtual void render(const Window &window);
     

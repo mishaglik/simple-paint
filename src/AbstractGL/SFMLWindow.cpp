@@ -13,6 +13,7 @@ namespace aGL {
 
 Window_::Window_(uint32_t width, uint32_t height, const char* title): sf::RenderWindow(sf::VideoMode(width, height), title) {}
 
+Window_::~Window_() {}
 
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -78,24 +79,27 @@ void Window::drawRect(const Rect& rect, Color color) const{
 }
     
 void Window::drawPoint(Point p, Color color) const {
-    sf::Vertex vertex({(float) p.x, (float)p.y}, sf::Color(color));
+    sf::Vertex vertex({
+        static_cast<float>(p.x),
+        static_cast<float>(p.y)
+        }, sf::Color(color));
     wp_->draw(&vertex, 1, sf::Points);
 }
 
 
-static MouseButtonEventData::MouseButton getMouseButton(sf::Mouse::Button button){
+static MouseButton getMouseButton(sf::Mouse::Button button){
     switch (button) {
 
     case sf::Mouse::Left:
-        return MouseButtonEventData::MouseButton::Left;
+        return MouseButton::Left;
     case sf::Mouse::Right:
-        return MouseButtonEventData::MouseButton::Right;
+        return MouseButton::Right;
     case sf::Mouse::Middle:
-        return MouseButtonEventData::MouseButton::Middle;
+        return MouseButton::Middle;
     case sf::Mouse::XButton1:
     case sf::Mouse::XButton2:
     case sf::Mouse::ButtonCount:
-        return MouseButtonEventData::MouseButton::Other;
+        return MouseButton::Other;
     }
     assert(0 && "Wrong switch");
 }

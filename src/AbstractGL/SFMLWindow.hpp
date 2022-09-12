@@ -9,6 +9,7 @@ namespace aGL {
     
     public:
         Window_(uint32_t widht, uint32_t height, const char* title);
+        ~Window_() override;
     };
 
 }

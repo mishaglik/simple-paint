@@ -18,13 +18,14 @@ enum class EventType{
 };
 
 
+enum class MouseButton{
+    Left,
+    Right,
+    Middle,
+    Other
+};
+
 struct MouseButtonEventData{
-    enum class MouseButton{
-        Left,
-        Right,
-        Middle,
-        Other
-    };
 
     MouseButton button;
     Point point;
@@ -162,6 +163,8 @@ public:
         MouseWheelEventData  mwed;
         KeyEventData          ked;
     };
+
+    Event() : type(EventType::ERROR) {}
 };
 
 enum class HandlerState{
