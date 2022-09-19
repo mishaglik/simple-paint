@@ -1,11 +1,11 @@
 #ifndef MGEOMETRY_VECTOR_HPP
 #define MGEOMETRY_VECTOR_HPP
+#include <MGeomerty/Float.hpp>
 #include <cassert>
 #include <cmath>
 #include <math.h>
 
 namespace mgm {
-const double EPS = 1e-6;
 
 template<typename num_t>
 class Vector2{
@@ -39,7 +39,6 @@ public:
         return *this;
     } 
 };
-
 
 template<typename num_t>
 Vector2<num_t> getOrthogonal(const Vector2<num_t>& v){
@@ -98,31 +97,69 @@ num_t operator*(const Vector3<num_t>& v1, const Vector3<num_t>& v2){
            v1.z * v2.z;
 }
 
-typedef Vector2<double>   Vector2f;
-typedef Vector2<int   >   Vector2i;
-typedef Vector2<unsigned> Vector2u;
-
-typedef Vector3<double>   Vector3f;
-typedef Vector3<int   >   Vector3i;
-typedef Vector3<unsigned> Vector3u;
-
-inline Vector2f& normalize(Vector2f& v){
-    if(v*v < EPS) {
-        v.x = v.y = 0;
-        return v;
-    }
-    return v /= v.len();
+template<typename num_t>
+num_t operator^(const Vector2<num_t>& v1, const Vector2<num_t>& v2){
+    return v1.x * v2.y - v1.y * v2.x;
 }
 
-inline Vector3f& normalize(Vector3f& v){
-    if(v*v < EPS) {
-        v.x = v.y = v.z = 0;
-        return v;
-    }
-    return v /= v.len();
+template<typename num_t>
+Vector3<num_t> operator^(const Vector3<num_t>& v1, const Vector3<num_t>& v2){
+    return Vector3<num_t>{
+    v1.y * v2.z - v1.z * v2.y,
+    v1.z * v2.x - v1.x * v2.z,
+    v1.x * v2.y - v1.y * v2.x,
+    };
 }
+
+template<typename num_t>
+bool isParallel(const Vector2<num_t>& v1, const Vector2<num_t>& v2){
+    return isZero(v1 ^ v2);
+}
+
+template<typename num_t>
+bool isParallel(const Vector3<num_t>& v1, const Vector3<num_t>& v2){
+    return isZero((v1 ^ v2).len());
+}
+
+template<typename num_t>
+bool isCollin(const Vector2<num_t>& v1, const Vector2<num_t>& v2){
+    return isParallel(v1, v2) && (v1 * v2) >= 0;
+}
+
+template<typename num_t>
+bool isCollin(const Vector3<num_t>& v1, const Vector3<num_t>& v2){
+    return isParallel(v1, v2) && (v1 * v2) >= 0;
+}
+
+template<typename num_t>
+bool operator||(const Vector2<num_t>& v1, const Vector2<num_t>& v2){
+    return isParallel(v1, v2);
+}
+
+template<typename num_t>
+bool operator||(const Vector3<num_t>& v1, const Vector3<num_t>& v2){
+    return isParallel(v1, v2);
+}
+
+using Vector2f = Vector2<double>;
+using Vector2i = Vector2<int>;
+using Vector2u = Vector2<unsigned>;
+
+using Vector3f = Vector3<double>;
+using Vector3i = Vector3<int>;
+using Vector3u = Vector3<unsigned>;
+
+Vector2f normalize(const Vector2f& v);
+Vector3f normalize(const Vector3f& v);
 
 Vector2f rotate(const Vector2f& v, double a);
 Vector3f rotateZ(const Vector3f& v, double a);
+
+bool operator==(const Vector2f& lhs, const Vector2f& rhs);
+bool operator==(const Vector3f& lhs, const Vector3f& rhs);
+
+inline bool operator!=(const Vector2f& lhs, const Vector2f& rhs) {return !(lhs == rhs);}
+inline bool operator!=(const Vector3f& lhs, const Vector3f& rhs) {return !(lhs == rhs);}
+
 }
 #endif

@@ -6,20 +6,22 @@
 #include <MGeomerty/Rect.hpp>
 #include <MGeomerty/Line.hpp>
 #include <MGeomerty/Sphere.hpp>
+#include <MGeomerty/Intersects.hpp>
 
 namespace mgm{
-
-template<typename num_t>
-Vector2<num_t>& operator+(const Vector2<num_t> &v1, const Vector2<num_t>& v2){
-    Vector2<num_t> vector = v1;
-    return vector += v2;
-}
-
 
 template<typename num_t>
 Point2<num_t> operator+=(Point2<num_t>& pt, const Vector2<num_t>& v){
     pt.x += v.x;
     pt.y += v.y;
+    return pt;
+}
+
+template<typename num_t>
+Point3<num_t> operator+=(Point3<num_t>& pt, const Vector3<num_t>& v){
+    pt.x += v.x;
+    pt.y += v.y;
+    pt.z += v.z;
     return pt;
 }
 

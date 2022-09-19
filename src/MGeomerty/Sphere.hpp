@@ -1,17 +1,28 @@
 #ifndef MGEOMERTY_SPHERE_HPP
 #define MGEOMERTY_SPHERE_HPP
-#include "Point.hpp"
+#include <MGeomerty/Point.hpp>
+#include <MGeomerty/Vector.hpp>
 namespace mgm {
+
 
 class Sphere3f{
     Point3f center_;
     double r_;
     public:
         Sphere3f(const Point3f& pt, double r): center_(pt), r_(r) {}
-        bool hasIn(const Point3f& pt);
-        bool hasOnSurf(const Point3f& pt);
+        Sphere3f(const Point3f& pt, const Vector3f& v) : center_(pt), r_(v.len()) {}
+
+        bool contains(const Point3f& pt);
+        bool isOnSurface(const Point3f& pt);
+
+        const Point3f& center() const {return center_;}
+        double              r() const {return r_;}
+
+        void center(const Point3f& c) {center_ = c;}
+        void r(double radius)         {r_ = radius;}
 };
 
+bool operator==(const Sphere3f& lhs, const Sphere3f& rhs);
 }
 
 #endif /* MGEOMERTY_SPHERE_HPP */

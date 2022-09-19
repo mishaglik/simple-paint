@@ -37,5 +37,8 @@ typedef Point3<double>   Point3f;
 typedef Point3<int   >   Point3i;
 typedef Point3<unsigned> Point3u;
 
+bool operator==(const Point2f& lhs, const Point2f& rhs); 
+bool operator==(const Point3f& lhs, const Point3f& rhs); 
+
 }
 #endif

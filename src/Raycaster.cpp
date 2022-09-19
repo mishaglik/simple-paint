@@ -29,8 +29,8 @@ void Raycaster::render(const aGL::Window& window){
                 mgm::Vector3f normal    = ballPoint - mgm::Point3f(0, 0, 0);
                 mgm::Vector3f view      = camera_ - ballPoint;
 
-                mgm::normalize(lightVect);
-                mgm::normalize(view);
+                lightVect = mgm::normalize(lightVect);
+                view      = mgm::normalize(view);
 
                 uint8_t ligthness = 0x1c;
 
