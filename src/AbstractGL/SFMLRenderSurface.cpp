@@ -53,4 +53,10 @@ namespace aGL {
         rsp_->clear(sf::Color(color));
     }
 
+    void RenderSurface::resize(uint32_t w, uint32_t h){
+        delete rsp_;
+        rsp_ = new RenderSurface_(w, h);
+    }
+
+
 }

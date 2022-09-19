@@ -1,6 +1,5 @@
 #ifndef VECTORPLOT_HPP
 #define VECTORPLOT_HPP
-#include "AbstractGL/AWindow.hpp"
 #include "AbstractGL/Widget.hpp"
 #include "CoordinateSystem.hpp"
 #include "MGeomerty/Point.hpp"
@@ -14,15 +13,15 @@ class VectorPlot : public aGL::Widget, public CoordSystem{
     double angle_ = 0;
     double speed_ = 0.01;
     bool captured = false;
-    void drawBackground(const aGL::Window* window);
-    void drawForeground(const aGL::Window* window);
+    void drawBackground() const;
+    void drawForeground() const;
 
 public:
-    void render(const aGL::Window& window) override;
+    void onPaintEvent() const override;
     
     void update() override;
 
-    VectorPlot(uint32_t x, uint32_t y, uint32_t w, uint32_t h, double minX, double minY, double maxX, double maxY);
+    VectorPlot(int32_t x, int32_t y, int32_t w, int32_t h, double minX, double minY, double maxX, double maxY);
     
     ~VectorPlot() override;
 

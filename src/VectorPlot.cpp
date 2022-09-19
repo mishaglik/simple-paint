@@ -12,13 +12,13 @@ VectorPlot::VectorPlot(uint32_t x, uint32_t y, uint32_t w, uint32_t h, double mi
 
 }
 
-void VectorPlot::drawForeground(const aGL::Window* window){
+void VectorPlot::drawForeground() const {
     mgm::Point2f finPoint = startPoint_;
     mgm::Vector2f vec = rotate(vec_, angle_);
 
     finPoint += vec;
 
-    window->drawLine(transform(startPoint_), transform(finPoint), aGL::Colors::Red);
+    surface->drawLine(transform(startPoint_), transform(finPoint), aGL::Colors::Red);
 
     mgm::Point2f pt = finPoint;
 
@@ -30,21 +30,21 @@ void VectorPlot::drawForeground(const aGL::Window* window){
     orth *= 0.05;
     pt += orth;
 
-    window->drawLine(transform(finPoint), transform(pt) ,0xFF0000FF);
+    surface->drawLine(transform(finPoint), transform(pt) ,0xFF0000FF);
     orth *= -2;
     pt += orth;
 
-    window->drawLine(transform(finPoint), transform(pt) ,0xFF0000FF);
+    surface->drawLine(transform(finPoint), transform(pt) ,0xFF0000FF);
 
 }
 
-void VectorPlot::drawBackground(const aGL::Window* window){
-    window->drawRect(getRect(), aGL::Colors::White);
+void VectorPlot::drawBackground() const {
+    surface->clear(aGL::Colors::White);
 }
 
-void VectorPlot::render(const aGL::Window& window){
-    drawBackground(&window);
-    drawForeground(&window);
+void VectorPlot::onPaintEvent() const{
+    drawBackground();
+    drawForeground();
 }
 
 
@@ -73,8 +73,11 @@ void VectorPlot::addAngle(double a){
 }
 
 int VectorPlot::handleEvent(const aGL::Event& event){
+    mgm::Vector2i st = {-aGL::Widget::rect_.x, -aGL::Widget::rect_.y};
     if(event.type == aGL::EventType::MouseButtonPressed && mgm::contains(aGL::Widget::rect_, event.mbed.point)){
-        vec_ = rTransform(event.mbed.point) - startPoint_;
+        aGL::Point pt = event.mbed.point;
+        pt += st;
+        vec_ = rTransform(pt) - startPoint_;
         angle_ = 0;
         captured = true;
         return 0;

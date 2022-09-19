@@ -28,7 +28,7 @@ Window::~Window(){
     wp_ = nullptr;
 }
 
-void Window::resize(uint32_t width, uint32_t height){
+void Window::resize(int32_t width, int32_t height){
     wp_->setSize(sf::Vector2u(width, height));
 }
 
@@ -92,10 +92,21 @@ void Window::drawPoint(Point p, Color color) const {
 
 void Window::drawSurf(Point pt, const RenderSurface &surf) const{
     sf::Sprite sprite(surf.rsp_->getTexture());
+        // sprite.setColor(sf::Color::Black);
+        // sprite.setOrigin(pt.x, static_cast<float>(sprite.getTextureRect().height - pt.y));
+        // sprite.setScale(1, -1);
         sprite.setPosition({
             static_cast<float>(pt.x),
             static_cast<float>(pt.y)
         });
+        drawRect(
+            {
+                pt.x,
+                pt.y,
+                static_cast<int32_t>(sprite.getTextureRect().width),
+                static_cast<int32_t>(sprite.getTextureRect().height)
+            }
+        );
         wp_->draw(sprite);
 }
 
@@ -140,8 +151,8 @@ bool Window::pollEvent(Event& event){
             event.type = EventType::MouseWheeled;
             event.mwed.delta = sfEvent.mouseWheel.delta;
             event.mwed.point = {
-                                static_cast<uint32_t>(sfEvent.mouseWheel.x),
-                                static_cast<uint32_t>(sfEvent.mouseWheel.y)
+                                static_cast<int32_t>(sfEvent.mouseWheel.x),
+                                static_cast<int32_t>(sfEvent.mouseWheel.y)
                                };
             break;
 
@@ -149,23 +160,23 @@ bool Window::pollEvent(Event& event){
             event.type = EventType::MouseButtonPressed;
             event.mbed.button = getMouseButton(sfEvent.mouseButton.button);
             event.mbed.point = {
-                                static_cast<uint32_t>(sfEvent.mouseButton.x),
-                                static_cast<uint32_t>(sfEvent.mouseButton.y)
+                                static_cast<int32_t>(sfEvent.mouseButton.x),
+                                static_cast<int32_t>(sfEvent.mouseButton.y)
                                };
             break;
         case sf::Event::MouseButtonReleased:
             event.type = EventType::MouseButtonReleased;
             event.mbed.button = getMouseButton(sfEvent.mouseButton.button);
             event.mbed.point = {
-                                static_cast<uint32_t>(sfEvent.mouseButton.x),
-                                static_cast<uint32_t>(sfEvent.mouseButton.y)
+                                static_cast<int32_t>(sfEvent.mouseButton.x),
+                                static_cast<int32_t>(sfEvent.mouseButton.y)
                                };
             break;
         case sf::Event::MouseMoved:
             event.type = EventType::MouseMoved;
             event.mmed.point = {
-                                static_cast<uint32_t>(sfEvent.mouseMove.x),
-                                static_cast<uint32_t>(sfEvent.mouseMove.y)
+                                static_cast<int32_t>(sfEvent.mouseMove.x),
+                                static_cast<int32_t>(sfEvent.mouseMove.y)
                                };
             break;
         case sf::Event::Resized:

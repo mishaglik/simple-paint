@@ -35,7 +35,7 @@ void Text::setColor(const Color& color){
     tp_->setFillColor(sf::Color(color));
 }
 
-void Text::setStyle(uint32_t style){
+void Text::setStyle(unsigned style){
     tp_->setStyle(style);               // Text styles is equal to SFML
 }
 
@@ -47,10 +47,10 @@ Rect Text::getRect() const {
     sf::FloatRect rect = tp_->getGlobalBounds();
 
     return {
-            static_cast<unsigned>(rect.left), 
-            static_cast<unsigned>(rect.top), 
-            static_cast<unsigned>(rect.width), 
-            static_cast<unsigned>(rect.height)
+            static_cast<uint32_t>(rect.left), 
+            static_cast<uint32_t>(rect.top), 
+            static_cast<uint32_t>(rect.width), 
+            static_cast<uint32_t>(rect.height)
            };
 }
 

@@ -68,5 +68,9 @@ inline bool contains(const Rect2<num_t>& rect, const Point2<num_t>& pt){
         pt.y <= rect.y + rect.h    ;
 }
 
+inline bool contains(const Rect2<unsigned>& rect, const Point2<int>& pt){
+    contains(Rect2<int>(rect), pt);
+}
+
 }
 #endif /* MGEOMERTY_GEOMETRY_HPP */

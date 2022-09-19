@@ -1,5 +1,5 @@
-#ifndef ABSTRACTGL_RENDERSURFACE_HPP
-#define ABSTRACTGL_RENDERSURFACE_HPP
+#ifndef ABSTRACTGL_ARENDERSURFACE_HPP
+#define ABSTRACTGL_ARENDERSURFACE_HPP
 
 #include "AText.hpp"
 #include "Color.hpp"
@@ -23,9 +23,9 @@ public:
     void drawSurf    (Point pt, const RenderSurface& surf) const;
 
     void clear(Color color = Colors::Gray);
-
+    void resize(uint32_t w, uint32_t h);
     friend class Window;
 };
 
 }
-#endif /* ABSTRACTGL_RENDERSURFACE_HPP */
+#endif /* ABSTRACTGL_ARENDERSURFACE_HPP */

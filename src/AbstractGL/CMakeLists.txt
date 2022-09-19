@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-add_library(AbstractGL SFMLWindow.cpp Button.cpp Color.cpp Widget.cpp SFMLText.cpp)
+add_library(AbstractGL SFMLWindow.cpp Button.cpp Color.cpp Widget.cpp SFMLText.cpp SFMLRenderSurface.cpp)
 
 target_link_libraries(AbstractGL PRIVATE sfml-graphics sfml-window sfml-system)
 

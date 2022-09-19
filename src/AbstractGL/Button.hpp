@@ -24,7 +24,7 @@ public:
     
     int handleEvent(const Event& event) override;
 
-    void render(const Window &window) override;
+    void onPaintEvent() const override;
 
 };
 

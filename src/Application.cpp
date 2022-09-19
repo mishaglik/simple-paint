@@ -8,7 +8,7 @@
 
 Application::Application(){
     window_ = new aGL::Window(800, 600, "Vecplot window");
-    plotRotator_ = new VectorPlot(10, 20, 300, 300, -10, 10, 10, -10);
+    plotRotator_ = new VectorPlot(10, 200, 300, 300, -10, 10, 10, -10);
     plotRotator_->setVector({10, 0});
     
     raycaster_ = new Raycaster(300, 0, 500);
@@ -47,8 +47,13 @@ int Application::exec(){
         }
         window_->clear(0x999999FF);
 
+        plotRotator_->onPaintEvent();
+        // raycaster_  ->onPaintEvent();
+        exitButton  ->onPaintEvent();
+        resetButton ->onPaintEvent();
+
         plotRotator_->render(*window_); //TODO: change signature to window* 
-        raycaster_  ->render(*window_);  
+        // raycaster_  ->render(*window_);  
         exitButton  ->render(*window_);
         resetButton ->render(*window_);
         

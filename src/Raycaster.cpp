@@ -15,7 +15,7 @@ Raycaster::Raycaster(uint32_t x, uint32_t y, uint32_t size) :
 
 }
 
-void Raycaster::render(const aGL::Window& window){
+void Raycaster::onPaintEvent() const {
 
     for(uint32_t x = rect_.x; x < rect_.x + rect_.w; ++x){
         for(uint32_t y = rect_.y; y < rect_.y + rect_.h; ++y){
@@ -54,7 +54,7 @@ void Raycaster::render(const aGL::Window& window){
                 color.a(0xFF);
             }
 
-            window.drawPoint({x,y}, color);
+            surface->drawPoint({x,y}, color);
         }
     }
 }
