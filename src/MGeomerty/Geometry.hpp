@@ -1,9 +1,11 @@
-#ifndef MGEOMETRY_GEOMETRY_HPP
-#define MGEOMETRY_GEOMETRY_HPP
+#ifndef MGEOMERTY_GEOMETRY_HPP
+#define MGEOMERTY_GEOMETRY_HPP
 
+#include <MGeomerty/Vector.hpp>
 #include <MGeomerty/Point.hpp>
 #include <MGeomerty/Rect.hpp>
-#include <MGeomerty/Vector.hpp>
+#include <MGeomerty/Line.hpp>
+#include <MGeomerty/Sphere.hpp>
 
 namespace mgm{
 
@@ -65,4 +67,4 @@ inline bool contains(const Rect2<num_t>& rect, const Point2<num_t>& pt){
 }
 
 }
-#endif
+#endif /* MGEOMERTY_GEOMETRY_HPP */

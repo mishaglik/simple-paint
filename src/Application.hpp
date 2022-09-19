@@ -7,7 +7,7 @@
 #include <AbstractGL/Button.hpp>
 
 
-class Application{
+class Application : public AObject{
     aGL::Window* window_     = nullptr;
     VectorPlot* plotRotator_ = nullptr;
     // VectorPlot* plotClicked_ = nullptr;
@@ -27,18 +27,26 @@ class Application{
 
     AppState state_ = AppState::UnInit;
 
+    enum Slots : int{
+        Nothing,
+        Quit,
+        Reset,
+    };
+
 public:
     Application();
     Application(int , const char** ) : Application() {}
     
-    ~Application();
+    ~Application() override;
+
+    void handleSignal(int signal, void*) override;
 
     int exec();
 
     int handleEvent(const aGL::Event& event);
 
-    void quit (const aGL::Event& event);
-    void reset(const aGL::Event& event);
+    void quit ();
+    void reset();
 
     Application(const Application& app)             = delete;
     Application& operator= (const Application& app) = delete;

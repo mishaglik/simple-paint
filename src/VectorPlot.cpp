@@ -5,6 +5,7 @@
 #include "MGeomerty/Point.hpp"
 #include "MGeomerty/Vector.hpp"
 #include <iostream>
+
 VectorPlot::VectorPlot(uint32_t x, uint32_t y, uint32_t w, uint32_t h, double minX, double minY, double maxX, double maxY):
     aGL::Widget({x,y,w,h}), CoordSystem(aGL::Widget::rect_, {minX, minY}, {maxX, maxY}), vec_(1, 1)
 {

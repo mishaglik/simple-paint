@@ -14,7 +14,10 @@ Application::Application(){
     raycaster_ = new Raycaster(300, 0, 500);
 
     exitButton  = new aGL::Button("Exit", 0, 400);
+    exitButton->setEventFunction(this, Slots::Quit);
+
     resetButton = new aGL::Button("Reset", 200, 400);
+    resetButton->setEventFunction(this, Slots::Reset);
 
     state_ = AppState::Ready;
 }
@@ -71,9 +74,8 @@ int Application::handleEvent(const aGL::Event& event){
         return 1;
     }
 
-    if(resetButton->handleEvent(event)) reset(event);
-    if(exitButton ->handleEvent(event)) quit (event);
-
+    resetButton ->handleEvent(event);
+    exitButton  ->handleEvent(event);
     plotRotator_->handleEvent(event);
     raycaster_  ->handleEvent(event);
 
@@ -81,12 +83,28 @@ int Application::handleEvent(const aGL::Event& event){
 }
 
 
-void Application::quit (const aGL::Event&){
+void Application::quit (){
     state_ = AppState::Stopping;
 }
 
-void Application::reset(const aGL::Event&){
+void Application::reset(){
     plotRotator_->setAngle(0);
     plotRotator_->setVector({10, 0});
 }
 
+void Application::handleSignal(int s, void*){
+    Slots signal = static_cast<Slots>(s);
+
+    switch (signal) {
+    case Slots::Nothing:
+    break;
+    
+    case Slots::Quit:
+        quit();
+    break;
+
+    case Slots::Reset:
+        reset();
+    break;
+    }
+}

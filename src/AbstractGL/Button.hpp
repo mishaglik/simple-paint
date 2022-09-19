@@ -5,17 +5,22 @@
 namespace aGL {
 
 class Button : public Widget{
-    using ev_func_t = void (*)(const Event& event);
+    char const * const font_ = "/home/gms/progs++/vecplot/FreeMono.otf";
+    const Color defaultColor_ = 0x232323ff;
+    const Color pressedColor_ = 0x353535ff;
 
-    const char* text_ = nullptr;
-    ev_func_t eventFunction_ = nullptr;
+    uint32_t verticalMargin   = 10;
+    uint32_t horizontalMargin = 5;
+    
+    Text text_;
     bool pressed_ = false;
-    Color defaultColor = 0x232323ff;
-    Color pressedColor = 0x353535ff;
+
+    AObject* eventObject_ = nullptr;
+    int eventSignal_ = 0;
 public:
     Button(const char* text, uint32_t x, uint32_t y);
 
-    void setEventFunction(ev_func_t handler);
+    void setEventFunction(AObject* eventObject, int eventSignal);
     
     int handleEvent(const Event& event) override;
 

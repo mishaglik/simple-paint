@@ -1,4 +1,6 @@
 #include "SFMLWindow.hpp"
+
+#include "SFMLText.hpp"
 #include "AWindow.hpp"
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/PrimitiveType.hpp>
@@ -55,6 +57,10 @@ void Window::drawText(const char* text, Point pt, Color color) const{
     txt.setPosition({static_cast<float>(pt.x), static_cast<float>(pt.y)});
     wp_->draw(txt);
     return;
+}
+
+void Window::drawText(const Text& text) const{
+    wp_->draw(*text.tp_);
 }
 
 void Window::update(){
@@ -124,7 +130,7 @@ bool Window::pollEvent(Event& event){
             event.type = EventType::Quit;
             break;
             
-        case sf::Event::MouseWheelScrolled:
+        case sf::Event::MouseWheelMoved:
             event.type = EventType::MouseWheeled;
             event.mwed.delta = sfEvent.mouseWheel.delta;
             event.mwed.point = {
@@ -167,7 +173,7 @@ bool Window::pollEvent(Event& event){
             wp_->setView(view);
         }
             break;
-        case sf::Event::MouseWheelMoved:
+        case sf::Event::MouseWheelScrolled:
         case sf::Event::LostFocus:
         case sf::Event::GainedFocus:
         case sf::Event::TextEntered:

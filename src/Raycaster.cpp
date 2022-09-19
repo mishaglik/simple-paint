@@ -32,7 +32,7 @@ void Raycaster::render(const aGL::Window& window){
                 mgm::normalize(lightVect);
                 mgm::normalize(view);
 
-                uint8_t ligthness = 0x1a;
+                uint8_t ligthness = 0x1c;
 
                 double dynamic = (lightVect * normal);
                 dynamic = std::max(0.0, dynamic);
@@ -44,7 +44,7 @@ void Raycaster::render(const aGL::Window& window){
                 normal    += lightVect;
 
                 double blik = std::pow(std::max(normal * view, 0.), 11);
-                ligthness += static_cast<uint8_t>(std::min(50.,(blik * 400000)));
+                ligthness += static_cast<uint8_t>(std::min(30.,(blik * 400000)));
 
 
 
@@ -77,6 +77,11 @@ int Raycaster::handleEvent(const aGL::Event& event){
 
     if(captured && event.type == aGL::EventType::MouseButtonReleased && event.mbed.button == aGL::MouseButton::Left){
         captured = false;
+    }
+
+    if(event.type == aGL::EventType::MouseWheeled){
+        light_.z += 0.2 * event.mwed.delta;
+        if(light_.z < 0) light_.z = 0;
     }
     return 1;
 }
