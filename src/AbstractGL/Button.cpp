@@ -4,7 +4,7 @@
 namespace aGL {
 
 Button::Button(const char* text, uint32_t x, uint32_t y) :
-    Widget({x, y, 1, 1}), text_(font_, text, x + horizontalMargin, y + verticalMargin)
+    Widget({x, y, 1, 1}), text_(font_, text, horizontalMargin, verticalMargin + 2)
 {
     text_.setColor(Colors::Red);
 
@@ -35,12 +35,12 @@ int Button::handleEvent(const Event& event){
 }
 
 void Button::onPaintEvent() const {
-    surface->drawRect(rect_, pressed_ ? pressedColor_ : defaultColor_); //Todo: Two pictures different transpatency
+    surface->drawRect({0, 0, rect_.w, rect_.h}, pressed_ ? pressedColor_ : defaultColor_); //Todo: Two pictures different transpatency
     
-    surface->drawLine(rect_.getCornerLL(), rect_.getCornerLM(), Colors::LGray);
-    surface->drawLine(rect_.getCornerLM(), rect_.getCornerMM(), Colors::LGray);
-    surface->drawLine(rect_.getCornerMM(), rect_.getCornerML(), Colors::LGray);
-    surface->drawLine(rect_.getCornerML(), rect_.getCornerLL(), Colors::LGray);
+    surface->drawLine({      0,       0}, {      0, rect_.h}, Colors::LGray);
+    surface->drawLine({      0, rect_.h}, {rect_.w, rect_.h}, Colors::LGray);
+    surface->drawLine({rect_.w, rect_.h}, {rect_.w,       0}, Colors::LGray);
+    surface->drawLine({rect_.w,       0}, {      0,       0}, Colors::LGray);
     
     surface->drawText(text_);
 }

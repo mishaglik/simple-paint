@@ -15,8 +15,8 @@ public:
         rect_(rect), scaleX_(rect.w / (maximal.x - minimal.x)), scaleY_(rect.h / (maximal.y - minimal.y)),
         offset_(-minimal.x, -minimal.y) {}
 
-    mgm::Point2u transform (const mgm::Point2f& point);
-    mgm::Point2f rTransform(const mgm::Point2u& point);
+    mgm::Point2u transform (const mgm::Point2f& point) const;
+    mgm::Point2f rTransform(const mgm::Point2u& point) const;
 
     void moveTo(uint32_t x, uint32_t y);
     void resize(uint32_t w, uint32_t h);

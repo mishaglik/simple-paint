@@ -21,7 +21,7 @@ public:
     
     void update() override;
 
-    VectorPlot(int32_t x, int32_t y, int32_t w, int32_t h, double minX, double minY, double maxX, double maxY);
+    VectorPlot(uint32_t x, uint32_t y, uint32_t w, uint32_t h, double minX, double minY, double maxX, double maxY);
     
     ~VectorPlot() override;
 

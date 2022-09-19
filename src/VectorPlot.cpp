@@ -7,7 +7,7 @@
 #include <iostream>
 
 VectorPlot::VectorPlot(uint32_t x, uint32_t y, uint32_t w, uint32_t h, double minX, double minY, double maxX, double maxY):
-    aGL::Widget({x,y,w,h}), CoordSystem(aGL::Widget::rect_, {minX, minY}, {maxX, maxY}), vec_(1, 1)
+    aGL::Widget({x,y,w,h}), CoordSystem({0, 0, w, h}, {minX, minY}, {maxX, maxY}), vec_(1, 1)
 {
 
 }
@@ -73,10 +73,8 @@ void VectorPlot::addAngle(double a){
 }
 
 int VectorPlot::handleEvent(const aGL::Event& event){
-    mgm::Vector2i st = {-aGL::Widget::rect_.x, -aGL::Widget::rect_.y};
     if(event.type == aGL::EventType::MouseButtonPressed && mgm::contains(aGL::Widget::rect_, event.mbed.point)){
-        aGL::Point pt = event.mbed.point;
-        pt += st;
+        aGL::Point pt = aGL::getRelPoint(event.mbed.point, aGL::Widget::rect_);
         vec_ = rTransform(pt) - startPoint_;
         angle_ = 0;
         captured = true;
@@ -84,9 +82,7 @@ int VectorPlot::handleEvent(const aGL::Event& event){
     }
 
     if(captured && event.type == aGL::EventType::MouseMoved && mgm::contains(aGL::Widget::rect_, event.mmed.point)){
-        if(mgm::contains(aGL::Widget::rect_, event.mbed.point)){
-            vec_ = rTransform(event.mmed.point) - startPoint_;
-        }
+        vec_ = rTransform(aGL::getRelPoint(event.mmed.point, aGL::Widget::rect_)) - startPoint_;
     }
     
     if(captured && event.type == aGL::EventType::MouseButtonReleased){

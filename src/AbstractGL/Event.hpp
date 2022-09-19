@@ -173,6 +173,13 @@ enum class HandlerState{
     Passed,
 };
 
+inline Point getRelPoint(const Point& pt, const mgm::Rect2u& rect){
+    return Point{
+        pt.x - rect.x,
+        pt.y - rect.y
+    };
+}
+
 }
 
 #endif /* ABSTRACTGL_EVENT_HPP */

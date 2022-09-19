@@ -9,7 +9,7 @@
 #include <iostream>
 
 Raycaster::Raycaster(uint32_t x, uint32_t y, uint32_t size) :
-    aGL::Widget({x, y, size, size}), cs_({x, y, size, size}, {-2, 2}, {2, -2}),
+    aGL::Widget({x, y, size, size}), cs_({0, 0, size, size}, {-2, 2}, {2, -2}),
     camera_({0, 0, 20}), light_({10, 0, 3})
 {
 
@@ -17,8 +17,8 @@ Raycaster::Raycaster(uint32_t x, uint32_t y, uint32_t size) :
 
 void Raycaster::onPaintEvent() const {
 
-    for(uint32_t x = rect_.x; x < rect_.x + rect_.w; ++x){
-        for(uint32_t y = rect_.y; y < rect_.y + rect_.h; ++y){
+    for(uint32_t x = 0; x < rect_.w; ++x){
+        for(uint32_t y = 0; y < rect_.h; ++y){
             mgm::Point3f ballPoint = cs_.rTransform({x, y});
             aGL::Color color = aGL::Colors::Transparent;        
             
@@ -67,7 +67,7 @@ int Raycaster::handleEvent(const aGL::Event& event){
     if((event.type == aGL::EventType::MouseButtonPressed && event.mbed.button == aGL::MouseButton::Left && mgm::contains(rect_, event.mbed.point)) ||
                                                              ((captured && event.type == aGL::EventType::MouseMoved && contains(rect_, event.mmed.point)))){
         double z = light_.z;
-        light_ = cs_.rTransform(event.type == aGL::EventType::MouseMoved ? event.mmed.point : event.mbed.point);
+        light_ = cs_.rTransform(aGL::getRelPoint((event.type == aGL::EventType::MouseMoved ? event.mmed.point : event.mbed.point), rect_));
         light_.x *= 5;
         light_.y *= 5;
         light_.z = z;

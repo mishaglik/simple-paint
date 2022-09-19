@@ -54,8 +54,16 @@ namespace aGL {
     }
 
     void RenderSurface::resize(uint32_t w, uint32_t h){
-        delete rsp_;
+        // sf::View view = rsp_->getDefaultView();
+        // view.setSize({
+                // static_cast<float>(w),
+                // static_cast<float>(h)
+        // });
+        // view.reset(sf::FloatRect(0, 0, static_cast<float>(w), static_cast<float>(h)));
+        // rsp_->setView(view);
+        auto old = rsp_;
         rsp_ = new RenderSurface_(w, h);
+        delete old;
     }
 
 

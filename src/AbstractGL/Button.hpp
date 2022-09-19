@@ -9,7 +9,7 @@ class Button : public Widget{
     const Color defaultColor_ = 0x232323ff;
     const Color pressedColor_ = 0x353535ff;
 
-    uint32_t verticalMargin   = 10;
+    uint32_t verticalMargin   = 13;
     uint32_t horizontalMargin = 5;
     
     Text text_;
