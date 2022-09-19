@@ -1,12 +1,9 @@
 #include "SFMLWindow.hpp"
 
+#include "SFMLRenderSurface.hpp"
 #include "SFMLText.hpp"
 #include "AWindow.hpp"
-#include <SFML/Graphics/Color.hpp>
-#include <SFML/Graphics/PrimitiveType.hpp>
-#include <SFML/Graphics/RectangleShape.hpp>
-#include <SFML/Graphics/Vertex.hpp>
-#include <SFML/System/Vector2.hpp>
+#include <SFML/Graphics.hpp>
 #include <cstdint>
 #include <cassert>
 #include <iostream>
@@ -17,7 +14,7 @@ Window_::Window_(uint32_t width, uint32_t height, const char* title): sf::Render
 
 Window_::~Window_() {}
 
-//-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+//---------- = Colors::Gray-------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 Window::Window(uint32_t width, uint32_t height, const char* title) :
@@ -92,6 +89,15 @@ void Window::drawPoint(Point p, Color color) const {
     wp_->draw(&vertex, 1, sf::Points);
 }
 
+
+void Window::drawSurf(Point pt, const RenderSurface &surf) const{
+    sf::Sprite sprite(surf.rsp_->getTexture());
+        sprite.setPosition({
+            static_cast<float>(pt.x),
+            static_cast<float>(pt.y)
+        });
+        wp_->draw(sprite);
+}
 
 static MouseButton getMouseButton(sf::Mouse::Button button){
     switch (button) {

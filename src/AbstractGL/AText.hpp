@@ -28,6 +28,7 @@ class Text{
     const char* text_ = nullptr;
 
     friend class Window;
+    friend class RenderSurface;
 
 public:
     Text(const char* fontName, const char* text, uint32_t x = 0, uint32_t y = 0);

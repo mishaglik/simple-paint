@@ -1,11 +1,12 @@
-#ifndef ABSTRACTGL_WINDOW_HPP
-#define ABSTRACTGL_WINDOW_HPP
+#ifndef ABSTRACTGL_AWINDOW_HPP
+#define ABSTRACTGL_AWINDOW_HPP
 #include <cstdint>
 #include <MGeomerty/Geometry.hpp>
 #include "Color.hpp"
 #include "Event.hpp"
 #include "AObject.hpp"
 #include "AText.hpp"
+#include "ARenderSurface.hpp"
 
 namespace aGL {
 
@@ -23,13 +24,14 @@ public:
     ~Window() override;
 
     void resize(uint32_t width, uint32_t height);
-    void drawText    (const char* text, Point pt, Color color = 0) const;
+    [[deprecated]] void drawText    (const char* text, Point pt, Color color = 0) const;
     void drawText    (const Text& text) const;
     bool pollEvent(Event& event);
 
     void drawLine    (Point p1, Point p2, Color color = Colors::Black) const;
     void drawPoint   (Point p, Color color = Colors::Black) const ; 
     void drawRect    (const Rect& rect, Color color = Colors::Black) const;
+    void drawSurf    (Point pt, const RenderSurface& surf) const;
     void clear(Color color = Colors::Gray);
     void show();
     void hide();
@@ -43,4 +45,4 @@ public:
 };
 
 }
-#endif
+#endif /* ABSTRACTGL_AWINDOW_HPP */
