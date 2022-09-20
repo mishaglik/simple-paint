@@ -27,6 +27,12 @@ public:
         return *this;
     }
 
+    Vector2<num_t>& operator-= (const Vector2<num_t> &rhs){
+        x -= rhs.x;
+        y -= rhs.y;
+        return *this;
+    }
+
     Vector2<num_t>& operator*= (num_t rhs){
         x *= rhs;
         y *= rhs;
@@ -66,6 +72,13 @@ public:
         x += rhs.x;
         y += rhs.y;
         z += rhs.z;
+        return *this;
+    }
+
+    Vector3<num_t>& operator-= (const Vector3<num_t> &rhs){
+        x -= rhs.x;
+        y -= rhs.y;
+        z -= rhs.z;
         return *this;
     }
 
