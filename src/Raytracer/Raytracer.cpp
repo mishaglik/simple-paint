@@ -4,15 +4,19 @@
 
 
 Raytracer::Raytracer(uint32_t x, uint32_t y, uint32_t w, uint32_t h) : aGL::Widget({x, y, w, h}), camera_({0, 0, -1000}) {
-    objlist_    = new RTObjs::RenderObject* [2];
-    objlist_[0] = new RTObjs::RenderSphere({0,     0, 1000}, 250, false, aGL::Colors::Yellow);
-    objlist_[1] = new RTObjs::RenderSphere({0,  -1e5, 1000}, 9e4, true,  aGL::Colors::White);
+    nObjects = 4;
+    objlist_    = new RTObjs::RenderObject* [nObjects];
+    objlist_[0] = new RTObjs::RenderSphere({   0,     0, 1000}, 100, false, aGL::Colors::Magenta);
+    objlist_[1] = new RTObjs::RenderSphere({ 300,     0, 1000}, 100, false, aGL::Colors::White);
+    objlist_[2] = new RTObjs::RenderSphere({   0,  -1e5, 1000}, 9e4, true,  aGL::Colors::White);
+    objlist_[3] = new RTObjs::RenderSphere({ 155,     0, 1000},  10, true,  aGL::Colors::Blue);
 }
 
 
 Raytracer::~Raytracer(){
-    delete objlist_[0];
-    delete objlist_[1];
+    for(size_t i = 0; i < nObjects; ++i)
+        delete objlist_[i];
+
     delete[] objlist_;
 }
 
@@ -25,7 +29,7 @@ aGL::Color Raytracer::getRayColor(const mgm::Ray3f& ray, int depth) const {
     size_t crossObj = 0;
     double distance = RTObjs::NoIntersection;
 
-    for(size_t i = 0; i < 2; ++i){
+    for(size_t i = 0; i < nObjects; ++i){
         double curDistance = objlist_[i]->getIntersection(ray);
         if(curDistance < distance){
             distance = curDistance;
@@ -42,14 +46,31 @@ aGL::Color Raytracer::getRayColor(const mgm::Ray3f& ray, int depth) const {
     if(pt.isSource){
         return pt.color;
     }
-
+    
     mgm::Vector3f refVec = ray.dir();
     refVec *= -1;
+
+    if(refVec * pt.normal <= -mgm::EPS){
+
+        // std::cerr << refVec * pt.normal << ' ' << depth << '\n';
+        // std::cerr << ray.start().x << ' ' << ray.start().y << ' ' << ray.start().z << '\n';
+        // std::cerr << refVec.x    << ' ' << refVec.y    << ' ' << refVec.z << '\n'; 
+        // std::cerr << pt.normal.x << ' ' << pt.normal.y << ' ' << pt.normal.z << '\n'; 
+        // std::cerr << pt.point.x  << ' ' << pt.point.y << ' ' << pt.point.z << '\n'; 
+        // std::cerr << '\n';
+    }
+
+    assert(refVec * pt.normal >= -mgm::EPS);
     refVec = mgm::getReflection(refVec, pt.normal);
 
-    assert(refVec * pt.normal >= 0);
+    assert(refVec * pt.normal >= 0 );
 
     pt.point += normalize(refVec);
+   
+    assert(!reinterpret_cast<RTObjs::RenderSphere*>(objlist_[crossObj])->sph_.contains(pt.point));
+    for(size_t i = 0; i < nObjects; ++i){
+        assert(!reinterpret_cast<RTObjs::RenderSphere*>(objlist_[i])->sph_.contains(pt.point));
+    }
 
     // if(fabs(ray.dir().x) < 1){
         // std::cerr << refVec.x << ' ' << refVec.y << ' ' << refVec.z << '\n'; 

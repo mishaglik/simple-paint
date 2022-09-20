@@ -5,11 +5,22 @@ set (MGEOMETRY_SOURCES
     Line.cpp
     Rect.cpp
     Sphere.cpp
+    Plane.cpp
     Vector.cpp
 )
 
-add_library(MGeomerty ${MGEOMETRY_SOURCES})
+set (MGEOMETRY_HEADERS
+    Intersects.hpp
+    Line.hpp
+    Rect.hpp
+    Sphere.hpp
+    Vector.hpp
+    Point.hpp
+    Geometry.hpp
+    Float.hpp
+    Plane.hpp
+)
 
-# target_link_libraries(Raytracer PRIVATE AbstractGL MGeomerty)
+add_library(MGeomerty ${MGEOMETRY_SOURCES} ${MGEOMETRY_HEADERS})
 
-target_include_directories(MGeomerty PUBLIC "../")
+target_include_directories(MGeomerty PUBLIC "${PROJECT_SOURCE_DIR}/src")

@@ -7,10 +7,10 @@ namespace RTObjs{
 
 class RenderSphere : public RenderObject {
     protected:
+    public:
         mgm::Sphere3f sph_;
         bool isSource_ = false;
         aGL::Color color_;
-    public:
         RenderSphere(const mgm::Point3f& center, double r, bool isSource = false, aGL::Color color = aGL::Colors::White) : 
             sph_(center, r), isSource_(isSource), color_(color) {}
         

@@ -10,7 +10,8 @@ using vector = std::vector<T>;
 class Raytracer: public aGL::Widget{
 
     RTObjs::RenderObject** objlist_;
-
+    size_t nObjects;
+    
     mgm::Point3f camera_;
 
     aGL::Color getRayColor(const mgm::Ray3f& ray, int depth = 0) const;

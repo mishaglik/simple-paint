@@ -5,7 +5,13 @@ set (RAY_SOURCES
     Raytracer.cpp
 )
 
-add_library(Raytracer ${RAY_SOURCES})
+set (RAY_HEADERS
+    RenderSphere.hpp
+    Raytracer.hpp
+    RenderObject.hpp
+)
+
+add_library(Raytracer ${RAY_SOURCES} ${RAY_HEADERS})
 
 target_link_libraries(Raytracer PRIVATE AbstractGL MGeomerty)
 

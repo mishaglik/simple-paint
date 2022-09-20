@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(Vecplot VERSION 1.0)
+project(Vecplot VERSION 2.0)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -16,6 +16,13 @@ set(VP_SOURCES
     ${VP_SOURCE_DIR}/VectorPlot.cpp
     ${VP_SOURCE_DIR}/Application.cpp
     ${VP_SOURCE_DIR}/Raycaster.cpp
+)
+
+set(VP_HEADERS
+    ${VP_SOURCE_DIR}/CoordinateSystem.hpp
+    ${VP_SOURCE_DIR}/VectorPlot.hpp
+    ${VP_SOURCE_DIR}/Application.hpp
+    ${VP_SOURCE_DIR}/Raycaster.hpp
 )
 
 set(VP_LIBS
@@ -35,7 +42,7 @@ foreach(lib ${VP_LIBS})
     add_subdirectory(${VP_SOURCE_DIR}/${lib})
 endforeach()
 
-add_executable(main ${VP_SOURCES})
+add_executable(main ${VP_SOURCES} ${VP_HEADERS})
 
 target_link_libraries(main PUBLIC ${VP_LIBS})
 

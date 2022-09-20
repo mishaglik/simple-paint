@@ -4,6 +4,7 @@
 #include <MGeomerty/Point.hpp>
 #include <MGeomerty/Line.hpp>
 #include <MGeomerty/Sphere.hpp>
+#include <MGeomerty/Plane.hpp>
 
 namespace mgm {
     double distBtw(const Line3f& line, const Point3f& pt);
@@ -15,6 +16,12 @@ namespace mgm {
 
     bool intersect1(const Line3f& line, const Sphere3f& sph, Point3f* pt = nullptr);
     bool intersect1(const Ray3f&  ray,  const Sphere3f& sph, Point3f* pt = nullptr);
+
+    bool intersect1(const Ray3f&   ray,  const Plane3f& pln, Point3f* pt = nullptr);
+    bool intersect1(const Line3f& line,  const Plane3f& pln, Point3f* pt = nullptr);
+    
+    bool intersect1(const Plane3f& pln, const Ray3f&   ray,  Point3f* pt = nullptr);
+    bool intersect1(const Plane3f& pln, const Line3f& line,  Point3f* pt = nullptr);
 
 }
 

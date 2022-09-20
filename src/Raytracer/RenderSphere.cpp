@@ -6,6 +6,8 @@ namespace RTObjs {
 double RenderSphere::getIntersection(const mgm::Ray3f& ray, SurfacePoint* pt) const {
     mgm::Point3f intersect;
 
+    assert(!sph_.contains(ray.start()));
+
     if(!mgm::intersect1(ray, sph_, &intersect)){
         return NoIntersection;
     }
