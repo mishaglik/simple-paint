@@ -155,6 +155,19 @@ AbstractGL/fast:
 	$(MAKE) $(MAKESILENT) -f src/AbstractGL/CMakeFiles/AbstractGL.dir/build.make src/AbstractGL/CMakeFiles/AbstractGL.dir/build
 .PHONY : AbstractGL/fast
 
+#=============================================================================
+# Target rules for targets named Raytracer
+
+# Build rule for target.
+Raytracer: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Raytracer
+.PHONY : Raytracer
+
+# fast build rule for target.
+Raytracer/fast:
+	$(MAKE) $(MAKESILENT) -f src/Raytracer/CMakeFiles/Raytracer.dir/build.make src/Raytracer/CMakeFiles/Raytracer.dir/build
+.PHONY : Raytracer/fast
+
 src/Application.o: src/Application.cpp.o
 .PHONY : src/Application.o
 
@@ -285,6 +298,7 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... AbstractGL"
 	@echo "... MGeomerty"
+	@echo "... Raytracer"
 	@echo "... main"
 	@echo "... src/Application.o"
 	@echo "... src/Application.i"

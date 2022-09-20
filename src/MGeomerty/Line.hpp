@@ -19,7 +19,11 @@ class Line3f{
 };
 
 class Ray3f : public Line3f{
-    Ray3f(const Point3f& pt, const Vector3f& v) : Line3f(pt, v) {}
+    public:
+        Ray3f(const Point3f& pt, const Vector3f& v) : Line3f(pt, v) {}
+        Ray3f(const Point3f& p1, const Point3f& p2) : Line3f(p1, p2) {}
+
+        const Point3f& start() const {return point();}
 };
 
 bool isParallel(const Line3f& lhs, const Line3f& rhs);  

@@ -3,11 +3,11 @@
 
 namespace mgm {
 
-bool Sphere3f::contains(const Point3f& pt){
-    return (pt - center_).len() < r_;
+bool Sphere3f::contains(const Point3f& pt) const {
+    return (pt - center_).len() < r_ + EPS;
 }
 
-bool Sphere3f::isOnSurface(const Point3f& pt){
+bool Sphere3f::isOnSurface(const Point3f& pt) const {
     return ((pt - center_).len() - r_) < EPS;
 }
 

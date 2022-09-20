@@ -11,7 +11,8 @@ Application::Application(){
     plotRotator_ = new VectorPlot(10, 30, 300, 300, -10, 10, 10, -10);
     plotRotator_->setVector({10, 0});
     
-    raycaster_ = new Raycaster(300, 0, 500);
+    raycaster_ = new Raycaster(0, 0, 500);
+    raytracer_ = new Raytracer(300, 0 ,500, 500);
 
     exitButton  = new aGL::Button("Exit", 0, 400);
     exitButton->setEventFunction(this, Slots::Quit);
@@ -48,14 +49,16 @@ int Application::exec(){
         window_->clear(0x999999FF);
 
         plotRotator_->onPaintEvent();
-        raycaster_  ->onPaintEvent();
+        // raycaster_  ->onPaintEvent();
         exitButton  ->onPaintEvent();
         resetButton ->onPaintEvent();
+        raytracer_  ->onPaintEvent();
 
         plotRotator_->render(*window_); //TODO: change signature to window* 
-        raycaster_  ->render(*window_);  
+        // raycaster_  ->render(*window_);  
         exitButton  ->render(*window_);
         resetButton ->render(*window_);
+        raytracer_  ->render(*window_);
         
         
         raycaster_  ->addAngle(0.03);

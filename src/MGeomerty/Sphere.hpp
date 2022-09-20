@@ -12,8 +12,8 @@ class Sphere3f{
         Sphere3f(const Point3f& pt, double r): center_(pt), r_(r) {}
         Sphere3f(const Point3f& pt, const Vector3f& v) : center_(pt), r_(v.len()) {}
 
-        bool contains(const Point3f& pt);
-        bool isOnSurface(const Point3f& pt);
+        bool contains(const Point3f& pt) const;
+        bool isOnSurface(const Point3f& pt) const;
 
         const Point3f& center() const {return center_;}
         double              r() const {return r_;}

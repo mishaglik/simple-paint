@@ -5,13 +5,15 @@
 #include "VectorPlot.hpp"
 #include <AbstractGL/AWindow.hpp>
 #include <AbstractGL/Button.hpp>
-
+#include <Raytracer/Raytracer.hpp>
 
 class Application : public AObject{
     aGL::Window* window_     = nullptr;
     VectorPlot* plotRotator_ = nullptr;
     // VectorPlot* plotClicked_ = nullptr;
     Raycaster* raycaster_    = nullptr;
+    Raytracer* raytracer_    = nullptr;
+    
     aGL::Button* exitButton  = nullptr;
     aGL::Button* resetButton = nullptr;
 

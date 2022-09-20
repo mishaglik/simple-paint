@@ -5,6 +5,7 @@ namespace mgm {
 
 Line3f::Line3f(const Point3f& p1, const Point3f& p2) : Line3f(p1, p2 - p1) {
     assert(!(p1 == p2));
+    
 }
 
 

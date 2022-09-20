@@ -10,4 +10,12 @@ Color& Color::operator+=(const Color& rhs){
     return *this;
 }
 
+Color& Color::operator&=(const Color& rhs){
+    asRGBA_.r_ = static_cast<uint8_t>((asRGBA_.r_ * static_cast<uint32_t>(rhs.asRGBA_.r_) / 255));
+    asRGBA_.g_ = static_cast<uint8_t>((asRGBA_.g_ * static_cast<uint32_t>(rhs.asRGBA_.g_) / 255));
+    asRGBA_.b_ = static_cast<uint8_t>((asRGBA_.b_ * static_cast<uint32_t>(rhs.asRGBA_.b_) / 255));
+    asRGBA_.a_ = static_cast<uint8_t>((asRGBA_.a_ * static_cast<uint32_t>(rhs.asRGBA_.a_) / 255));
+    return *this;
+}
+
 }

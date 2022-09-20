@@ -1,5 +1,15 @@
 cmake_minimum_required(VERSION 3.10)
 
-add_library(MGeomerty Vector.cpp Sphere.cpp Intersects.cpp)
+set (MGEOMETRY_SOURCES
+    Intersects.cpp
+    Line.cpp
+    Rect.cpp
+    Sphere.cpp
+    Vector.cpp
+)
 
-target_include_directories(MGeomerty PUBLIC "${PROJECT_SOURCE_DIR}/src")
+add_library(MGeomerty ${MGEOMETRY_SOURCES})
+
+# target_link_libraries(Raytracer PRIVATE AbstractGL MGeomerty)
+
+target_include_directories(MGeomerty PUBLIC "../")

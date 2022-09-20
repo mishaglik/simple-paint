@@ -9,7 +9,7 @@ Text::Text_::Text_(const char* fontFilename, const char* text, uint32_t x, uint3
     setFont(font_);
     setString(text);
     setPosition( static_cast<float>(x), 
-                 static_cast<float>(y - getCharacterSize() / 2));
+                 static_cast<float>(y - getCharacterSize() * 0.5));
 }
 
 Text::Text(const char* fontName, const char* text, uint32_t x, uint32_t y){
@@ -23,7 +23,7 @@ Text::~Text(){
 void Text::setPosition(uint32_t x, uint32_t y){
     tp_->setPosition(
         static_cast<float>(x),
-        static_cast<float>(y - tp_->getCharacterSize() / 2)
+        static_cast<float>(y - tp_->getCharacterSize() * 0.5)
     );
 }
 

@@ -38,6 +38,8 @@ public:
 
     Color& operator+= (const Color &rhs);
     Color& operator*= (uint8_t k);
+    Color& operator&=(const Color& rhs);
+
 
 };
 
@@ -46,14 +48,16 @@ public:
 #pragma clang diagnostic ignored "-Wglobal-constructors"
 namespace Colors {
     const Color Transparent = 0;
-    const Color White = 0xFFFFFFFF; 
-    const Color Black = 0x000000FF; 
-    const Color Red   = 0xFF0000FF; 
-    const Color Green = 0x00FF00FF; 
-    const Color Blue  = 0x0000FFFF; 
-    const Color Gray  = 0xA0A0A0FF; 
-    const Color DGray = 0x505050FF; 
-    const Color LGray = 0xD0D0D0FF; 
+    const Color White   = 0xFFFFFFFF; 
+    const Color Black   = 0x000000FF; 
+    const Color Red     = 0xFF0000FF; 
+    const Color Green   = 0x00FF00FF; 
+    const Color Blue    = 0x0000FFFF; 
+    const Color Gray    = 0xA0A0A0FF; 
+    const Color DGray   = 0x202020FF; 
+    const Color LGray   = 0xD0D0D0FF; 
+    const Color Yellow  = 0xFFFF00FF; 
+    const Color Magenta = 0xFF00FFFF;
 }
 #pragma clang diagnostic pop
 }

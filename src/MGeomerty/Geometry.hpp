@@ -33,12 +33,12 @@ Point2<num_t> operator+(const Point2<num_t>& pt, const Vector2<num_t>& v){
 
 template<typename num_t>
 Vector2<num_t> operator-(const Point2<num_t>& pt1, const Point2<num_t>& pt2){
-    return {pt2.x - pt1.x, pt2.y - pt1.y};
+    return {pt1.x - pt2.x, pt1.y - pt2.y};
 }
 
 template<typename num_t>
 Vector3<num_t> operator-(const Point3<num_t>& pt1, const Point3<num_t>& pt2){
-    return {pt2.x - pt1.x, pt2.y - pt1.y, pt2.z - pt1.z};
+    return {pt1.x - pt2.x, pt1.y - pt2.y, pt1.z - pt2.z};
 }
 
 template<typename num_t>
@@ -69,7 +69,7 @@ inline bool contains(const Rect2<num_t>& rect, const Point2<num_t>& pt){
 }
 
 inline bool contains(const Rect2<unsigned>& rect, const Point2<int>& pt){
-    contains(Rect2<int>(rect), pt);
+    return contains(Rect2<int>(rect), pt);
 }
 
 }
