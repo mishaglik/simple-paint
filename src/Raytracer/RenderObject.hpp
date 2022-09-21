@@ -16,6 +16,8 @@ namespace RTObjs {
     };
 
     class RenderObject{
+        protected:
+        const char* objName = "";
     public:
         virtual ~RenderObject() {}
         virtual double getIntersection(const mgm::Ray3f& ray, SurfacePoint* pt = nullptr) const = 0;

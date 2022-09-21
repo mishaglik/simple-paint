@@ -12,7 +12,7 @@ class RenderSphere : public RenderObject {
         bool isSource_ = false;
         aGL::Color color_;
         RenderSphere(const mgm::Point3f& center, double r, bool isSource = false, aGL::Color color = aGL::Colors::White) : 
-            sph_(center, r), isSource_(isSource), color_(color) {}
+            sph_(center, r), isSource_(isSource), color_(color) {objName="Sphere";}
         
         virtual ~RenderSphere() override {}
         

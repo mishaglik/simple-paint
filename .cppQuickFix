@@ -1,0 +1,4 @@
+[CppEditor.QuickFix]
+GettersOutsideClassFrom=-1
+MemberVariableNameTemplate=<name>_
+SettersOutsideClassFrom=-1

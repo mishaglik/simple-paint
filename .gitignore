@@ -1,5 +1,6 @@
 .vscode
 .cache
+.cppQuickFix
 build/**
 CMakeFiles
 include

@@ -1,15 +1,18 @@
 #include "Raytracer.hpp"
 #include "RenderSphere.hpp"
+#include "RenderPlane.hpp"
 #include <iostream>
 
 
 Raytracer::Raytracer(uint32_t x, uint32_t y, uint32_t w, uint32_t h) : aGL::Widget({x, y, w, h}), camera_({0, 0, -1000}) {
-    nObjects = 4;
+    nObjects = 6;
     objlist_    = new RTObjs::RenderObject* [nObjects];
-    objlist_[0] = new RTObjs::RenderSphere({   0,     0, 1000}, 100, false, aGL::Colors::Magenta);
-    objlist_[1] = new RTObjs::RenderSphere({ 300,     0, 1000}, 100, false, aGL::Colors::White);
-    objlist_[2] = new RTObjs::RenderSphere({   0,  -1e5, 1000}, 9e4, true,  aGL::Colors::White);
-    objlist_[3] = new RTObjs::RenderSphere({ 155,     0, 1000},  10, true,  aGL::Colors::Blue);
+    objlist_[0] = new RTObjs::RenderPlane ({   0,     1,   0}, {0, 101,0}, false,  aGL::Colors::Yellow);
+    objlist_[1] = new RTObjs::RenderSphere({   0,     0, 1000}, 100, false, aGL::Colors::Magenta);
+    objlist_[2] = new RTObjs::RenderSphere({ 300,     0, 1000}, 100, false, aGL::Colors::Cyan);
+    objlist_[3] = new RTObjs::RenderSphere({   0,  -1e5, 1000}, 9e4, true,  aGL::Colors::White);
+    objlist_[4] = new RTObjs::RenderSphere({ 155,     0, 1000},  10, true,  aGL::Colors::Blue);
+    objlist_[5] = new RTObjs::RenderSphere({   50,  -150, 1100}, 100, false,  aGL::Colors::White);
 }
 
 
@@ -50,16 +53,6 @@ aGL::Color Raytracer::getRayColor(const mgm::Ray3f& ray, int depth) const {
     mgm::Vector3f refVec = ray.dir();
     refVec *= -1;
 
-    if(refVec * pt.normal <= -mgm::EPS){
-
-        // std::cerr << refVec * pt.normal << ' ' << depth << '\n';
-        // std::cerr << ray.start().x << ' ' << ray.start().y << ' ' << ray.start().z << '\n';
-        // std::cerr << refVec.x    << ' ' << refVec.y    << ' ' << refVec.z << '\n'; 
-        // std::cerr << pt.normal.x << ' ' << pt.normal.y << ' ' << pt.normal.z << '\n'; 
-        // std::cerr << pt.point.x  << ' ' << pt.point.y << ' ' << pt.point.z << '\n'; 
-        // std::cerr << '\n';
-    }
-
     assert(refVec * pt.normal >= -mgm::EPS);
     refVec = mgm::getReflection(refVec, pt.normal);
 
@@ -67,20 +60,26 @@ aGL::Color Raytracer::getRayColor(const mgm::Ray3f& ray, int depth) const {
 
     pt.point += normalize(refVec);
    
-    assert(!reinterpret_cast<RTObjs::RenderSphere*>(objlist_[crossObj])->sph_.contains(pt.point));
-    for(size_t i = 0; i < nObjects; ++i){
-        assert(!reinterpret_cast<RTObjs::RenderSphere*>(objlist_[i])->sph_.contains(pt.point));
-    }
+    // assert(!reinterpret_cast<RTObjs::RenderSphere*>(objlist_[crossObj])->sph_.contains(pt.point));
+    // for(size_t i = 0; i < nObjects; ++i){
+        // assert(!reinterpret_cast<RTObjs::RenderSphere*>(objlist_[i])->sph_.contains(pt.point));
+    // }
 
     // if(fabs(ray.dir().x) < 1){
         // std::cerr << refVec.x << ' ' << refVec.y << ' ' << refVec.z << '\n'; 
     // }
 
-    return pt.color &= getRayColor(mgm::Ray3f{pt.point, refVec}, depth + 1);
+    aGL::Color refRayColor = getRayColor(mgm::Ray3f{pt.point, refVec}, depth + 1);
+    
+    refRayColor |= ambient_;
+    return refRayColor &= pt.color;
+
+    // return pt.color &= getRayColor(mgm::Ray3f{pt.point, refVec}, depth + 1);
 }
 
 
 void Raytracer::onPaintEvent() const {
+    if(isRendered) return;
     surface->clear(aGL::Colors::Black);
 
     for(uint32_t x = 0; x < rect_.w; ++x){

@@ -13,8 +13,11 @@ class Raytracer: public aGL::Widget{
     size_t nObjects;
     
     mgm::Point3f camera_;
+    aGL::Color ambient_ = 0x202020ff;
 
     aGL::Color getRayColor(const mgm::Ray3f& ray, int depth = 0) const;
+
+    bool isRendered = false;
 
     public:
         Raytracer(uint32_t x, uint32_t y, uint32_t w, uint32_t h);

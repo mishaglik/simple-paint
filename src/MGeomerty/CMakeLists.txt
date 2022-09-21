@@ -19,6 +19,7 @@ set (MGEOMETRY_HEADERS
     Geometry.hpp
     Float.hpp
     Plane.hpp
+    Operations.hpp
 )
 
 add_library(MGeomerty ${MGEOMETRY_SOURCES} ${MGEOMETRY_HEADERS})

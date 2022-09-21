@@ -1,52 +1,37 @@
 #ifndef MGEOMERTY_RECT_HPP
 #define MGEOMERTY_RECT_HPP
 #include "Point.hpp"
-namespace mgm{
+namespace mgm {
 
-template<typename num_t> 
-struct Rect2{
-    num_t x, y, w, h;
+    template<typename num_t>
+    struct Rect2
+    {
+        num_t x, y, w, h;
 
-    Rect2(num_t x_, num_t y_, num_t w_, num_t h_) : x(x_), y(y_), w(w_), h(h_) {}
-    Rect2() : Rect2(0, 0, 0, 0) {}
-    
-    template<typename T>
-    Rect2(const Rect2<T>& oth) : 
-        x(static_cast<num_t>(oth.x)),
-        y(static_cast<num_t>(oth.y)),
-        w(static_cast<num_t>(oth.w)),
-        h(static_cast<num_t>(oth.h))
-    {}
+        Rect2(num_t x_, num_t y_, num_t w_, num_t h_) : x(x_), y(y_), w(w_), h(h_) {}
+        Rect2() : Rect2(0, 0, 0, 0) {}
 
-    Point2<num_t> getCornerLL () const;
-    Point2<num_t> getCornerML() const;
-    Point2<num_t> getCornerLM () const;
-    Point2<num_t> getCornerMM() const;
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wsign-conversion"    //TODO: think about it
+        template<typename T>
+        explicit Rect2(const Rect2<T>& oth) :
+            x(oth.x),
+            y(oth.y),
+            w(oth.w),
+            h(oth.h)
+        {}
+#pragma clang diagnostic pop
 
-};
 
-typedef Rect2<unsigned> Rect2u;
+        Point2<num_t> getCornerLL() const {return {x    , y    };} //FIXME: Cringe naming...
+        Point2<num_t> getCornerGL() const {return {x + w, y    };}
+        Point2<num_t> getCornerLG() const {return {x    , y + h};}
+        Point2<num_t> getCornerGG() const {return {x + w, y + h};}
 
-template<typename num_t>
-Point2<num_t> Rect2<num_t>::getCornerLL () const{
-    return {x, y};
-}
+    };
 
-template<typename num_t>
-Point2<num_t> Rect2<num_t>::getCornerML() const{
-    return {x + w, y};
-}
+    using Rect2u = Rect2<unsigned>;
 
-template<typename num_t>
-Point2<num_t> Rect2<num_t>::getCornerLM () const{
-    return {x, y + h};
-}
-
-template<typename num_t>
-Point2<num_t> Rect2<num_t>::getCornerMM() const{
-    return {x + w, y + h};
-}
-
-}
+} // namespace mgm
 
 #endif /* MGEOMERTY_RECT_HPP */

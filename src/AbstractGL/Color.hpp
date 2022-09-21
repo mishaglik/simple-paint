@@ -39,6 +39,7 @@ public:
     Color& operator+= (const Color &rhs);
     Color& operator*= (uint8_t k);
     Color& operator&=(const Color& rhs);
+    Color& operator|=(const Color& rhs);
 
 
 };
@@ -58,6 +59,7 @@ namespace Colors {
     const Color LGray   = 0xD0D0D0FF; 
     const Color Yellow  = 0xFFFF00FF; 
     const Color Magenta = 0xFF00FFFF;
+    const Color Cyan    = 0x00FFFFFF;
 }
 #pragma clang diagnostic pop
 }

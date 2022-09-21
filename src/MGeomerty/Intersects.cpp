@@ -94,13 +94,15 @@ namespace mgm {
         if(pln || ray.dir()) return false;
 
         Vector3f v = ray.dir();
-        v *= -pln.dist(ray.start()) / (pln.normal() * ray.dir());
+        v *= pln.dist(ray.start()) / (pln.normal() * ray.dir());
 
         if(v * ray.dir() < 0) return false;
         if(pt == nullptr) return true;
 
         *pt = ray.start();
         *pt += v;
+
+        assert(pln.contains(*pt));
 
         return true;
     }
