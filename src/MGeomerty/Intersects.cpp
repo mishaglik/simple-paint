@@ -102,7 +102,7 @@ namespace mgm {
         *pt = ray.start();
         *pt += v;
 
-        assert(pln.contains(*pt));
+        // assert(pln.contains(*pt));
 
         return true;
     }

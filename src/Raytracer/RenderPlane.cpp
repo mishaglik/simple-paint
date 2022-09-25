@@ -19,9 +19,18 @@ namespace RTObjs {
         if(pt->normal * ray.dir() >0) pt->normal *= -1;
         pt->color = color_;
         pt->isSource = isSource_;
-        pt->reflCoef = 1;
-        
+        pt->reflCoef = 0;
+        pt->refrCoef = 1;
         return (intrsetecton - ray.start()).len();
     }
+
+
+mgm::Point3f RenderPlane::getCenter() const{
+    assert(0 && "Planr has no center");
+}
+
+aGL::Color RenderPlane::getColor () const{
+    return color_;
+}
 
 }

@@ -16,6 +16,7 @@ class Raytracer: public aGL::Widget{
     aGL::Color ambient_ = 0x202020ff;
 
     aGL::Color getRayColor(const mgm::Ray3f& ray, int depth = 0) const;
+    aGL::Color getLambert(const RTObjs::SurfacePoint& surface) const;
 
     bool isRendered = false;
 

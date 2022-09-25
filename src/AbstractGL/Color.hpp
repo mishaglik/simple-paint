@@ -18,7 +18,7 @@ class Color{
 
 public:
     Color(uint32_t color = 0) : color_(color) {}
-    Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a) : asRGBA_({a, g, b, r}) {}
+    Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a) : asRGBA_({a, b, g, r}) {}
 
     Color& operator=(uint32_t color) {color_ = color; return *this;}
 
@@ -44,6 +44,9 @@ public:
 
 };
 
+
+Color operator*(const Color& lhs, double rhs);
+Color operator*(double lhs, const Color& rhs);
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wglobal-constructors"
