@@ -3,19 +3,30 @@
 
 #include <LogUtils/Logger.hpp>
 #include <iostream>
+#include <iomanip>
 
 namespace mlg {
 
     class ConsoleLogger : public mlg::Logger
     {
         std::ostream& out_;
+
+        static constexpr std::ios_base::fmtflags getFlags(FmtFlag flag);
+        static constexpr std::ios_base::fmtflags getMasks(FmtMask mask);
+
     public:
         ConsoleLogger(std::ostream& out) : out_(out) {
             printWelcome();
+            out_.setf(std::ios_base::showbase, std::ios_base::showbase);
+            out_.setf(std::ios_base::internal, std::ios_base::adjustfield);
+            out_ << std::setfill('0');
         }
 
         virtual ~ConsoleLogger() override { printFinish(); }
 
+        void setFmtFlags(FmtFlag flag, FmtMask mask) override;
+
+        void setWidth(uint64_t w) override;
 
         virtual Logger& operator<<(char x) override;
         

@@ -7,7 +7,7 @@
 #include <AbstractGL/Button.hpp>
 #include <Raytracer/Raytracer.hpp>
 
-class Application : public AObject{
+class Application : public aGL::AObject{
     aGL::Window* window_     = nullptr;
     VectorPlot* plotRotator_ = nullptr;
     // VectorPlot* plotClicked_ = nullptr;

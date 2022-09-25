@@ -55,8 +55,42 @@ namespace mlg {
         uint64_t ident_ = 0;
         uint64_t identSize_ = 4;
 
+        uint64_t outputFlags_ = 0;
+        uint64_t widht_ = 0;
+
     public:
-        uint64_t outputFlags = 0;
+        enum FmtFlag : uint64_t
+        {
+            Dec = 0x0,
+            Hex = 0x1,
+            Oct = 0x2,
+            Bin = 0x3,
+            ShowBase = 0x4,
+        };
+
+        enum FmtMask : uint64_t
+        {
+            BaseMask     = 0x3,
+            ShowBaseMask = 0x4,
+        };
+        
+
+
+    
+        /**
+         * @brief Set ] FmtFlags
+         * 
+         * @param flag - new flags
+         * @param mask - mask of flags
+         */
+        virtual void setFmtFlags(FmtFlag flag, FmtMask mask);
+
+        /**
+         * @brief Set width 
+         * 
+         * @param w - width
+         */
+        virtual void setWidth(uint64_t w);
 
         /**
          * @brief Set the Ident size 
@@ -154,11 +188,17 @@ namespace mlg {
 
     void endl(Logger& log);
 
-//TODO: Implement
-    // void hex(Logger& log);
-    // void dec(Logger& log);
-    // void oct(Logger& log);
-    // void bin(Logger& log);
+    void hex(Logger& log);
+    void dec(Logger& log);
+    void oct(Logger& log);
+    // void bin(Logger& log); //TODO: binary output (bitset)
+
+    template<uint64_t w>      //HACK: only const nums
+    void setWidth(Logger& log)
+    {
+        log.setWidth(w);
+    }
+
 }
 
 #endif /* LOGUTILS_LOGGER_HPP */

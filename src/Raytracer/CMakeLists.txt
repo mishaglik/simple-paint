@@ -15,6 +15,6 @@ set (RAY_HEADERS
 
 add_library(Raytracer ${RAY_SOURCES} ${RAY_HEADERS})
 
-target_link_libraries(Raytracer PRIVATE AbstractGL MGeomerty)
+target_link_libraries(Raytracer PRIVATE AbstractGL MGeomerty LogUtils)
 
 target_include_directories(Raytracer PUBLIC "../")

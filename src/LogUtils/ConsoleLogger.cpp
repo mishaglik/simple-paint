@@ -1,5 +1,7 @@
 #include "ConsoleLogger.hpp"
+#include "LogUtils/LogUtils.hpp"
 #include <chrono>
+#include <iomanip>
 
 namespace mlg {
 
@@ -106,4 +108,46 @@ namespace mlg {
         out_ << "\033[" << static_cast<int>(newStyle) << "m";
         return *this;
     }
+
+
+    void ConsoleLogger::setFmtFlags(FmtFlag flag, FmtMask mask)
+    {
+
+        out_.setf(getFlags(flag), getMasks(mask));
+        Logger::setFmtFlags(flag, mask);
+    }
+
+    constexpr std::ios_base::fmtflags ConsoleLogger::getFlags(FmtFlag flag){
+        switch (flag) {
+        case Logger::Dec:
+            return std::ios_base::dec;
+        case Logger::Hex:
+            return std::ios_base::hex;
+        case Logger::Oct:
+            return std::ios_base::oct;
+        case Logger::Bin:
+            break;
+        case Logger::ShowBase:
+          return std::ios_base::showbase;
+        }
+        mAssert(0 && "Error flag");
+        abort();
+    }
+
+    constexpr std::ios_base::fmtflags ConsoleLogger::getMasks(FmtMask mask){
+        switch (mask) {
+        case Logger::BaseMask:
+          return std::ios_base::basefield;
+        case Logger::ShowBaseMask:
+            return std::ios_base::showbase;
+        }
+        mAssert(0 && "Error mask");
+        abort();
+    }
+
+    void ConsoleLogger::setWidth(uint64_t w)
+    {
+        out_ << std::setw(static_cast<int>(w));
+    }
+
 }

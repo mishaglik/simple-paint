@@ -30,6 +30,6 @@ add_library(AbstractGL ${AGL_SOURCES} ${AGL_HEADERS} ${AGL_SFML_SOURCES} ${AGL_S
 
 target_link_libraries(AbstractGL PRIVATE sfml-graphics sfml-window sfml-system)
 
-target_link_libraries(AbstractGL PRIVATE MGeomerty)
+target_link_libraries(AbstractGL PRIVATE MGeomerty LogUtils)
 
 target_include_directories(AbstractGL PUBLIC "${PROJECT_SOURCE_DIR}/src")

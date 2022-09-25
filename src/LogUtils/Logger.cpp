@@ -83,4 +83,30 @@ namespace mlg {
         printLineStart();
         return *this << "[" << CoStyle::Red << CoStyle::Bold << "Fatal" << CoStyle::Reset << "  ]: ";
     }
+
+    void hex(Logger& log)
+    {
+        log.setFmtFlags(Logger::FmtFlag::Hex, Logger::FmtMask::BaseMask);
+    }
+
+    void dec(Logger& log)
+    {
+        log.setFmtFlags(Logger::FmtFlag::Dec, Logger::FmtMask::BaseMask);
+
+    }
+
+    void oct(Logger& log)
+    {
+        log.setFmtFlags(Logger::FmtFlag::Oct, Logger::FmtMask::BaseMask);
+    }
+    
+    void Logger::setFmtFlags(FmtFlag flag, FmtMask mask)
+    {
+        outputFlags_ = (outputFlags_ & ~mask) | flag;
+    }
+    
+    void Logger::setWidth(uint64_t w){
+        widht_ = w;
+    }
+    
 }
