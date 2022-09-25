@@ -29,6 +29,7 @@ set(VP_LIBS
     MGeomerty
     AbstractGL
     Raytracer
+    LogUtils
 )
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")

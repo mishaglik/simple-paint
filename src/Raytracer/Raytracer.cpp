@@ -100,7 +100,7 @@ void Raytracer::onPaintEvent() const {
     }
 }
 
-
+//TODO: True lambert.
 aGL::Color Raytracer::getLambert(const RTObjs::SurfacePoint& surfPoint) const {
     aGL::Color lambert = aGL::Colors::Black;
     for(size_t i = 0; i < nObjects; ++i){
