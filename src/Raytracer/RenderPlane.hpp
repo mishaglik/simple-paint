@@ -6,7 +6,8 @@
 
 namespace RTObjs {
 
-    class RenderPlane : public RenderObject{
+    class RenderPlane : public RenderObject
+    {
         protected:
             mgm::Plane3f plane_;
             aGL::Color color_;

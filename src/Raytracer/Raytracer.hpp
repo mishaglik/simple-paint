@@ -2,26 +2,27 @@
 #define RAYTRACER_RAYTRACER_HPP
 #include <AbstractGL/Widget.hpp>
 #include <Raytracer/RenderObject.hpp>
+#include <Vector/Vector.hpp>
 #include <vector>
 
 
 class Raytracer: public aGL::Widget{
     template<typename T>
-    using dynarr = std::vector<T>;
+    using Vector = mvc::Vector<T>;
 
     using Point  = mgm::Point3f;
-    using Vector = mgm::Vector3f;
+    using Vec = mgm::Vector3f;
     using Color  = aGL::Color;
     using Ray    = mgm::Ray3f;
 
-    static Color getSkyGradient(const Vector& v);
+    static Color getSkyGradient(const Vec& v);
     
-    dynarr<RTObjs::RenderObject*> objlist_;
+    Vector<RTObjs::RenderObject*> objlist_;
 
     Point camera_;
     Color ambient_ = 0x202020ff;
 
-    uint64_t labertianDepth_ = 50;
+    uint64_t labertianDepth_ = 500;
 
     Color getRayColor(const mgm::Ray3f& ray, int depth = 0) const;
     Color getLambert(const RTObjs::SurfacePoint& surface) const;
@@ -37,6 +38,10 @@ class Raytracer: public aGL::Widget{
         ~Raytracer() override;
 
         void onPaintEvent() const override;
+
+        Raytracer(const Raytracer&) = delete;
+        Raytracer& operator=(const Raytracer&) = delete;
+
 };
 
 #endif /* RAYTRACER_RAYTRACER_HPP */

@@ -4,24 +4,27 @@
 #include <iostream>
 #include "ColorAvg.hpp"
 
-Raytracer::Raytracer(uint32_t x, uint32_t y, uint32_t w, uint32_t h) : aGL::Widget({x, y, w, h}), camera_({0, 0, -1000}) {
+Raytracer::Raytracer(uint32_t x, uint32_t y, uint32_t w, uint32_t h) : aGL::Widget({x, y, w, h}), camera_({0, 0, -1000})
+{
     
     objlist_.push_back(new RTObjs::RenderPlane ({   0,     1,   0.05}, {0, 150,0}, false,  0x00a520ff));
     objlist_.push_back(new RTObjs::RenderSphere({   0,     0, 1000}, 100, false, aGL::Colors::Magenta));
     objlist_.push_back(new RTObjs::RenderSphere({ 300,     0, 1000}, 100, false, aGL::Colors::LGray));
-    objlist_.push_back(new RTObjs::RenderSphere({   0,  -1e5, 1000}, 9e4, true,  aGL::Colors::White));
+    objlist_.push_back(new RTObjs::RenderSphere({   0,  -1e5, 1000}, 5e4, true,  aGL::Colors::White));
     objlist_.push_back(new RTObjs::RenderSphere({ 155,  -300, 1000},  40, true,  aGL::Colors::Yellow));
     // objlist_.push_back(new RTObjs::RenderPlane ({   0,     1,   1}, {0, -1e9,0}, true,  aGL::Colors::White));
 
 }
 
 
-Raytracer::~Raytracer(){
+Raytracer::~Raytracer()
+{
     for(size_t i = 0; i < objlist_.size(); ++i)
         delete objlist_[i];
 }
 
-aGL::Color Raytracer::getRayColor(const mgm::Ray3f& ray, int depth) const {
+aGL::Color Raytracer::getRayColor(const mgm::Ray3f& ray, int depth) const
+{
     if(depth > 10){
         return aGL::Colors::Blue;
     }
@@ -37,7 +40,8 @@ aGL::Color Raytracer::getRayColor(const mgm::Ray3f& ray, int depth) const {
             crossObj = i;
         }
     }
-    if(distance == RTObjs::NoIntersection){
+    if(distance == RTObjs::NoIntersection) // It seems unsafe but NoInertsecton is +INF so it's ok.
+    {
         // return getSkyGradient(ray.dir());
         return (depth != 0) ? aGL::Colors::Black : getSkyGradient(ray.dir());
     }
@@ -78,8 +82,10 @@ void Raytracer::onPaintEvent() const
     if(isRendered) return;
     // surface->clear(aGL::Colors::Black);
 
-    for(uint32_t x = 0; x < rect_.w; ++x){
-        for(uint32_t y = 0; y < rect_.h; ++y){
+    for(uint32_t x = 0; x < rect_.w; ++x)
+    {
+        for(uint32_t y = 0; y < rect_.h; ++y)
+        {
             mgm::Ray3f ray(camera_, mgm::Point3f((x - 0.5 * rect_.w), (y - 0.5 * rect_.h), 0.));
             //TODO: add gamma correction. pow(color, 1/ gamma);     
             surface->drawPoint({x, y}, getRayColor(ray));
@@ -96,7 +102,7 @@ aGL::Color Raytracer::getTrueLambert(const RTObjs::SurfacePoint& surfPoint, int 
 
     for(uint64_t i = 0; i < labertianDepth_; ++i)
     {
-        Vector dir = surfPoint.normal;
+        Vec dir = surfPoint.normal;
         dir += mgm::randomInSphere();
         Point pt = surfPoint.point;
         pt += dir;
@@ -112,13 +118,14 @@ aGL::Color Raytracer::getLambert(const RTObjs::SurfacePoint& surfPoint) const
 {
     aGL::Color lambert = aGL::Colors::Black;
     for(size_t i = 0; i < objlist_.size(); ++i){
-        if(objlist_[i]->isSource_){
-
+        if(objlist_[i]->isSource_)
+        {
             bool isShadow = false;
             double dist = objlist_[i]->getIntersection({surfPoint.point, objlist_[i]->getCenter()});
             for(size_t j = 0; j < objlist_.size(); ++j){
                 if(i != j){
-                    if(dist > objlist_[j]->getIntersection({surfPoint.point, objlist_[i]->getCenter()})){
+                    if(dist > objlist_[j]->getIntersection({surfPoint.point, objlist_[i]->getCenter()}))
+                    {
                         isShadow = true;
                         break;
                     }
@@ -134,7 +141,7 @@ aGL::Color Raytracer::getLambert(const RTObjs::SurfacePoint& surfPoint) const
     return lambert &= surfPoint.color;
 }
 
-Raytracer::Color Raytracer::getSkyGradient(const Vector& v)
+Raytracer::Color Raytracer::getSkyGradient(const Vec& v)
 {
     double t = 0.5 * (mgm::normalize(v).y + 1);
     // mDebug << t << mlg::endl;

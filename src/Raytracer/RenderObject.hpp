@@ -26,10 +26,15 @@ namespace RTObjs {
         const char* objName = "";
     public:
         bool isSource_ = false;
+        RenderObject(){}
+
         virtual ~RenderObject() {}
         virtual double getIntersection(const Ray& ray, SurfacePoint* pt = nullptr) const = 0;
         virtual Point   getCenter() const = 0;
         virtual Color   getColor () const = 0;
+
+        RenderObject(const RenderObject&) = delete;
+        RenderObject& operator=(const RenderObject&) = delete;
     };
 
 }
