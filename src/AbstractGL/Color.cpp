@@ -46,4 +46,8 @@ namespace aGL {
     }
 
 
+    Color operator+ (const Color& lhs, const Color& rhs){
+        Color res = lhs;
+        return res += rhs;
+    }
 }

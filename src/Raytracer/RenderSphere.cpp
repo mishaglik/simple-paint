@@ -17,7 +17,7 @@ double RenderSphere::getIntersection(const mgm::Ray3f& ray, SurfacePoint* pt) co
     if(pt == nullptr) return (intersect - ray.start()).len();
 
     pt->point = intersect;
-    pt->normal = intersect - sph_.center();
+    pt->normal = mgm::normalize(intersect - sph_.center());
     pt->color = color_;
     pt->reflCoef = 0.9;
     pt->refrCoef = 0.7;

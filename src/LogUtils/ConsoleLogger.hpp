@@ -34,6 +34,7 @@ namespace mlg {
         virtual Logger& operator<<(int32_t  x) override;
         virtual Logger& operator<<(uint64_t x) override;
         virtual Logger& operator<<(int64_t  x) override;
+        virtual Logger& operator<<(double  x)  override;
 
         virtual Logger& operator<<(const char* x) override;
         virtual Logger& operator<<(const void* x) override;

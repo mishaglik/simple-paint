@@ -50,6 +50,12 @@ namespace mlg {
         return *this;
     }
 
+     Logger& ConsoleLogger::operator<<(const double x) 
+    {
+        out_ << x;
+        return *this;
+    }
+
     void ConsoleLogger::flush() 
     {
         out_.flush();

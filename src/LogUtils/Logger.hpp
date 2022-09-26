@@ -154,6 +154,7 @@ namespace mlg {
         virtual Logger& operator<<(int32_t  x) = 0;
         virtual Logger& operator<<(uint64_t x) = 0;
         virtual Logger& operator<<(int64_t  x) = 0;
+        virtual Logger& operator<<(double  x)  = 0;
 
         virtual Logger& operator<<(const char* x) = 0;
         virtual Logger& operator<<(const void* x) = 0;

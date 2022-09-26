@@ -20,6 +20,7 @@ namespace mlg {
         virtual Logger& operator<<(int32_t )override {return *this;}
         virtual Logger& operator<<(uint64_t)override {return *this;}
         virtual Logger& operator<<(int64_t )override {return *this;}
+        virtual Logger& operator<<(double  )override {return *this;}
 
         virtual Logger& operator<<(const char*) override {return *this;}
         virtual Logger& operator<<(const void*) override {return *this;}

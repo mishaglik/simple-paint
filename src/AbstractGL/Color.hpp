@@ -41,13 +41,13 @@ namespace aGL {
         Color& operator*= (uint8_t k);
         Color& operator&= (const Color& rhs);
         Color& operator|= (const Color& rhs);
-
-
     };
 
 
     Color operator* (const Color& lhs, double rhs);
     Color operator* (double lhs, const Color& rhs);
+
+    Color operator+ (const Color& lhs, const Color& rhs); 
 
     mlg::Logger& operator<< (mlg::Logger& out, const Color& color);
 

@@ -6,13 +6,15 @@
 #include <SFML/System/Clock.hpp>
 #include <iostream>
 
-Application::Application(){
+Application::Application()
+{
     window_ = new aGL::Window(800, 600, "Vecplot window");
     plotRotator_ = new VectorPlot(10, 30, 300, 300, -10, 10, 10, -10);
     plotRotator_->setVector({10, 0});
     
     raycaster_ = new Raycaster(0, 0, 500);
     raytracer_ = new Raytracer(300, 0 ,500, 500);
+    raytracer_->wind = window_;
 
     exitButton  = new aGL::Button("Exit", 0, 400);
     exitButton->setEventFunction(this, Slots::Quit);
@@ -23,27 +25,32 @@ Application::Application(){
     state_ = AppState::Ready;
 }
 
-Application::~Application(){
+Application::~Application()
+{
     state_ = AppState::Died;
     delete raycaster_;
     delete plotRotator_;
     delete window_;
 }
 
-int Application::exec(){
-    if(state_ != AppState::Ready){
+int Application::exec()
+{
+    if(state_ != AppState::Ready)
+    {
         state_ = AppState::Error;
         return -1;
     }
     state_ = AppState::Running;
 
-    sf::Clock fpsCounter;
+    sf::Clock fpsCounter; //FIXME
     uint8_t i = 0;
-    while (state_ == AppState::Running) {
-        sf::Clock fpsTimer;
+    while (state_ == AppState::Running)
+    {
+        sf::Clock fpsTimer; //FIXME
 
         aGL::Event event;
-        while(window_->pollEvent(event)){
+        while(window_->pollEvent(event))
+        {
             handleEvent(event);
         }
         window_->clear(0x999999FF);
@@ -65,7 +72,7 @@ int Application::exec(){
         plotRotator_->update();
         window_->update();
 
-        sf::sleep(sf::milliseconds(std::max(0, 16 - fpsTimer.getElapsedTime().asMilliseconds())));
+        sf::sleep(sf::milliseconds(std::max(0, 16 - fpsTimer.getElapsedTime().asMilliseconds()))); //FIXME: sf
         if(!++i){
             std::cerr << "FPS: " << 256000. / fpsCounter.getElapsedTime().asMilliseconds() << '\n';
             fpsCounter.restart();
