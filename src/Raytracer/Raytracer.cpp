@@ -2,8 +2,38 @@
 #include <iostream>
 #include "ColorAvg.hpp"
 
+#include <thread>
+#include <mutex>
+
 Raytracer::Raytracer(uint32_t x, uint32_t y, uint32_t w, uint32_t h) : aGL::Widget({x, y, w, h}), camera_({0, 0, -1000})
 {
+    #ifdef RAYTRACER_MULTITHREADING
+        multithreadContext_ = new MulithreadContext{};
+        multithreadContext_->rt = this;
+        
+        for(size_t i = 0; i < nThreads; ++i)
+        {
+            threads[i] = new std::thread(Raytracer::raytraceThread, multithreadContext_);
+        }
+    #endif
+}
+
+void Raytracer::raytraceThread(MulithreadContext* context)
+{
+    uint32_t x = 0;
+    uint32_t w = context->rt->getRect().w;
+    while (1)
+    {
+        context->xMutex.lock();
+        x = context->x0++;
+        if(x >= w)
+        {
+            x = context->x0 = 0;
+        }
+        context->xMutex.unlock();
+
+        context->rt->paintSegment(x, 1);
+    }
 }
 
 
@@ -11,13 +41,17 @@ Raytracer::~Raytracer()
 {
     for(size_t i = 0; i < objlist_.size(); ++i)
         delete objlist_[i];
+    
+#ifdef RAYTRACER_MULTITHREADING
+    for(size_t i = 0; i < nThreads; ++i)
+    {
+        delete threads[i];
+    }
+    delete multithreadContext_;
+#endif
+
 }
 
-
-// struct RefrIndexList    // TO
-// {
-    // RefrIndexList* prev = nullptr;
-// }
 
 aGL::Color Raytracer::getRayColor(const mgm::Ray3f& ray, int depth) const
 {
@@ -38,7 +72,8 @@ aGL::Color Raytracer::getRayColor(const mgm::Ray3f& ray, int depth) const
     }
     if(distance == RTObjs::NoIntersection) // It seems unsafe but NoInertsecton is +INF so it's ok.
     {   
-        return (depth != 0) ? ambient_ : getSkyGradient(ray.dir());
+        // return (depth != 0) ? ambient_ : getSkyGradient(ray.dir());
+        return ambient_;
     }
 
     objlist_[crossObj]->getIntersection(ray, &pt);
@@ -106,7 +141,7 @@ aGL::Color Raytracer::getRayColor(const mgm::Ray3f& ray, int depth) const
 
             Point startPt = pt.point;
 
-            aGL::Color refrColor = getRayColor({startPt, orthogonal}, depth /*FIXME*/) * pt.material->refrCoef;
+            aGL::Color refrColor = getRayColor({startPt, orthogonal}, depth + 1/*XXX*/) * pt.material->refrCoef;
             //TODO: Color adjustment
             resultColor += refrColor;
 
@@ -126,13 +161,25 @@ aGL::Color Raytracer::getRayColor(const mgm::Ray3f& ray, int depth) const
     return resultColor;
 }
 
-
 void Raytracer::onPaintEvent() const 
 {
     if(isRendered) return;
-    // surface->clear(aGL::Colors::Black);
+#ifdef RAYTRACER_MULTITHREADING
+    return;
+#else
+    for(uint32_t x = 0; x < rect_.w; x++)
+    {  
+        paintSegment(x, 1);
+        // render(*wind);  //HACK:
+        // wind->update();
+    }
+#endif
+}
 
-    for(uint32_t x = 0; x < rect_.w; ++x)
+void Raytracer::paintSegment(uint32_t x0, uint32_t w0) const
+{
+    if(isRendered) return;
+    for(uint32_t x = x0; x < x0 + w0; ++x)
     {
         for(uint32_t y = 0; y < rect_.h; ++y)
         {
@@ -149,15 +196,27 @@ void Raytracer::onPaintEvent() const
                 Ray aliasRay(camera_, aliasDir);
                 antialiasing += getRayColor(aliasRay);
             }
+        
+        #ifdef RAYTRACER_MULTITHREADING
+            multithreadContext_->drawMutex.lock();
+        #endif
 
             surface->drawPoint({x, y}, aGL::gammaCorrect(antialiasing.getAvg(), qS_.gamma));
             // mInfo << "Point " << x << ' ' << y << " gotten" << mlg::endl;
+
+        #ifdef RAYTRACER_MULTITHREADING
+            multithreadContext_->drawMutex.unlock();
+        #endif
         }
-            mInfo << "Done layer: " << x << mlg::endl;
-            render(*wind);  //HACK:
-            wind->update();
+
+    #ifndef RAYTRACER_MULTITHREADING
+        render(*wind);  //HACK:
+        wind->update();
+    #endif
+        mInfo << mlg::Logger::CoStyle::Green <<"Done layer: " << x << mlg::endl;
     }
 }
+
 
 aGL::Color Raytracer::getTrueLambert(const RTObjs::SurfacePoint& surfPoint, int depth) const 
 {
@@ -210,7 +269,7 @@ aGL::Color Raytracer::getLambert(const RTObjs::SurfacePoint& surfPoint) const
 
 Raytracer::Color Raytracer::getSkyGradient(const Vec& v)
 {
-    // if(v.z < 0 || v.y > 0) return aGL::Colors::Red;
+    if(v.z < 0 || v.y > 0) return aGL::Colors::Red;
     double t = 0.5 * (mgm::normalize(v).y + 1);
     // mDebug << t << mlg::endl;
     return (1. - t) * aGL::Colors::White + (t)*(Color(0x78B2FFFF)); 

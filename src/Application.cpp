@@ -8,8 +8,12 @@
 #include <SFML/System/Clock.hpp>
 #include <iostream>
 
-Application::Application()
+Application::Application() : 
+    logger(std::cerr)
 {
+    logger.setLogLevel(mlg::Logger::LogLevel::INFO);
+    setGlobalLogger(&logger);
+
     window_ = new aGL::Window(800, 600, "Vecplot window");
     plotRotator_ = new VectorPlot(10, 30, 300, 300, -10, 10, 10, -10);
     plotRotator_->setVector({10, 0});
@@ -35,7 +39,6 @@ void Application::fillScene()
 {
     raytracer_->addObject(new RTObjs::RenderPlane ({   0,      1, 0.05}, {0, 150,0}));
 
-    
     RTObjs::Material material = RTObjs::MaterialCollection::Mirror;
     material.color = RTObjs::Colors::Magenta;
     
@@ -128,6 +131,20 @@ int Application::handleEvent(const aGL::Event& event){
     exitButton  ->handleEvent(event);
     plotRotator_->handleEvent(event);
     raycaster_  ->handleEvent(event);
+
+    if(event.type == aGL::EventType::KeyPressedEvent)
+    {
+        if(event.ked.key == aGL::KeyboardKey::Num0)
+            logger.setLogLevel(mlg::Logger::LogLevel::DEBUG);
+        else if(event.ked.key == aGL::KeyboardKey::Num1)
+            logger.setLogLevel(mlg::Logger::LogLevel::INFO);
+        else if(event.ked.key == aGL::KeyboardKey::Num2)
+            logger.setLogLevel(mlg::Logger::LogLevel::WARNING);
+        else if(event.ked.key == aGL::KeyboardKey::Num3)
+            logger.setLogLevel(mlg::Logger::LogLevel::ERROR);
+        else if(event.ked.key == aGL::KeyboardKey::Num4)
+            logger.setLogLevel(mlg::Logger::LogLevel::FATAL);
+    }
 
     return 0;
 }

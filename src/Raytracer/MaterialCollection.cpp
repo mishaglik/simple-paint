@@ -61,7 +61,22 @@ namespace RTObjs {
         {
             .color     = aGL::Colors::White,
             .isSource  = true,
-            .srcColor  = aGL::Colors::White,
+            .srcColor  = 0xfffc1aFF,
+            .fuzzyness = 0,
+            .reflCoef  = 0,
+            .diffCoef  = 0,
+            .refrCoef  = 0,
+            .refrIndex = 0,
+
+        };
+
+        const Material Sky
+        {
+            .color     = aGL::Colors::Red,
+            // .color     = 0xc7defeff,
+            .isSource  = true,
+            .srcColor  = aGL::Colors::Red,
+            // .srcColor  = 0xc7defeff,
             .fuzzyness = 0,
             .reflCoef  = 0,
             .diffCoef  = 0,

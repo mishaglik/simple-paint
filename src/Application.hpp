@@ -17,6 +17,8 @@ class Application : public aGL::AObject{
     aGL::Button* exitButton  = nullptr;
     aGL::Button* resetButton = nullptr;
 
+    mlg::ConsoleLogger logger;
+
     enum class AppState{
         UnInit = 0,
         Ready,

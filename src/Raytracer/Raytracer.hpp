@@ -6,14 +6,19 @@
 #include <vector>
 
 
+#define RAYTRACER_MULTITHREADING
 
+#ifdef RAYTRACER_MULTITHREADING
+#include <thread>
+#include <mutex>
+#endif 
 
 class Raytracer: public aGL::Widget{
     template<typename T>
     using Vector = mvc::Vector<T>;
 
     using Point  = mgm::Point3f;
-    using Vec = mgm::Vector3f;
+    using Vec    = mgm::Vector3f;
     using Color  = aGL::Color;
     using Ray    = mgm::Ray3f;
 
@@ -24,15 +29,32 @@ class Raytracer: public aGL::Widget{
     Vector<RTObjs::RenderObject*> objlist_;
 
     Point camera_;
-    Color ambient_ = 0x202020ff;
+    Color ambient_ = 0x6da6bdff;
 
     uint64_t labertianDepth_ = 5;
 
     Color getRayColor(const mgm::Ray3f& ray, int depth = 0) const;
-    Color getLambert(const RTObjs::SurfacePoint& surface) const;
+    [[deprecated]] Color getLambert(const RTObjs::SurfacePoint& surface) const;
     Color getTrueLambert(const RTObjs::SurfacePoint& surfPoint, int depth) const;
 
     bool isRendered = false;
+
+#ifdef RAYTRACER_MULTITHREADING
+    struct MulithreadContext
+    {
+        const Raytracer* rt = nullptr;
+        std::mutex xMutex;
+        std::mutex drawMutex;
+        uint32_t x0 = 0;
+    };
+    
+    static const size_t nThreads = 10;
+    mvc::Array<std::thread*, nThreads> threads; // There can be way via std::move.
+
+    MulithreadContext* multithreadContext_ = nullptr;
+
+    [[noreturn]] static void raytraceThread(MulithreadContext* context);
+#endif
 
     public:
 
@@ -49,13 +71,13 @@ class Raytracer: public aGL::Widget{
 
         QualitySettings qS_
         {
-            .lamberthDepth     = 40,
-            .antialiasingLvl   = 40,
+            .lamberthDepth     = 20,
+            .antialiasingLvl   = 30,
             .maxRayRefl        = 20,
             .lamberthReflCost  = 5,
             .lamberthFastEdge  = 12,
             .antialiasMaxShift = 0.5,
-            .gamma             = 1.5,
+            .gamma             = 1.1,
         };
 
         aGL::Window* wind; //HACK
@@ -66,6 +88,8 @@ class Raytracer: public aGL::Widget{
         void addObject(RenderObject* object);
 
         void onPaintEvent() const override;
+
+        void paintSegment(uint32_t x0, uint32_t w0) const;
 
         Raytracer(const Raytracer&) = delete;
         Raytracer& operator=(const Raytracer&) = delete;

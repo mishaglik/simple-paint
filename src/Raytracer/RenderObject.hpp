@@ -31,6 +31,7 @@ namespace RTObjs {
         extern const Material Glass;
         extern const Material Grass;
         extern const Material Sun;
+        extern const Material Sky;
     }
 
     struct SurfacePoint
