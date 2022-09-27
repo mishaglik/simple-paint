@@ -9,6 +9,7 @@
 #include <MGeomerty/Intersects.hpp>
 #include <MGeomerty/Operations.hpp>
 #include <random>
+#include <LogUtils/LogUtils.hpp>
 
 namespace mgm {
 
@@ -34,6 +35,17 @@ namespace mgm {
         }while(v.len2() > 1);
         return normalize(v);
     }
+
+    inline mlg::Logger& operator<<(mlg::Logger& out, const Line3f& line)
+    {
+        return out << "Line3f{ " << line.point() << ", " << line.dir() << '}';
+    }
+    
+    inline mlg::Logger& operator<<(mlg::Logger& out, const Ray3f& line)
+    {
+        return out << "Ray3f{ " << line.point() << ", " << line.dir() << '}';
+    }
+
 
 }
 

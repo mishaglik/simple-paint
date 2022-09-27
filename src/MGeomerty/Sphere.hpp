@@ -16,6 +16,7 @@ namespace mgm {
         Sphere3f(const Point3f& pt, const Vector3f& v) : center_(pt), r_(v.len()) {}
 
         bool contains(const Point3f& pt) const;
+        bool containsB(const Point3f& pt) const;
         bool isOnSurface(const Point3f& pt) const;
 
         const Point3f& center() const {return center_;}

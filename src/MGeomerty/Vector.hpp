@@ -1,5 +1,6 @@
 #ifndef MGEOMETRY_VECTOR_HPP
 #define MGEOMETRY_VECTOR_HPP
+#include "LogUtils/Logger.hpp"
 #include <MGeomerty/Float.hpp>
 #include <cassert>
 #include <cmath>
@@ -252,5 +253,16 @@ namespace mgm {
     inline bool operator!=(const Vector2f& rhs, const Vector2f& lhs) {return !(lhs == rhs);}
     inline bool operator!=(const Vector3f& lhs, const Vector3f& rhs) {return !(lhs == rhs);}
 
+    template<typename num_t>
+    mlg::Logger& operator<<(mlg::Logger& out, const Vector2<num_t>& v)
+    {
+        return out << "Vector2{ " << v.x << ", " << v.y << '}';
+    }
+
+    template<typename num_t>
+    mlg::Logger& operator<<(mlg::Logger& out, const Vector3<num_t>& v)
+    {
+        return out << "Vector3{ " << v.x << ", " << v.y << ", " << v.z << '}';
+    }
 }
 #endif

@@ -1,4 +1,5 @@
 #include "Intersects.hpp"
+#include "LogUtils/LogUtils.hpp"
 #include "Operations.hpp"
 #include <iostream>
 namespace mgm {
@@ -35,12 +36,12 @@ namespace mgm {
     bool intersect1(const Sphere3f& sph, const Ray3f& ray, Point3f* pt){
         double dist = distBtw(ray, sph.center());
         
-        if(dist > sph.r() - EPS) return false;
+        if(dist >= sph.r() - 2 * EPS) return false;
 
         Vector3f v = normalize(ray.dir());
         Vector3f u = sph.center() - ray.point();
 
-        if(v * u <= 0 && !sph.contains(ray.start())) return false;
+        if(v * u <= EPS && !sph.contains(ray.start())) return false;
         if(pt == nullptr)  return true;
 
         v *= v * u;
@@ -49,15 +50,19 @@ namespace mgm {
         h *= - std::sqrt(fabs(dist * dist - sph.r() * sph.r()));
 
         v += h;
-        
-        assert(v * h <= 0);
+        if(!sph.contains(ray.start()) && v * h > EPS)
+        {
+            mError << v << " " << h << mlg::endl;
+        }
+        mAssert(sph.contains(ray.start()) || v * h <= EPS);
 
         *pt = ray.point();
         *pt += v;
-        if(!sph.contains(*pt)){
-            std::cerr << pt->x << ' ' << pt->y << ' ' << pt->z << '\n';
+        if(!sph.containsB(*pt))
+        {
+            mError << sph.center() << ' ' << sph.r() << ' ' << *pt << ' ' << ((*pt - sph.center()).len() - sph.r()) << mlg::endl;
         }
-        assert(sph.contains(*pt));
+        mAssert(sph.containsB(*pt));
         return true;
     }
 

@@ -17,8 +17,12 @@ namespace RTObjs {
         Vector normal;
         Color color;
         bool isSource = false;
+        Color srcColor;
+        bool isInside;
+        double fuzzyness;
         double reflCoef;
-        double refrCoef;
+        double diffCoef;
+        double refrCoef; 
     };
 
     class RenderObject{

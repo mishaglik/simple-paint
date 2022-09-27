@@ -1,5 +1,6 @@
 #ifndef MGEOMETRY_POINT_HPP
 #define MGEOMETRY_POINT_HPP
+#include "LogUtils/Logger.hpp"
 #include <cassert>
 #include <cstdint>
 #include <math.h>
@@ -83,6 +84,18 @@ namespace mgm {
 
     bool operator!=(const Point2f& lhs, const Point2f& rhs);
     bool operator!=(const Point3f& lhs, const Point3f& rhs);
+
+    template<typename num_t>
+    mlg::Logger& operator<<(mlg::Logger& out, const Point2<num_t>& pt)
+    {
+        return out << "Point2{ " << pt.x << ", " << pt.y << '}';
+    }
+
+    template<typename num_t>
+    mlg::Logger& operator<<(mlg::Logger& out, const Point3<num_t>& pt)
+    {
+        return out << "Point3{ " << pt.x << ", " << pt.y << ", " << pt.z << '}';
+    }
 
 } // namespace mgm
 #endif

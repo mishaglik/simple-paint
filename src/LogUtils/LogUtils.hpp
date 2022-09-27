@@ -19,7 +19,7 @@ namespace mlg {
 
     Logger& operator<< (mlg::Logger& out, const CodePlace& cp);
 
-    [[noreturn]] void assert_fail(const char* cond, const CodePlace& cp);
+    /*[[noreturn]]*/ void assert_fail(const char* cond, const CodePlace& cp);
 }
 
 #pragma clang diagnostic push 
@@ -42,5 +42,14 @@ namespace mlg {
 #define mDUMP_FIELD(field) out << "."#field": " << field << mlg::endl;    
 
 #pragma clang diagnostic pop
+
+#ifdef MEM_VERBOSE
+
+void* operator new     (size_t size); 
+void* operator new[]   (size_t size); 
+void  operator delete  (void* pt) noexcept; 
+void  operator delete[](void* pt) noexcept; 
+
+#endif
 
 #endif /* LOGUTILS_LOGUTILS_HPP */

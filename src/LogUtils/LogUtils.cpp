@@ -25,9 +25,54 @@ namespace mlg {
     {
         
         mFatal << Logger::CoStyle::Red << Logger::CoStyle::Bold << "Assertion (" << cond << ") failed " << cp << endl;
-        LOG->~Logger(); 
-        abort();
+        // LOG->~Logger(); 
+        // abort();
     }
 
 
 }
+
+#ifdef MEM_VERBOSE
+
+void* operator new (size_t size)
+{
+    void* pt = malloc(size);
+    while(pt == nullptr)
+    {
+        mInfo << "new:" <<"malloc returned " << mlg::Logger::CoStyle::Bold << "nullptr" << mlg::endl;
+        std::new_handler hdl = std::get_new_handler();
+        if(hdl == nullptr){
+            mError << "new: get_new_handler returned " << mlg::Logger::CoStyle::Bold << "nullptr" << mlg::endl;
+            throw std::bad_alloc();
+        }
+        (*hdl)();
+        pt = malloc(size);
+    }
+
+    mInfo << "new: malloc returned " << mlg::Logger::CoStyle::Bold << pt << mlg::endl;
+    return pt;
+} 
+
+
+void* operator new[] (size_t size) 
+{ 
+    mInfo << "new[" << size << "] -- calling base new" << mlg::endl;
+    return operator new(size); 
+}
+
+void operator delete (void* pt) noexcept
+{
+    
+    mInfo << "delete: " << pt << mlg::endl;
+    
+    free(pt);
+}
+
+void operator delete[]( void* pt) noexcept
+{
+    mInfo << "delete[]: " << pt << mlg::endl;
+
+    operator delete(pt);
+}
+
+#endif

@@ -6,7 +6,7 @@
 
 int main(int argc, const char* argv[]){
    mlg::ConsoleLogger logger(std::cerr);
-   logger.setLogLevel(mlg::Logger::LogLevel::DEBUG);
+   logger.setLogLevel(mlg::Logger::LogLevel::INFO);
    setGlobalLogger(&logger);
    Application app(argc, argv);
 

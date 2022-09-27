@@ -4,6 +4,10 @@
 namespace mgm {
 
 bool Sphere3f::contains(const Point3f& pt) const {
+    return (pt - center_).len() < r_ - EPS;
+}
+
+bool Sphere3f::containsB(const Point3f& pt) const {
     return (pt - center_).len() < r_ + EPS;
 }
 

@@ -48,6 +48,9 @@ namespace aGL {
     Color operator* (double lhs, const Color& rhs);
 
     Color operator+ (const Color& lhs, const Color& rhs); 
+    
+    Color gammaCorrect(Color col, double gamma);
+
 
     mlg::Logger& operator<< (mlg::Logger& out, const Color& color);
 

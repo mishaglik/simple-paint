@@ -16,11 +16,11 @@ namespace RTObjs {
 
         pt->point = intrsetecton;
         pt->normal = plane_.normal();
-        if(pt->normal * ray.dir() >0) pt->normal *= -1;
+        if(pt->normal * ray.dir() > 0) pt->normal *= -1;
         pt->color = color_;
         pt->isSource = isSource_;
         pt->reflCoef = 0.1;
-        pt->refrCoef = 1;   
+        pt->diffCoef = 1;   
         return (intrsetecton - ray.start()).len();
     }
 

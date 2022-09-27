@@ -4,7 +4,7 @@
 #include <cmath>
 
 #ifndef MGEOMERTY_EPSILON
-#define MGEOMERTY_EPSILON 1e-6
+#define MGEOMERTY_EPSILON 1e-8
 #endif
 
 namespace mgm {
