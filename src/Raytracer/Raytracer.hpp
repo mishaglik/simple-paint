@@ -17,6 +17,8 @@ class Raytracer: public aGL::Widget{
     using Color  = aGL::Color;
     using Ray    = mgm::Ray3f;
 
+    using RenderObject = RTObjs::RenderObject;
+
     static Color getSkyGradient(const Vec& v);
     
     Vector<RTObjs::RenderObject*> objlist_;
@@ -47,19 +49,21 @@ class Raytracer: public aGL::Widget{
 
         QualitySettings qS_
         {
-            .lamberthDepth     = 20,
-            .antialiasingLvl   = 10,
+            .lamberthDepth     = 40,
+            .antialiasingLvl   = 40,
             .maxRayRefl        = 20,
             .lamberthReflCost  = 5,
             .lamberthFastEdge  = 12,
             .antialiasMaxShift = 0.5,
-            .gamma             = 1.1,
+            .gamma             = 1.5,
         };
 
         aGL::Window* wind; //HACK
 
         Raytracer(uint32_t x, uint32_t y, uint32_t w, uint32_t h);
         ~Raytracer() override;
+
+        void addObject(RenderObject* object);
 
         void onPaintEvent() const override;
 

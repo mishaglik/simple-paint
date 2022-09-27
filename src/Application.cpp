@@ -1,6 +1,8 @@
 #include "Application.hpp"
 #include "AbstractGL/AWindow.hpp"
 #include "Raycaster.hpp"
+#include "Raytracer/RenderPlane.hpp"
+#include "Raytracer/RenderSphere.hpp"
 #include "VectorPlot.hpp"
 #include <SFML/System/Sleep.hpp>
 #include <SFML/System/Clock.hpp>
@@ -13,8 +15,11 @@ Application::Application()
     plotRotator_->setVector({10, 0});
     
     raycaster_ = new Raycaster(0, 0, 500);
+
     raytracer_ = new Raytracer(300, 0 ,500, 500);
     raytracer_->wind = window_;
+    
+    fillScene();
 
     exitButton  = new aGL::Button("Exit", 0, 400);
     exitButton->setEventFunction(this, Slots::Quit);
@@ -23,6 +28,33 @@ Application::Application()
     resetButton->setEventFunction(this, Slots::Reset);
 
     state_ = AppState::Ready;
+}
+
+
+void Application::fillScene()
+{
+    raytracer_->addObject(new RTObjs::RenderPlane ({   0,      1, 0.05}, {0, 150,0}));
+
+    
+    RTObjs::Material material = RTObjs::MaterialCollection::Mirror;
+    material.color = RTObjs::Colors::Magenta;
+    
+    raytracer_->addObject(new RTObjs::RenderSphere({   0,     20, 1000}, 100, material));
+    raytracer_->addObject(new RTObjs::RenderSphere({ 300,    -20, 1000}, 100));
+    raytracer_->addObject(new RTObjs::RenderSphere({   0,   -1e5, 1000}, 5e4, RTObjs::MaterialCollection::Sun));
+
+    RTObjs::Material yellowSun = RTObjs::MaterialCollection::Sun;
+    yellowSun.color = yellowSun.srcColor = RTObjs::Colors::Yellow;
+
+    raytracer_->addObject(new RTObjs::RenderSphere({ 155,   -300, 1000},  40, yellowSun));
+    
+    material.color = 0xba4545ff;
+    material.reflCoef = 0.1;
+    material.diffCoef = 0.9;
+
+    raytracer_->addObject(new RTObjs::RenderSphere({ -300,     0, 2000},  80, material));
+    raytracer_->addObject(new RTObjs::RenderSphere({ -250,   -80,  900},  20));
+    raytracer_->addObject(new RTObjs::RenderSphere({ -200,   -35,  600}, 150, RTObjs::MaterialCollection::Glass));
 }
 
 Application::~Application()
@@ -44,6 +76,8 @@ int Application::exec()
 
     sf::Clock fpsCounter; //FIXME
     uint8_t i = 0;
+
+    
     while (state_ == AppState::Running)
     {
         sf::Clock fpsTimer; //FIXME
@@ -53,22 +87,23 @@ int Application::exec()
         {
             handleEvent(event);
         }
-        window_->clear(0x999999FF);
 
+        window_->clear(0x999999FF);
         plotRotator_->onPaintEvent();
         // raycaster_  ->onPaintEvent();
         exitButton  ->onPaintEvent();
         resetButton ->onPaintEvent();
-        raytracer_  ->onPaintEvent();
 
         plotRotator_->render(*window_); //TODO: change signature to window* 
         // raycaster_  ->render(*window_);  
         exitButton  ->render(*window_);
         resetButton ->render(*window_);
+        
+        raytracer_  ->onPaintEvent();
         raytracer_  ->render(*window_);
         
         
-        raycaster_  ->addAngle(0.03);
+        raycaster_  ->addAngle(1. / 60);
         plotRotator_->update();
         window_->update();
 

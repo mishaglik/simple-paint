@@ -4,6 +4,7 @@ set (RAY_SOURCES
     RenderSphere.cpp
     Raytracer.cpp
     RenderPlane.cpp
+    MaterialCollection.cpp
 )
 
 set (RAY_HEADERS

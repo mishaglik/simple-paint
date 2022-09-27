@@ -1,19 +1,9 @@
 #include "Raytracer.hpp"
-#include "RenderSphere.hpp"
-#include "RenderPlane.hpp"
 #include <iostream>
 #include "ColorAvg.hpp"
 
 Raytracer::Raytracer(uint32_t x, uint32_t y, uint32_t w, uint32_t h) : aGL::Widget({x, y, w, h}), camera_({0, 0, -1000})
 {
-    
-    objlist_.push_back(new RTObjs::RenderPlane ({   0,     1,   0.05}, {0, 150,0}, false,  0x00a520ff));
-    objlist_.push_back(new RTObjs::RenderSphere({   0,     20, 1000}, 100, false, aGL::Colors::Magenta));
-    objlist_.push_back(new RTObjs::RenderSphere({ 300,     -20, 1000}, 100, false, aGL::Colors::LGray));
-    objlist_.push_back(new RTObjs::RenderSphere({   0,  -1e5, 1000}, 5e4, true,  aGL::Colors::White));
-    objlist_.push_back(new RTObjs::RenderSphere({ 155,  -300, 1000},  40, true,  aGL::Colors::Yellow));
-    // objlist_.push_back(new RTObjs::RenderPlane ({   0,     1,   1}, {0, -1e9,0}, true,  aGL::Colors::White));
-
 }
 
 
@@ -22,6 +12,12 @@ Raytracer::~Raytracer()
     for(size_t i = 0; i < objlist_.size(); ++i)
         delete objlist_[i];
 }
+
+
+// struct RefrIndexList    // TO
+// {
+    // RefrIndexList* prev = nullptr;
+// }
 
 aGL::Color Raytracer::getRayColor(const mgm::Ray3f& ray, int depth) const
 {
@@ -42,45 +38,90 @@ aGL::Color Raytracer::getRayColor(const mgm::Ray3f& ray, int depth) const
     }
     if(distance == RTObjs::NoIntersection) // It seems unsafe but NoInertsecton is +INF so it's ok.
     {   
-        return (depth != 0) ? aGL::Colors::Black : getSkyGradient(ray.dir());
+        return (depth != 0) ? ambient_ : getSkyGradient(ray.dir());
     }
 
     objlist_[crossObj]->getIntersection(ray, &pt);
 
-    if(pt.isSource){
-        return pt.color; // * mgm::randomDouble(0.95, 1.105);
+    if(pt.material->isSource){
+        return pt.material->srcColor;
     }
     
+    aGL::Color resultColor = aGL::Colors::Black;
 
-    mgm::Vector3f refVec = ray.dir();
-    refVec *= -1;
+    if(!mgm::isZero(pt.material->reflCoef) && !pt.isInside)
+    {
+        mgm::Vector3f refVec = ray.dir();
+        refVec *= -1;
 
-    if((refVec * pt.normal < -mgm::EPS || pt.isInside) && depth > 5)
-        return aGL::Colors::Black;
+        if(refVec * pt.normal < -mgm::EPS)
+            mError << depth << " " << ray << " " << pt.normal << " " << pt.point << mlg::endl;
+        mAssert(refVec * pt.normal >= -mgm::EPS);
+        
 
-    if(refVec * pt.normal < -mgm::EPS)
-        mError << depth << " " << ray << " " << pt.normal << " " << pt.point << mlg::endl;
-    mAssert(refVec * pt.normal >= -mgm::EPS);
+        refVec = mgm::getReflection(refVec, pt.normal);
+
+        mAssert(refVec * pt.normal >= -mgm::EPS);
+        
+        aGL::Color refRayColor = getRayColor(mgm::Ray3f{pt.point, refVec}, depth + 1) * pt.material->reflCoef;
+
+        refRayColor &= pt.material->color;
+        resultColor += refRayColor;
+    } /* endif direct reflection. */
+
+    if(!mgm::isZero(pt.material->diffCoef) && !pt.isInside)
+    {
+        resultColor += getTrueLambert(pt, depth + 1) * pt.material->diffCoef;
+    }
     
+    if(!mgm::isZero(pt.material->refrCoef))
+    {
+        double  inRefrIndex = 1;
+        double outRefrIndex = pt.material->refrIndex;
+        
+        if(pt.isInside) std::swap(inRefrIndex, outRefrIndex);
 
-    refVec = mgm::getReflection(refVec, pt.normal);
+        Vec v = mgm::normalize(ray.dir());
 
-    mAssert(refVec * pt.normal >= -mgm::EPS);
-    mAssert(pt.isInside == false);
-    
-    // Vec wave = mgm::normalize(pt.normal);
-    // wave *= 1.1 * mgm::EPS;
-    // pt.point += wave;
+        double sinF = sqrt(1 - (v * pt.normal) * (v * pt.normal));
+        mAssert(!std::isnan(sinF));
 
-    aGL::Color refRayColor = getRayColor(mgm::Ray3f{pt.point, refVec}, depth + 1);
-    
-    aGL::Color resultColor = ambient_;
+        if((inRefrIndex * sinF / outRefrIndex) < 1 - mgm::EPS)
+        {
+            mAssert(v * pt.normal < mgm::EPS);
+            Vec parrallel = pt.normal;
+            parrallel *= v * pt.normal;
 
-    resultColor += refRayColor * pt.reflCoef;
-    resultColor &= pt.color;
+            Vec orthogonal = v;
+            orthogonal -= parrallel;
 
-    resultColor += getTrueLambert(pt, depth + 1) * pt.diffCoef;
-    
+            mAssert(mgm::isZero(orthogonal.len() - sinF));
+
+            orthogonal *= inRefrIndex / outRefrIndex;
+
+            parrallel = pt.normal;
+            parrallel *= -sqrt(1 - orthogonal.len2());
+
+            orthogonal += parrallel;
+
+            Point startPt = pt.point;
+
+            aGL::Color refrColor = getRayColor({startPt, orthogonal}, depth /*FIXME*/) * pt.material->refrCoef;
+            //TODO: Color adjustment
+            resultColor += refrColor;
+
+        } 
+        else /* Full reflection */  //XXX: This is copy of reflection. Do smth with it.
+        {
+            v *= -1;
+            v = mgm::getReflection(v, pt.normal);
+            aGL::Color refRayColor = getRayColor(mgm::Ray3f{pt.point, v}, depth + 1) * pt.material->refrCoef;
+            refRayColor &= pt.material->color;
+            resultColor += refRayColor;
+            mAssert(pt.isInside);
+        }
+    }
+
     // mAssert(refRayColor.a() == 255);
     return resultColor;
 }
@@ -112,7 +153,8 @@ void Raytracer::onPaintEvent() const
             surface->drawPoint({x, y}, aGL::gammaCorrect(antialiasing.getAvg(), qS_.gamma));
             // mInfo << "Point " << x << ' ' << y << " gotten" << mlg::endl;
         }
-            render(*wind);
+            mInfo << "Done layer: " << x << mlg::endl;
+            render(*wind);  //HACK:
             wind->update();
     }
 }
@@ -134,7 +176,8 @@ aGL::Color Raytracer::getTrueLambert(const RTObjs::SurfacePoint& surfPoint, int 
     }
 
     Color ret = avg.getAvg();
-    ret &= surfPoint.color;
+    // ret |= ambient_;
+    ret &= surfPoint.material->color;
     return ret;
 }
 
@@ -162,14 +205,20 @@ aGL::Color Raytracer::getLambert(const RTObjs::SurfacePoint& surfPoint) const
         }
     }
 
-    return lambert &= surfPoint.color;
+    return lambert &= surfPoint.material->color;
 }
 
 Raytracer::Color Raytracer::getSkyGradient(const Vec& v)
 {
+    // if(v.z < 0 || v.y > 0) return aGL::Colors::Red;
     double t = 0.5 * (mgm::normalize(v).y + 1);
     // mDebug << t << mlg::endl;
     return (1. - t) * aGL::Colors::White + (t)*(Color(0x78B2FFFF)); 
 }
 
+
+void Raytracer::addObject(RenderObject* object)
+{
+    objlist_.push_back(object);
+}
 

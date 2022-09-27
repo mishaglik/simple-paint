@@ -41,20 +41,28 @@ namespace mgm {
         Vector3f v = normalize(ray.dir());
         Vector3f u = sph.center() - ray.point();
 
-        if(v * u <= EPS && !sph.contains(ray.start())) return false;
+        bool isInside = sph.containsB(ray.start());
+
+        if(v * u <= 0 && !isInside) return false;
         if(pt == nullptr)  return true;
 
         v *= v * u;
         
-        Vector3f h = normalize(v);
-        h *= - std::sqrt(fabs(dist * dist - sph.r() * sph.r()));
+        Vector3f h = normalize(ray.dir());
+        h *= std::sqrt(fabs(dist * dist - sph.r() * sph.r()));
+        
+        if(!isInside)
+        {
+            h *= -1;
+        }
 
         v += h;
-        if(!sph.contains(ray.start()) && v * h > EPS)
+
+        if(!isInside && v * h > 0)
         {
             mError << v << " " << h << mlg::endl;
         }
-        mAssert(sph.contains(ray.start()) || v * h <= EPS);
+        mAssert(isInside || v * h <= 0);
 
         *pt = ray.point();
         *pt += v;

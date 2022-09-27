@@ -10,15 +10,15 @@ namespace RTObjs {
     {
         protected:
             mgm::Plane3f plane_;
-            aGL::Color color_;
-            // bool isSource_ = false;
+            [[deprecated("Use material")]] aGL::Color color_;
+
+            Material material_;
 
         public:
-            RenderPlane(const mgm::Vector3f& normal, const mgm::Point3f& pt, bool isSource = false, aGL::Color color = aGL::Colors::Green) :
-                plane_(normal, pt), color_(color)
-                //Kill me with implict conversions bool <-> uint32_t; 
+            RenderPlane(const mgm::Vector3f& normal, const mgm::Point3f& pt, const Material& material = MaterialCollection::Grass) :
+                plane_(normal, pt), material_(material)
+                //Kill me with implict conversions bool <-> uint32_t; [[deprecated]]
             {
-                isSource_ = isSource;
                 objName = "Plane";
             } 
             
@@ -26,6 +26,8 @@ namespace RTObjs {
 
             virtual mgm::Point3f getCenter() const override;
             virtual aGL::Color getColor () const override;
+
+            void setMaterial(const Material& material);
             
             virtual double getIntersection(const mgm::Ray3f& ray, SurfacePoint* pt = nullptr) const override;
     };

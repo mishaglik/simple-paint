@@ -35,6 +35,8 @@ class Application : public aGL::AObject{
         Reset,
     };
 
+    void fillScene();
+
 public:
     Application();
     Application(int , const char** ) : Application() {}
