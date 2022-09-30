@@ -39,9 +39,6 @@ void Raytracer::raytraceThread(MulithreadContext* context)
 
 Raytracer::~Raytracer()
 {
-    for(size_t i = 0; i < objlist_.size(); ++i)
-        delete objlist_[i];
-    
 #ifdef RAYTRACER_MULTITHREADING
     for(size_t i = 0; i < nThreads; ++i)
     {
@@ -50,6 +47,8 @@ Raytracer::~Raytracer()
     delete multithreadContext_;
 #endif
 
+    for(size_t i = 0; i < objlist_.size(); ++i)
+        delete objlist_[i];
 }
 
 
@@ -222,7 +221,7 @@ aGL::Color Raytracer::getTrueLambert(const RTObjs::SurfacePoint& surfPoint, int 
 {
     AvgColor avg = {};
 
-    uint64_t nRays = (depth < qS_.lamberthFastEdge) ? qS_.lamberthDepth : (labertianDepth_ / 10);
+    uint64_t nRays = (depth < qS_.lamberthFastEdge) ? qS_.lamberthDepth : (qS_.lamberthDepth / 10);
 
     for(uint64_t i = 0; i < nRays; ++i)
     {
