@@ -46,6 +46,7 @@ class Raytracer: public aGL::Widget{
         std::mutex xMutex;
         std::mutex drawMutex;
         uint32_t x0 = 0;
+        bool finish = false;
     };
     
     static const size_t nThreads = 10;
@@ -53,7 +54,7 @@ class Raytracer: public aGL::Widget{
 
     MulithreadContext* multithreadContext_ = nullptr;
 
-    [[noreturn]] static void raytraceThread(MulithreadContext* context);
+    static void raytraceThread(MulithreadContext* context);
 
 public:
     void render(const aGL::Window& window) const override;
@@ -91,7 +92,7 @@ public:
 
         void addObject(RenderObject* object);
 
-        void onPaintEvent() const override;
+        aGL::EventHandlerState onPaintEvent(const aGL::Event* ) override;
 
         void paintSegment(uint32_t x0, uint32_t w0) const;
 

@@ -22,7 +22,7 @@ void Raytracer::raytraceThread(MulithreadContext* context)
 {
     uint32_t x = 0;
     uint32_t w = context->rt->getRect().w;
-    while (1)
+    while (!context->finish)
     {
         context->xMutex.lock();
         x = context->x0++;
@@ -40,8 +40,10 @@ void Raytracer::raytraceThread(MulithreadContext* context)
 Raytracer::~Raytracer()
 {
 #ifdef RAYTRACER_MULTITHREADING
+    multithreadContext_->finish = 1;
     for(size_t i = 0; i < nThreads; ++i)
     {
+        if(threads[i]->joinable()) threads[i]->join();
         delete threads[i];
     }
     delete multithreadContext_;
@@ -169,17 +171,16 @@ aGL::Color Raytracer::getRayColor(const mgm::Ray3f& ray, int depth) const
     return resultColor;
 }
 
-void Raytracer::onPaintEvent() const 
+aGL::EventHandlerState Raytracer::onPaintEvent(const aGL::Event* ) 
 {
-    if(isRendered) return;
-#ifdef RAYTRACER_MULTITHREADING
-    return;
-#else
+    if(isRendered) return aGL::EventHandlerState::Accepted;
+#ifndef RAYTRACER_MULTITHREADING
     for(uint32_t x = 0; x < rect_.w; x++)
     {  
         paintSegment(x, 1);
     }
 #endif
+    return aGL::EventHandlerState::Accepted;
 }
 
 void Raytracer::paintSegment(uint32_t x0, uint32_t w0) const
