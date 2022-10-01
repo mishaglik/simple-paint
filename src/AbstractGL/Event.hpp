@@ -163,7 +163,7 @@ namespace aGL {
     };
 
 
-    class Event
+    class Event //TODO: Make abstract.
     {
     public:
         EventType type;

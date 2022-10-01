@@ -92,7 +92,7 @@ namespace aGL {
                 case EventType::UserMin:
                 case EventType::UserMax:
                 case EventType::Other:
-                default:
+                default:        // We have user events so default is required.
                     resp = subs.object->handleEvent(event);
                 }
             }
