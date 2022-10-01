@@ -19,27 +19,27 @@ namespace aGL {
     }
 
 
-    int Button::handleEvent(const Event& event)
+    EventHandlerState Button::onMouseClickEvent(const Event* event) 
     {
-        if(event.type == EventType::MouseButtonPressed && event.mbed.button == MouseButton::Left &&
-                                                                            mgm::contains(rect_, event.mbed.point))
+        if(event->type == EventType::MouseButtonPressed && event->mbed.button == MouseButton::Left &&
+                                                                            mgm::contains(rect_, event->mbed.point))
         {
             pressed_ = true;
         }
 
-        if(pressed_ && event.type == EventType::MouseButtonReleased && event.mbed.button == MouseButton::Left)
+        if(pressed_ && event->type == EventType::MouseButtonReleased && event->mbed.button == MouseButton::Left)
         {
             pressed_ = false;
-            if(mgm::contains(rect_, event.mbed.point))
+            if(mgm::contains(rect_, event->mbed.point))
             {
                 eventObject_->handleSignal(eventSignal_);
             }
-            return 1;
+            return EventHandlerState::Accepted;
         }
-        return 0;
+        return EventHandlerState::Dropped;
     }
 
-    void Button::onPaintEvent() const 
+    EventHandlerState Button::onPaintEvent(const Event* ) 
     {
         surface->drawRect({0, 0, rect_.w, rect_.h}, pressed_ ? pressedColor_ : defaultColor_); //TODO: Two pictures different transpatency
         
@@ -49,6 +49,7 @@ namespace aGL {
         surface->drawLine({rect_.w,       0}, {      0,       0}, Colors::LGray);
         
         surface->drawText(text_);
+        return EventHandlerState::Accepted;
     }
 
 }

@@ -20,7 +20,5 @@ namespace aGL {
     {
         window.drawSurf(rect_.getCornerLL(), *surface);
     }
-
-    void Widget::onPaintEvent() const {}
     
 }

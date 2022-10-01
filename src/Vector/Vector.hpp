@@ -7,6 +7,20 @@ void* operator new (size_t, void* mem) noexcept;
 
 namespace mvc {
 
+    template<class T>
+    class ConstIterator
+    {
+        const T* ptr_;
+    public:
+        ConstIterator(const T* ptr) : ptr_(ptr) {}
+
+        const T& operator*() const {return *ptr_;}
+        ConstIterator& operator++()    {ptr_++; return *this;}
+        ConstIterator  operator++(int) {ConstIterator retval = *this; ptr_++; return retval;}
+        template<class U>
+        friend bool operator==(const ConstIterator<U>&, const ConstIterator<U>&);
+    };
+
     template<class T, size_t size>
     class Array
     {
@@ -24,6 +38,8 @@ namespace mvc {
         T* arr_ = nullptr;
         size_t size_ = 0, capacity_ = 0;
     public:
+
+        
 
         Vector()
         {
@@ -119,11 +135,20 @@ namespace mvc {
             new (arr_ + size_++) T(value);
         }
 
+        ConstIterator<T> begin() const {return ConstIterator<T>(arr_);}
+        ConstIterator<T> end  () const {return ConstIterator<T>(arr_ + size_);}
+
         const T& operator[] (size_t i) const { return arr_[i]; }
 
               T& operator[] (size_t i)       { return arr_[i]; }
         
         size_t size() const { return size_; }
     };
+    
+    template<class T>
+    bool operator==(const ConstIterator<T>& lhs, const ConstIterator<T>& rhs) { return lhs.ptr_ == rhs.ptr_;}
+
+    template<class T>
+    bool operator!=(const ConstIterator<T>& lhs, const ConstIterator<T>& rhs) { return !(lhs == rhs);}
 }
 #endif /* VECTOR_ARRAY_HPP */

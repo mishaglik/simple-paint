@@ -42,9 +42,11 @@ void VectorPlot::drawBackground() const {
     surface->clear(aGL::Colors::White);
 }
 
-void VectorPlot::onPaintEvent() const{
+aGL::EventHandlerState VectorPlot::onPaintEvent(const aGL::Event*)
+{
     drawBackground();
     drawForeground();
+    return aGL::EventHandlerState::Accepted;
 }
 
 
@@ -72,23 +74,29 @@ void VectorPlot::addAngle(double a){
     angle_ += a;
 }
 
-int VectorPlot::handleEvent(const aGL::Event& event){
-    if(event.type == aGL::EventType::MouseButtonPressed && mgm::contains(aGL::Widget::rect_, event.mbed.point)){
-        aGL::Point pt = aGL::getRelPoint(event.mbed.point, aGL::Widget::rect_);
+aGL::EventHandlerState VectorPlot::onMouseMoveEvent (const aGL::Event* event)
+{
+    mAssert(event->type == aGL::EventType::MouseMoved);
+    if(!captured || !mgm::contains(aGL::Widget::rect_, event->mmed.point)) return aGL::EventHandlerState::Dropped;
+    vec_ = rTransform(aGL::getRelPoint(event->mmed.point, aGL::Widget::rect_)) - startPoint_;
+    return aGL::EventHandlerState::Owned;
+}
+
+aGL::EventHandlerState VectorPlot::onMouseClickEvent(const aGL::Event* event)
+{
+    if(event->type == aGL::EventType::MouseButtonPressed && mgm::contains(aGL::Widget::rect_, event->mbed.point)){
+        aGL::Point pt = aGL::getRelPoint(event->mbed.point, aGL::Widget::rect_);
         vec_ = rTransform(pt) - startPoint_;
         angle_ = 0;
         captured = true;
-        return 0;
+        return aGL::EventHandlerState::Owned;
     }
 
-    if(captured && event.type == aGL::EventType::MouseMoved && mgm::contains(aGL::Widget::rect_, event.mmed.point)){
-        vec_ = rTransform(aGL::getRelPoint(event.mmed.point, aGL::Widget::rect_)) - startPoint_;
-    }
-    
-    if(captured && event.type == aGL::EventType::MouseButtonReleased){
+    if(captured && event->type == aGL::EventType::MouseButtonReleased){
         captured = false;
+        return aGL::EventHandlerState::Owned;
     }
-    return 1;
+    return aGL::EventHandlerState::Dropped;
 }
 
 void VectorPlot::update(){

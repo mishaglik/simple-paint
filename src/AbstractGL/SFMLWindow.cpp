@@ -128,17 +128,17 @@ namespace aGL {
             switch (sfEvent.type) {
 
             case sf::Event::KeyPressed:
-                event.type = EventType::KeyPressedEvent;
+                event.type = EventType::KeyPressed;
                 event.ked = *reinterpret_cast<KeyEventData*>(&sfEvent.key); // I'm personally created very simmilar to SFML prototypes, so I've decided to make reinterperter cast.
                 break;
 
             case sf::Event::KeyReleased:
-                event.type = EventType::KeyReleasedEvent;
+                event.type = EventType::KeyReleased;
                 event.ked = *reinterpret_cast<KeyEventData*>(&sfEvent.key);
                 break;
 
             case sf::Event::Closed:
-                event.type = EventType::Quit;
+                event.type = EventType::Quited;
                 break;
                 
             case sf::Event::MouseWheelMoved:

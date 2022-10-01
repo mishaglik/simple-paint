@@ -4,6 +4,7 @@ set (AGL_SOURCES
     Button.cpp
     Widget.cpp
     Color.cpp
+    EventManager.cpp
 )
 
 set (AGL_HEADERS
@@ -12,6 +13,7 @@ set (AGL_HEADERS
     AWindow.hpp
     AObject.hpp
     AText.hpp
+    EventManager.hpp
 )
 
 set (AGL_SFML_SOURCES

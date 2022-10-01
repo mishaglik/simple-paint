@@ -8,13 +8,17 @@ namespace aGL {
 
     enum class EventType{
         ERROR,
-        Quit,
         MouseButtonPressed,
         MouseButtonReleased,
         MouseMoved,
         MouseWheeled,
-        KeyPressedEvent,
-        KeyReleasedEvent,
+        KeyPressed,
+        KeyReleased,
+        TimerTicked,
+        Paint,
+        Quited,
+        UserMin = 1000,
+        UserMax = 2000,
         Other,
     };
 
@@ -173,10 +177,10 @@ namespace aGL {
         Event() : type(EventType::ERROR) {}
     };
 
-    enum class HandlerState{
+    enum class EventHandlerState{
+        Dropped = 0,
         Accepted,
-        Dropped,
-        Passed,
+        Owned,
     };
 
     inline Point getRelPoint(const Point& pt, const mgm::Rect2u& rect)

@@ -17,7 +17,7 @@ class VectorPlot : public aGL::Widget, public CoordSystem{
     void drawForeground() const;
 
 public:
-    void onPaintEvent() const override;
+    aGL::EventHandlerState onPaintEvent(const aGL::Event*) override;
     
     void update() override;
 
@@ -35,7 +35,8 @@ public:
     void setSpeed(double speed);
 
     mgm::Vector2f& getVectorRef();
-    int handleEvent(const aGL::Event& event) override;
+    aGL::EventHandlerState onMouseMoveEvent (const aGL::Event* event) override;
+    aGL::EventHandlerState onMouseClickEvent(const aGL::Event* event) override;
 
 };
 

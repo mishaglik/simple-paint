@@ -1,6 +1,5 @@
 #include "Application.hpp"
 #include "AbstractGL/AWindow.hpp"
-#include "Raycaster.hpp"
 #include "Raytracer/RenderPlane.hpp"
 #include "Raytracer/RenderSphere.hpp"
 #include "VectorPlot.hpp"
@@ -10,15 +9,17 @@
 Application::Application() : 
     logger(std::cerr)
 {
-    logger.setLogLevel(mlg::Logger::LogLevel::INFO);
+    logger.setLogLevel(mlg::Logger::LogLevel::WARNING);
     setGlobalLogger(&logger);
 
     window_ = new aGL::Window(800, 600, "Vecplot window");
     plotRotator_ = new VectorPlot(10, 30, 300, 300, -10, 10, 10, -10);
     plotRotator_->setVector({10, 0});
-    
-    raycaster_ = new Raycaster(0, 0, 500);
 
+    eventManager_.subscribeOn(aGL::EventType::MouseButtonPressed, plotRotator_);
+    eventManager_.subscribeOn(aGL::EventType::MouseMoved, plotRotator_);
+    eventManager_.subscribeOn(aGL::EventType::Paint, plotRotator_);
+    
     raytracer_ = new Raytracer(300, 0 ,500, 500);
     
     fillScene();
@@ -26,8 +27,15 @@ Application::Application() :
     exitButton  = new aGL::Button("Exit", 0, 400);
     exitButton->setEventFunction(this, Slots::Quit);
 
+    eventManager_.subscribeOn(aGL::EventType::MouseButtonPressed, exitButton);
+    eventManager_.subscribeOn(aGL::EventType::Paint, exitButton);
+    
+
     resetButton = new aGL::Button("Reset", 200, 400);
     resetButton->setEventFunction(this, Slots::Reset);
+
+    eventManager_.subscribeOn(aGL::EventType::MouseButtonPressed, resetButton);
+    eventManager_.subscribeOn(aGL::EventType::Paint, resetButton);
 
     state_ = AppState::Ready;
 }
@@ -64,7 +72,7 @@ void Application::fillScene()
 Application::~Application()
 {
     state_ = AppState::Died;
-    delete raycaster_;
+    delete raytracer_;
     delete plotRotator_;
     delete window_;
 }
@@ -93,25 +101,19 @@ int Application::exec()
         aGL::Event event;
         while(window_->pollEvent(event))
         {
-            handleEvent(event);
+            eventManager_.handleEvent(&event);
         }
 
         window_->clear(0x999999FF);
-        plotRotator_->onPaintEvent();
-        // raycaster_  ->onPaintEvent();
-        exitButton  ->onPaintEvent();
-        resetButton ->onPaintEvent();
+
+        event.type = aGL::EventType::Paint;
+        eventManager_.handleEvent(&event);
 
         plotRotator_->render(*window_); //TODO: change signature to window* 
-        // raycaster_  ->render(*window_);  
         exitButton  ->render(*window_);
-        resetButton ->render(*window_);
-        
-        raytracer_  ->onPaintEvent();
+        resetButton ->render(*window_);        
         raytracer_  ->render(*window_);
     
-        
-        raycaster_  ->addAngle(1. / 60);
         plotRotator_->update();
         window_->update();
 
@@ -129,32 +131,29 @@ int Application::exec()
     return 0;
 }
 
-int Application::handleEvent(const aGL::Event& event){
-    if(event.type == aGL::EventType::Quit){
+aGL::EventHandlerState Application::handleEvent(const aGL::Event* event)
+{
+    if(event->type == aGL::EventType::Quited){
         state_ = AppState::Stopping;
-        return 1;
+        return aGL::EventHandlerState::Accepted;
     }
 
-    resetButton ->handleEvent(event);
-    exitButton  ->handleEvent(event);
-    plotRotator_->handleEvent(event);
-    raycaster_  ->handleEvent(event);
-
-    if(event.type == aGL::EventType::KeyPressedEvent)
+    if(event->type == aGL::EventType::KeyPressed)
     {
-        if(event.ked.key == aGL::KeyboardKey::Num0)
+        if(event->ked.key == aGL::KeyboardKey::Num0)
             logger.setLogLevel(mlg::Logger::LogLevel::DEBUG);
-        else if(event.ked.key == aGL::KeyboardKey::Num1)
+        else if(event->ked.key == aGL::KeyboardKey::Num1)
             logger.setLogLevel(mlg::Logger::LogLevel::INFO);
-        else if(event.ked.key == aGL::KeyboardKey::Num2)
+        else if(event->ked.key == aGL::KeyboardKey::Num2)
             logger.setLogLevel(mlg::Logger::LogLevel::WARNING);
-        else if(event.ked.key == aGL::KeyboardKey::Num3)
+        else if(event->ked.key == aGL::KeyboardKey::Num3)
             logger.setLogLevel(mlg::Logger::LogLevel::ERROR);
-        else if(event.ked.key == aGL::KeyboardKey::Num4)
+        else if(event->ked.key == aGL::KeyboardKey::Num4)
             logger.setLogLevel(mlg::Logger::LogLevel::FATAL);
+        return aGL::EventHandlerState::Accepted;
     }
 
-    return 0;
+    return aGL::EventHandlerState::Dropped;
 }
 
 

@@ -25,9 +25,9 @@ namespace aGL {
 
         void setEventFunction(AObject* eventObject, int eventSignal);
         
-        int handleEvent(const Event& event) override;
+        EventHandlerState onMouseClickEvent(const Event* event) override; 
 
-        void onPaintEvent() const override;
+        EventHandlerState onPaintEvent(const Event* event) override;
 
     };
 

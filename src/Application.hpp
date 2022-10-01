@@ -1,23 +1,24 @@
 #ifndef APPLICATION_HPP
 #define APPLICATION_HPP
 
-#include "Raycaster.hpp"
 #include "VectorPlot.hpp"
 #include <AbstractGL/AWindow.hpp>
 #include <AbstractGL/Button.hpp>
+#include <AbstractGL/EventManager.hpp>
 #include <Raytracer/Raytracer.hpp>
 
 class Application : public aGL::AObject{
     aGL::Window* window_     = nullptr;
     VectorPlot* plotRotator_ = nullptr;
-    // VectorPlot* plotClicked_ = nullptr;
-    Raycaster* raycaster_    = nullptr;
+
     Raytracer* raytracer_    = nullptr;
     
     aGL::Button* exitButton  = nullptr;
     aGL::Button* resetButton = nullptr;
 
     mlg::ConsoleLogger logger;
+
+    aGL::EventManager eventManager_;
 
     enum class AppState{
         UnInit = 0,
@@ -49,7 +50,7 @@ public:
 
     int exec();
 
-    int handleEvent(const aGL::Event& event);
+    aGL::EventHandlerState handleEvent(const aGL::Event* event) override;
 
     void quit ();
     void reset();

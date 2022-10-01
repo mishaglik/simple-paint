@@ -14,12 +14,17 @@ namespace aGL {
 
         Widget() : rect_({0, 0, 100, 100}), surface(new RenderSurface(100, 100)) {}
         Widget(const Rect& rect) : rect_(rect), surface(new RenderSurface(rect.w, rect.h)) {}
-        
-        virtual int handleEvent(const Event&){ return 1;}
 
         virtual void render(const Window &window) const;
 
-        virtual void onPaintEvent() const;
+        virtual EventHandlerState handleEvent       (const Event* ) override  { return EventHandlerState::Dropped;}
+        virtual EventHandlerState onPaintEvent      (const Event* )           { return EventHandlerState::Accepted;}
+        virtual EventHandlerState onKeyboardEvent   (const Event* )           { return EventHandlerState::Dropped;}
+        virtual EventHandlerState onMouseMoveEvent  (const Event* )           { return EventHandlerState::Dropped;}
+        virtual EventHandlerState onMouseClickEvent (const Event* )           { return EventHandlerState::Dropped;}
+        virtual EventHandlerState onMouseScrollEvent(const Event* )           { return EventHandlerState::Dropped;}
+        virtual EventHandlerState onTimerEvent      (const Event* )           { update(); return EventHandlerState::Dropped;}
+        
         virtual void update() {}
         virtual void resize(uint32_t w, uint32_t h);
         virtual void resize(const mgm::Vector2u& v);
