@@ -192,9 +192,9 @@ namespace mlg {
     void hex(Logger& log);
     void dec(Logger& log);
     void oct(Logger& log);
-    // void bin(Logger& log); //TODO: binary output (bitset)
+    // void bin(Logger& log); //TODO: Implement binary output (bitset)
 
-    template<uint64_t w>      //HACK: only const nums
+    template<uint64_t w>      //Take only const nums. Sorry :(; XXX: Later: Rework it to non const.
     void setWidth(Logger& log)
     {
         log.setWidth(w);

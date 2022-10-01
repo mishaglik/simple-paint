@@ -178,8 +178,6 @@ void Raytracer::onPaintEvent() const
     for(uint32_t x = 0; x < rect_.w; x++)
     {  
         paintSegment(x, 1);
-        // render(*wind);  //HACK:
-        // wind->update();
     }
 #endif
 }
@@ -217,10 +215,6 @@ void Raytracer::paintSegment(uint32_t x0, uint32_t w0) const
         #endif
         }
 
-    #ifndef RAYTRACER_MULTITHREADING
-        render(*wind);  //HACK:
-        wind->update();
-    #endif
         mInfo << mlg::Logger::CoStyle::Green <<"Done layer: " << x << mlg::endl;
     }
 }

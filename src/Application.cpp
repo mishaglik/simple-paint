@@ -4,8 +4,7 @@
 #include "Raytracer/RenderPlane.hpp"
 #include "Raytracer/RenderSphere.hpp"
 #include "VectorPlot.hpp"
-#include <SFML/System/Sleep.hpp>
-#include <SFML/System/Clock.hpp>
+#include <chrono>
 #include <iostream>
 
 Application::Application() : 
@@ -79,13 +78,17 @@ int Application::exec()
     }
     state_ = AppState::Running;
 
-    sf::Clock fpsCounter; //FIXME
+    std::chrono::high_resolution_clock clock;
+    auto fpsCounterTimepoint = clock.now();
+
+    std::chrono::duration<double, std::milli> cap(1000. / 61);
+
     uint8_t i = 0;
 
     
     while (state_ == AppState::Running)
     {
-        sf::Clock fpsTimer; //FIXME
+        auto fpsCapTimepoint = clock.now();
 
         aGL::Event event;
         while(window_->pollEvent(event))
@@ -112,10 +115,13 @@ int Application::exec()
         plotRotator_->update();
         window_->update();
 
-        sf::sleep(sf::milliseconds(std::max(0, 16 - fpsTimer.getElapsedTime().asMilliseconds()))); //FIXME: sf
+        std::this_thread::sleep_until(fpsCapTimepoint + cap);
+        
         if(!++i){
-            mInfo << "FPS: " << 256000. / fpsCounter.getElapsedTime().asMilliseconds() << '\n';
-            fpsCounter.restart();
+            auto nowTimepoint = clock.now();            
+            std::chrono::duration<double, std::milli> delta = nowTimepoint - fpsCounterTimepoint;
+            mWarning << "FPS: " << 256000 / (std::chrono::duration_cast<std::chrono::milliseconds>(delta)).count() << mlg::endl;
+            fpsCounterTimepoint = nowTimepoint;
         }
     }
     

@@ -84,7 +84,7 @@ public:
             .gamma             = 1.1,
         };
 
-        [[deprecated]] aGL::Window* wind; //HACK
+        [[deprecated]] aGL::Window* wind;
 
         Raytracer(uint32_t x, uint32_t y, uint32_t w, uint32_t h);
         ~Raytracer() override;
