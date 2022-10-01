@@ -18,8 +18,8 @@ namespace aGL {
         };
 
     public:
-        Color(uint32_t color = 0) : color_(color) {}
-        Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a) : asRGBA_({a, b, g, r}) {}
+        constexpr Color(uint32_t color = 0) : color_(color) {}
+        constexpr Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a) : asRGBA_({a, b, g, r}) {}
 
         Color& operator= (uint32_t color) {color_ = color; return *this;}
 
@@ -54,8 +54,6 @@ namespace aGL {
 
     mlg::Logger& operator<< (mlg::Logger& out, const Color& color);
 
-    #pragma clang diagnostic push
-    #pragma clang diagnostic ignored "-Wglobal-constructors"
     namespace Colors {
         const Color Transparent = 0;
         const Color White   = 0xFFFFFFFF; 
@@ -70,7 +68,6 @@ namespace aGL {
         const Color Magenta = 0xFF00FFFF;
         const Color Cyan    = 0x00FFFFFF;
     }
-    #pragma clang diagnostic pop
 }
 
 #endif /* ABSTRACTGL_COLOR_HPP */
