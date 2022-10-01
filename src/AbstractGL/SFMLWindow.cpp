@@ -50,19 +50,6 @@ namespace aGL {
         wp_->clear(sf::Color(color));
     }
 
-    void Window::drawText(const char* text, Point pt, Color color) const
-    {
-        sf::Font font;
-        if (!font.loadFromFile("/home/gms/progs++/vecplot/FreeMono.otf")){      //FIXME: Normal work with fonts
-            mAssert(0 && "Font not found");
-        }
-        sf::Text txt(text, font);
-        txt.setFillColor(sf::Color(color));
-        txt.setPosition({static_cast<float>(pt.x), static_cast<float>(pt.y)});
-        wp_->draw(txt);
-        return;
-    }
-
     void Window::drawText(const Text& text) const
     {
         wp_->draw(*text.tp_);

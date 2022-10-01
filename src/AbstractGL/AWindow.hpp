@@ -26,7 +26,6 @@ namespace aGL {
         ~Window() override;
 
         void resize(uint32_t width, uint32_t height);
-        [[deprecated]] void drawText    (const char* text, Point pt, Color color = 0) const;
         void drawText    (const Text& text) const;
         bool pollEvent(Event& event);
 
