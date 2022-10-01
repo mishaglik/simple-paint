@@ -52,6 +52,15 @@ Raytracer::~Raytracer()
 }
 
 
+#ifdef RAYTRACER_MULTITHREADING
+void Raytracer::render(const aGL::Window& window) const
+{
+    multithreadContext_->drawMutex.lock();
+    aGL::Widget::render(window);
+    multithreadContext_->drawMutex.unlock();
+}
+#endif
+
 aGL::Color Raytracer::getRayColor(const mgm::Ray3f& ray, int depth) const
 {
     if(depth > qS_.maxRayRefl){

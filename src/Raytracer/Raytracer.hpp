@@ -31,7 +31,7 @@ class Raytracer: public aGL::Widget{
     Point camera_;
     Color ambient_ = 0x6da6bdff;
 
-    uint64_t labertianDepth_ = 5;
+    [[deprecated]] uint64_t labertianDepth_ = 5;
 
     Color getRayColor(const mgm::Ray3f& ray, int depth = 0) const;
     [[deprecated]] Color getLambert(const RTObjs::SurfacePoint& surface) const;
@@ -49,14 +49,18 @@ class Raytracer: public aGL::Widget{
     };
     
     static const size_t nThreads = 10;
-    mvc::Array<std::thread*, nThreads> threads; // There can be way via std::move.
+    mvc::Array<std::thread*, nThreads> threads; // There can be way via std::move but...
 
     MulithreadContext* multithreadContext_ = nullptr;
 
     [[noreturn]] static void raytraceThread(MulithreadContext* context);
+
+public:
+    void render(const aGL::Window& window) const override;
+private:
 #endif
 
-    public:
+public:
 
         struct QualitySettings
         {
@@ -71,16 +75,16 @@ class Raytracer: public aGL::Widget{
 
         QualitySettings qS_
         {
-            .lamberthDepth     = 20,
-            .antialiasingLvl   = 30,
+            .lamberthDepth     = 3,
+            .antialiasingLvl   = 0,
             .maxRayRefl        = 20,
             .lamberthReflCost  = 5,
             .lamberthFastEdge  = 12,
-            .antialiasMaxShift = 0.5,
+            .antialiasMaxShift = .5,
             .gamma             = 1.1,
         };
 
-        aGL::Window* wind; //HACK
+        [[deprecated]] aGL::Window* wind; //HACK
 
         Raytracer(uint32_t x, uint32_t y, uint32_t w, uint32_t h);
         ~Raytracer() override;

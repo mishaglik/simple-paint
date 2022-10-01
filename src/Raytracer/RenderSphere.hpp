@@ -26,8 +26,8 @@ namespace RTObjs{
 
             virtual double getIntersection(const mgm::Ray3f& ray, SurfacePoint* pt = nullptr) const override;
 
-            virtual mgm::Point3f getCenter() const override;
-            virtual aGL::Color   getColor () const override;
+            [[deprecated("Use material")]] virtual mgm::Point3f getCenter() const override;
+            [[deprecated("Use material")]] virtual aGL::Color   getColor () const override;
             
             void setMaterial(const Material& material);
     };

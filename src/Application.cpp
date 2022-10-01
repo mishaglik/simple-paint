@@ -21,7 +21,6 @@ Application::Application() :
     raycaster_ = new Raycaster(0, 0, 500);
 
     raytracer_ = new Raytracer(300, 0 ,500, 500);
-    raytracer_->wind = window_;
     
     fillScene();
 
@@ -58,6 +57,9 @@ void Application::fillScene()
     raytracer_->addObject(new RTObjs::RenderSphere({ -300,     0, 2000},  80, material));
     raytracer_->addObject(new RTObjs::RenderSphere({ -250,   -80,  900},  20));
     raytracer_->addObject(new RTObjs::RenderSphere({ -200,   -35,  600}, 150, RTObjs::MaterialCollection::Glass));
+    
+    // raytracer_->addObject(new RTObjs::RenderSphere({ 100,      0,  600}, 50, RTObjs::MaterialCollection::Sun));
+
 }
 
 Application::~Application()
@@ -104,7 +106,7 @@ int Application::exec()
         
         raytracer_  ->onPaintEvent();
         raytracer_  ->render(*window_);
-        
+    
         
         raycaster_  ->addAngle(1. / 60);
         plotRotator_->update();
@@ -112,7 +114,7 @@ int Application::exec()
 
         sf::sleep(sf::milliseconds(std::max(0, 16 - fpsTimer.getElapsedTime().asMilliseconds()))); //FIXME: sf
         if(!++i){
-            std::cerr << "FPS: " << 256000. / fpsCounter.getElapsedTime().asMilliseconds() << '\n';
+            mInfo << "FPS: " << 256000. / fpsCounter.getElapsedTime().asMilliseconds() << '\n';
             fpsCounter.restart();
         }
     }

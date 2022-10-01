@@ -1,8 +1,5 @@
 #include "RenderObject.hpp"
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wglobal-constructors"
-
 namespace RTObjs {
     namespace MaterialCollection {
         const Material Void
@@ -86,4 +83,3 @@ namespace RTObjs {
         };
     }
 }
-#pragma clang diagnostic pop

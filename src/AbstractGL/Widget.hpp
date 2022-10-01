@@ -17,7 +17,7 @@ namespace aGL {
         
         virtual int handleEvent(const Event&){ return 1;}
 
-        void render(const Window &window) const;
+        virtual void render(const Window &window) const;
 
         virtual void onPaintEvent() const;
         virtual void update() {}
