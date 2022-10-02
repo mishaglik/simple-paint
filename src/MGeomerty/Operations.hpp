@@ -84,6 +84,11 @@ namespace mgm {
         return contains(Rect2<int>(rect), pt);
     }
 
+    inline Vector3f rotate(Vector3f v, Vector3f axis, double angle)
+    {
+        
+    }
+
 } // namespace mgm
 
 #endif /* MGEOMERTY_OPERATIONS_HPP */

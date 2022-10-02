@@ -14,6 +14,7 @@ namespace aGL {
 
         Widget() : rect_({0, 0, 100, 100}), surface(new RenderSurface(100, 100)) {}
         Widget(const Rect& rect) : rect_(rect), surface(new RenderSurface(rect.w, rect.h)) {}
+        Widget(const Rect& rect, RenderSurface* surf) : rect_(rect), surface(surf) {}
 
         virtual void render(const Window &window) const;
 

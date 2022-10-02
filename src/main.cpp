@@ -3,6 +3,7 @@
 #include "Application.hpp"
 
 #include <LogUtils/LogUtils.hpp>
+#include <Vector/Vector.hpp>
 
 int main(int argc, const char* argv[]){
    

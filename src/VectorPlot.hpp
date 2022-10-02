@@ -35,7 +35,7 @@ public:
     void setSpeed(double speed);
 
     mgm::Vector2f& getVectorRef();
-    aGL::EventHandlerState onMouseMoveEvent (const aGL::Event* event) override;
+        aGL::EventHandlerState onMouseMoveEvent (const aGL::Event* event) override;
     aGL::EventHandlerState onMouseClickEvent(const aGL::Event* event) override;
 
 };

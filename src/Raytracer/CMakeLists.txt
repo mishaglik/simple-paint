@@ -5,6 +5,8 @@ set (RAY_SOURCES
     Raytracer.cpp
     RenderPlane.cpp
     MaterialCollection.cpp
+    Scene.cpp
+    Camera.cpp
 )
 
 set (RAY_HEADERS
@@ -12,6 +14,8 @@ set (RAY_HEADERS
     Raytracer.hpp
     RenderObject.hpp
     RenderPlane.hpp
+    Scene.hpp
+    Camera.hpp
 )
 
 add_library(Raytracer ${RAY_SOURCES} ${RAY_HEADERS})
