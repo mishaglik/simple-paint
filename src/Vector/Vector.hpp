@@ -2,10 +2,18 @@
 #define VECTOR_ARRAY_HPP
 #include <cstdlib>
 #include <LogUtils/Logger.hpp>
+#include <exception>
+#include <new>
 
 void* operator new (size_t, void* mem) noexcept;
 
 namespace mvc {
+
+    enum class Exception
+    {
+        OutOfMemory,
+        OutOfRangeError,
+    };
 
     template<class T>
     class ConstIterator
@@ -17,6 +25,7 @@ namespace mvc {
         const T& operator*() const {return *ptr_;}
         ConstIterator& operator++()    {ptr_++; return *this;}
         ConstIterator  operator++(int) {ConstIterator retval = *this; ptr_++; return retval;}
+        T* operator->() {return ptr_;}
         template<class U>
         friend bool operator==(const ConstIterator<U>&, const ConstIterator<U>&);
     };
@@ -24,10 +33,22 @@ namespace mvc {
     template<class T, size_t size>
     class Array
     {
-        T arr_[size];
+        T data_[size];
     public:
-        const T& operator[] (size_t i) const { return arr_[i]; }
-              T& operator[] (size_t i)       { return arr_[i]; }
+        const T& operator[] (size_t i) const
+        { 
+            if(i < size) 
+                return data_[i];
+            else throw Exception::OutOfRangeError;
+        }
+        
+        T& operator[] (size_t i)
+        { 
+            if(i < size) 
+                return data_[i];
+            else throw Exception::OutOfRangeError;
+        }
+
     };
 
 
@@ -35,11 +56,9 @@ namespace mvc {
     template<class T>
     class Vector
     {
-        T* arr_ = nullptr;
+        T* data_ = nullptr;
         size_t size_ = 0, capacity_ = 0;
     public:
-
-        
 
         Vector()
         {
@@ -55,10 +74,15 @@ namespace mvc {
         {
             for(size_t i = 0; i < size_; ++i)
             {
-                arr_[i].~T();
+                data_[i].~T();
             }
 
-            delete [] reinterpret_cast<char*>(arr_);    // We alloced as char* so will free as char*
+            delete [] reinterpret_cast<char*>(data_);    // We alloced as char* so will free as char*
+        }
+
+        Vector(const Vector& oth)
+        {
+            operator=(oth);
         }
 
         Vector& operator=(const Vector& other)
@@ -67,7 +91,7 @@ namespace mvc {
 
             for(size_t i = 0; i < other.size_; ++i)
             {
-                arr_[i] = other[i];
+                data_[i] = other[i];
             }
 
 
@@ -79,11 +103,17 @@ namespace mvc {
         {
             if(newCap <= capacity_) return;
 
-            T* newArr = reinterpret_cast<T*>(new char[newCap * sizeof(T)]);
+            T* newArr = nullptr;
+            try {
+                newArr = reinterpret_cast<T*>(new char[newCap * sizeof(T)]);
             
-            if (arr_ == nullptr)
+            } catch (const std::bad_alloc& e) {
+                throw Exception::OutOfMemory;
+            }
+            
+            if (data_ == nullptr)
             {
-                arr_ = newArr;
+                data_ = newArr;
                 capacity_ = newCap;
                 return;
             }
@@ -91,15 +121,25 @@ namespace mvc {
             
             for(size_t i = 0; i < size_; ++i)
             {
-                new (newArr + i) T(arr_[i]);
-                arr_[i].~T();
+                try{
+                    new (newArr + i) T(data_[i]);
+                }
+                catch(...){
+                    for(size_t j = 0; j < i; ++j)
+                        newArr[i].~T();
+                    delete [] reinterpret_cast<char*>(newArr);
+                    std::rethrow_exception(std::current_exception());
+                }
             }
+
+            for(size_t i = 0; i < size_; ++i)
+                data_[i].~T();
 
             capacity_ = newCap;
 
-            delete [] reinterpret_cast<char*>(arr_);    // We alloced as char* so will free as char*
+            delete [] reinterpret_cast<char*>(data_);    // We alloced as char* so will free as char*
             
-            arr_ = newArr;
+            data_ = newArr;
         }
 
         void resize(size_t newSize)
@@ -113,12 +153,20 @@ namespace mvc {
             {
                 for(size_t i = size_; i < newSize; ++i)
                 {
-                    new (arr_ + i) T;
+                    try{
+                        new (data_ + i) T;
+                    }
+                    catch(...)
+                    {
+                        for(size_t j = size_; j < i; ++j)
+                            data_[i].~T();
+                        std::rethrow_exception(std::current_exception());
+                    }
                 }
             } else {
                 for(size_t i = newSize; i < size_; ++i)
                 {
-                    arr_[i].~T();
+                    data_[i].~T();
                 }
             }
 
@@ -132,15 +180,25 @@ namespace mvc {
                 reserve(2 * capacity_);
             }
 
-            new (arr_ + size_++) T(value);
+            new (data_ + size_++) T(value);
         }
 
-        ConstIterator<T> begin() const {return ConstIterator<T>(arr_);}
-        ConstIterator<T> end  () const {return ConstIterator<T>(arr_ + size_);}
+        ConstIterator<T> begin() const {return ConstIterator<T>(data_);}
+        ConstIterator<T> end  () const {return ConstIterator<T>(data_ + size_);}
 
-        const T& operator[] (size_t i) const { return arr_[i]; }
-
-              T& operator[] (size_t i)       { return arr_[i]; }
+        const T& operator[] (size_t i) const 
+        { 
+            if(i < size_) 
+                return data_[i];
+            else throw Exception::OutOfRangeError;
+        }
+        
+        T& operator[] (size_t i)
+        { 
+            if(i < size_) 
+                return data_[i];
+            else throw Exception::OutOfRangeError;
+        }
         
         size_t size() const { return size_; }
     };
