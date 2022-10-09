@@ -3,11 +3,11 @@
 #include <cstdint>
 #include <MGeomerty/Geometry.hpp>
 
-#include "Color.hpp"
-#include "Event.hpp"
-#include "AObject.hpp"
-#include "AText.hpp"
-#include "ARenderSurface.hpp"
+#include <AbstractGL/Color.hpp>
+#include <AbstractGL/Event.hpp>
+#include <AbstractGL/AObject.hpp>
+#include <AbstractGL/AText.hpp>
+#include <AbstractGL/ARenderSurface.hpp>
 
 namespace aGL {
 

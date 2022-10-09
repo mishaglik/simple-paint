@@ -1,6 +1,6 @@
 #include "VectorPlot.hpp"
 #include "AbstractGL/AWindow.hpp"
-#include "AbstractGL/Widget.hpp"
+#include "Widgets/Widget.hpp"
 #include "CoordinateSystem.hpp"
 #include "MGeomerty/Point.hpp"
 #include "MGeomerty/Vector.hpp"
@@ -82,7 +82,7 @@ aGL::EventHandlerState VectorPlot::onMouseMoveEvent (const aGL::Event* event)
     return aGL::EventHandlerState::Owned;
 }
 
-aGL::EventHandlerState VectorPlot::onMouseClickEvent(const aGL::Event* event)
+aGL::EventHandlerState VectorPlot::onMouseButtonPressEvent(const aGL::Event* event)
 {
     if(event->type == aGL::EventType::MouseButtonPressed && mgm::contains(aGL::Widget::rect_, event->mbed.point)){
         aGL::Point pt = aGL::getRelPoint(event->mbed.point, aGL::Widget::rect_);

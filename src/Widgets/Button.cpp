@@ -1,10 +1,11 @@
+#include <AbstractGL/AText.hpp>
 #include "Button.hpp"
 #include <iostream>
 
 namespace aGL {
 
     Button::Button(const char* text, uint32_t x, uint32_t y) :
-        Widget({x, y, 1, 1}), text_(font_, text, horizontalMargin, verticalMargin + 2)
+        Widget({x, y, 1, 1}), text_(text, horizontalMargin, verticalMargin + 2)
     {
         text_.setColor(Colors::Red);
 
@@ -19,7 +20,7 @@ namespace aGL {
     }
 
 
-    EventHandlerState Button::onMouseClickEvent(const Event* event) 
+    EventHandlerState Button::onMouseButtonPressEvent(const Event* event) 
     {
         if(event->type == EventType::MouseButtonPressed && event->mbed.button == MouseButton::Left &&
                                                                             mgm::contains(rect_, event->mbed.point))

@@ -20,7 +20,8 @@ Application::Application() :
     eventManager_.subscribeOn(aGL::EventType::MouseMoved, plotRotator_);
     eventManager_.subscribeOn(aGL::EventType::Paint, plotRotator_);
     
-    raytracer_ = new Raytracer(300, 0 ,500, 500);
+    scene_ = new Scene();
+    raytracer_ = new Raytracer(scene_, 300, 0 ,500, 500);
     
     fillScene();
 
@@ -43,27 +44,27 @@ Application::Application() :
 
 void Application::fillScene()
 {
-    raytracer_->addObject(new RTObjs::RenderPlane ({   0,      1, 0.05}, {0, 150,0}));
+    scene_->addObject(new RTObjs::RenderPlane ({   0,      1, 0.05}, {0, 150,0}));
 
     RTObjs::Material material = RTObjs::MaterialCollection::Mirror;
     material.color = RTObjs::Colors::Magenta;
     
-    raytracer_->addObject(new RTObjs::RenderSphere({   0,     20, 1000}, 100, material));
-    raytracer_->addObject(new RTObjs::RenderSphere({ 300,    -20, 1000}, 100));
-    raytracer_->addObject(new RTObjs::RenderSphere({   0,   -1e5, 1000}, 5e4, RTObjs::MaterialCollection::Sun));
+    scene_->addObject(new RTObjs::RenderSphere({   0,     20, 1000}, 100, material));
+    scene_->addObject(new RTObjs::RenderSphere({ 300,    -20, 1000}, 100));
+    scene_->addObject(new RTObjs::RenderSphere({   0,   -1e5, 1000}, 5e4, RTObjs::MaterialCollection::Sun));
 
     RTObjs::Material yellowSun = RTObjs::MaterialCollection::Sun;
     yellowSun.color = yellowSun.srcColor = RTObjs::Colors::Yellow;
 
-    raytracer_->addObject(new RTObjs::RenderSphere({ 155,   -300, 1000},  40, yellowSun));
+    scene_->addObject(new RTObjs::RenderSphere({ 155,   -300, 1000},  40, yellowSun));
     
     material.color = 0xba4545ff;
     material.reflCoef = 0.1;
     material.diffCoef = 0.9;
 
-    raytracer_->addObject(new RTObjs::RenderSphere({ -300,     0, 2000},  80, material));
-    raytracer_->addObject(new RTObjs::RenderSphere({ -250,   -80,  900},  20));
-    raytracer_->addObject(new RTObjs::RenderSphere({ -200,   -35,  600}, 150, RTObjs::MaterialCollection::Glass));
+    scene_->addObject(new RTObjs::RenderSphere({ -300,     0, 2000},  80, material));
+    scene_->addObject(new RTObjs::RenderSphere({ -250,   -80,  900},  20));
+    scene_->addObject(new RTObjs::RenderSphere({ -200,   -35,  600}, 150, RTObjs::MaterialCollection::Glass));
     
     // raytracer_->addObject(new RTObjs::RenderSphere({ 100,      0,  600}, 50, RTObjs::MaterialCollection::Sun));
 
@@ -73,6 +74,7 @@ Application::~Application()
 {
     state_ = AppState::Died;
     delete raytracer_;
+    delete scene_;
     delete plotRotator_;
     delete window_;
 }

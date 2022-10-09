@@ -10,17 +10,18 @@ namespace mlg {
      *           - one logger to rule nothing.
      * 
      */
-    class NullLogger : public Logger
+    class NullLogger final : public Logger 
     {
     public:
-        ~NullLogger() override {}
+        constexpr NullLogger() {}
+        ~NullLogger() override final {}
         virtual Logger& operator<<(char) override {return *this;}
         
         virtual Logger& operator<<(uint32_t)override {return *this;}
         virtual Logger& operator<<(int32_t )override {return *this;}
         virtual Logger& operator<<(uint64_t)override {return *this;}
         virtual Logger& operator<<(int64_t )override {return *this;}
-        virtual Logger& operator<<(double  )override {return *this;}
+        virtual Logger& operator<<(double  )override     {return *this;}
 
         virtual Logger& operator<<(const char*) override {return *this;}
         virtual Logger& operator<<(const void*) override {return *this;}

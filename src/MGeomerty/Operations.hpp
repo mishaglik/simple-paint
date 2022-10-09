@@ -84,9 +84,9 @@ namespace mgm {
         return contains(Rect2<int>(rect), pt);
     }
 
-    inline Vector3f rotate(Vector3f v, Vector3f axis, double angle)
+    inline Vector3f rotate(Vector3f , Vector3f , double)
     {
-        
+        return {};
     }
 
 } // namespace mgm

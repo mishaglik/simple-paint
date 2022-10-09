@@ -51,8 +51,6 @@ namespace mvc {
 
     };
 
-
-
     template<class T>
     class Vector
     {
@@ -107,7 +105,7 @@ namespace mvc {
             try {
                 newArr = reinterpret_cast<T*>(new char[newCap * sizeof(T)]);
             
-            } catch (const std::bad_alloc& e) {
+            } catch (const std::bad_alloc&) {
                 throw Exception::OutOfMemory;
             }
             

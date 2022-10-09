@@ -1,5 +1,5 @@
 #include "EventManager.hpp"
-#include "Widget.hpp"
+#include "Widgets/Widget.hpp"
 #include "AObject.hpp"
 
 namespace aGL {
@@ -70,7 +70,7 @@ namespace aGL {
 
                 case EventType::MouseButtonPressed:
                 case EventType::MouseButtonReleased:
-                    resp = w->onMouseClickEvent(event);
+                    resp = w->onMouseButtonPressEvent(event);
                     break;
                 case EventType::MouseMoved:
                     resp = w->onMouseMoveEvent(event);
@@ -80,7 +80,7 @@ namespace aGL {
                     break;
                 case EventType::KeyPressed:
                 case EventType::KeyReleased:
-                    resp = w->onKeyboardEvent(event);
+                    resp = w->onKeyPressedEvent(event);
                     break;
                 case EventType::TimerTicked:
                     resp = w->onTimerEvent(event);

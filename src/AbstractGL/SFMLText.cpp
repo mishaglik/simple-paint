@@ -1,6 +1,7 @@
 #include "SFMLText.hpp"
 
 namespace aGL {
+    extern const char* const systemFont = "/home/gms/progs++/vecplot/FreeMono.otf";
 
     Text::Text_::Text_(const char* fontFilename, const char* text, uint32_t x, uint32_t y)
     {
@@ -18,6 +19,12 @@ namespace aGL {
     {
         tp_ = new Text_(fontName, text, x, y);
     }
+
+    Text::Text(const char* text, uint32_t x, uint32_t y, const char* const fontName)
+    {
+        tp_ = new Text_(fontName, text, x, y);
+    }
+
 
     Text::~Text()
     {

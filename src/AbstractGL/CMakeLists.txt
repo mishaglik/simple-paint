@@ -1,19 +1,16 @@
 cmake_minimum_required(VERSION 3.10)
 
 set (AGL_SOURCES
-    Button.cpp
-    Widget.cpp
     Color.cpp
     EventManager.cpp
 )
 
 set (AGL_HEADERS
-    Button.hpp
-    Widget.hpp
     AWindow.hpp
     AObject.hpp
     AText.hpp
     EventManager.hpp
+    Signals.hpp
 )
 
 set (AGL_SFML_SOURCES

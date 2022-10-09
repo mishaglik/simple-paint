@@ -5,7 +5,7 @@
 #include "Color.hpp"
 
 namespace aGL {
-
+    extern const char* const systemFont;
     using Rect  = mgm::Rect2u;
     using Point = mgm::Point2u;
 
@@ -37,6 +37,7 @@ namespace aGL {
 
     public:
         Text(const char* fontName, const char* text, uint32_t x = 0, uint32_t y = 0);
+        Text(const char* text, uint32_t x = 0, uint32_t y = 0, const char* const fontName = systemFont);
         ~Text();
         
         void setPosition(uint32_t x, uint32_t y);

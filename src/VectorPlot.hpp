@@ -1,6 +1,6 @@
 #ifndef VECTORPLOT_HPP
 #define VECTORPLOT_HPP
-#include "AbstractGL/Widget.hpp"
+#include "Widgets/Widget.hpp"
 #include "CoordinateSystem.hpp"
 #include "MGeomerty/Point.hpp"
 #include "MGeomerty/Vector.hpp"
@@ -36,7 +36,7 @@ public:
 
     mgm::Vector2f& getVectorRef();
         aGL::EventHandlerState onMouseMoveEvent (const aGL::Event* event) override;
-    aGL::EventHandlerState onMouseClickEvent(const aGL::Event* event) override;
+    aGL::EventHandlerState onMouseButtonPressEvent(const aGL::Event* event) override;
 
 };
 

@@ -40,7 +40,7 @@ namespace mlg {
 #endif
 
 #define mDUMP_FIELD(field) out << "."#field": " << field << mlg::endl;    
-
+#define MLG_UIMPLEMENTED { mFatal << MLG_HERE << "Usage of unimplemented function;\n"; }
 #pragma clang diagnostic pop
 
 #ifdef MEM_VERBOSE

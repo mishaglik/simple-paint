@@ -1,10 +1,11 @@
 #ifndef RAYTRACER_RAYTRACER_HPP
 #define RAYTRACER_RAYTRACER_HPP
-#include <AbstractGL/Widget.hpp>
+#include <Widgets/Widget.hpp>
 #include <Raytracer/RenderObject.hpp>
 #include <Vector/Vector.hpp>
 #include <vector>
-
+#include <Raytracer/Camera.hpp>
+#include <Raytracer/Scene.hpp>
 
 #define RAYTRACER_MULTITHREADING
 
@@ -26,9 +27,12 @@ class Raytracer: public aGL::Widget{
 
     static Color getSkyGradient(const Vec& v);
     
-    Vector<RTObjs::RenderObject*> objlist_;
+    Scene* scene_;
+    RTObjs::Camera currentView_;
 
-    Point camera_;
+    [[deprecated("Use scene_")]] Vector<RTObjs::RenderObject*> objlist_;
+    [[deprecated("Use currentView_")]] Point camera_;
+    
     Color ambient_ = 0x6da6bdff;
 
     [[deprecated]] uint64_t labertianDepth_ = 5;
@@ -87,10 +91,10 @@ public:
 
         [[deprecated]] aGL::Window* wind;
 
-        Raytracer(uint32_t x, uint32_t y, uint32_t w, uint32_t h);
+        Raytracer(Scene* scene, uint32_t x, uint32_t y, uint32_t w, uint32_t h);
         ~Raytracer() override;
 
-        void addObject(RenderObject* object);
+        [[deprecated]] void addObject(RenderObject* object);
 
         aGL::EventHandlerState onPaintEvent(const aGL::Event* ) override;
 

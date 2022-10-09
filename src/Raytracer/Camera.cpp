@@ -13,11 +13,11 @@ namespace RTObjs {
     {
         Point pt = canvasCenter_;
         Vec3 v = base1_;
-        v *= x;
+        v *= static_cast<int>(x) - static_cast<int>(w_ / 2);
         pt += v;
         
         v = base2_;
-        v *= y;
+        v *= static_cast<int>(y) - static_cast<int>(h_ / 2);
         pt += v;
 
         return pt;
@@ -31,11 +31,21 @@ namespace RTObjs {
         canvasCenter_ += viewVector_;
     }
 
-    void Camera::setViewDirection(Vec3 )
+    void Camera::setViewDirection(Vec3 v)
     {
-        //Todo Imlement
+        viewVector_ = v;
         return;
     }
+
+    void Camera::setBaseVectors(Vec3 b1, Vec3 b2)
+    {
+        MLG_UIMPLEMENTED
+        base1_ = mgm::normalize(b1);
+        base2_ = mgm::normalize(b2);
+        base1_ *= scale_;
+        base2_ *= scale_;
+    }
+
 
     void Camera::setFOV(double fov)
     {
@@ -46,6 +56,13 @@ namespace RTObjs {
 
     void Camera::rotate(double angle)
     {
+        MLG_UIMPLEMENTED
         return; // TODO: Implement
     }
+
+    Ray3 Camera::getRay(uint32_t x, uint32_t y) const
+    {
+        return Ray3(camera_, transform(x, y));
+    }
+
 }

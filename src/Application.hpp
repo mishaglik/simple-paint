@@ -3,7 +3,7 @@
 
 #include "VectorPlot.hpp"
 #include <AbstractGL/AWindow.hpp>
-#include <AbstractGL/Button.hpp>
+#include <Widgets/Button.hpp>
 #include <AbstractGL/EventManager.hpp>
 #include <Raytracer/Raytracer.hpp>
 
@@ -17,6 +17,7 @@ class Application : public aGL::AObject{
     aGL::Button* resetButton = nullptr;
 
     mlg::ConsoleLogger logger;
+    Scene* scene_ = nullptr;
 
     aGL::EventManager eventManager_;
 

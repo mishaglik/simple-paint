@@ -5,7 +5,7 @@
 #include <thread>
 #include <mutex>
 
-Raytracer::Raytracer(uint32_t x, uint32_t y, uint32_t w, uint32_t h) : aGL::Widget({x, y, w, h}), camera_({0, 0, -1000})
+Raytracer::Raytracer(Scene* scene, uint32_t x, uint32_t y, uint32_t w, uint32_t h) : aGL::Widget({x, y, w, h}), scene_(scene), currentView_(w, h, 1), camera_({0, 0, -1000})
 {
     #ifdef RAYTRACER_MULTITHREADING
         multithreadContext_ = new MulithreadContext{};
@@ -49,8 +49,8 @@ Raytracer::~Raytracer()
     delete multithreadContext_;
 #endif
 
-    for(size_t i = 0; i < objlist_.size(); ++i)
-        delete objlist_[i];
+    // for(size_t i = 0; i < objlist_.size(); ++i)
+        // delete objlist_[i];
 }
 
 
@@ -70,23 +70,25 @@ aGL::Color Raytracer::getRayColor(const mgm::Ray3f& ray, int depth) const
     }
 
     RTObjs::SurfacePoint pt = {};
-    size_t crossObj = 0;
-    double distance = RTObjs::NoIntersection;
+    // size_t crossObj = 0;
+    // double distance = RTObjs::NoIntersection;
 
-    for(size_t i = 0; i < objlist_.size(); ++i){
-        double curDistance = objlist_[i]->getIntersection(ray);
-        if(!mgm::isZero(curDistance) && curDistance < distance){
-            distance = curDistance;
-            crossObj = i;
-        }
-    }
-    if(distance == RTObjs::NoIntersection) // It seems unsafe but NoInertsecton is +INF so it's ok.
+    const RTObjs::RenderObject* crossObject = scene_->getObjectOnRay(ray);
+
+    // for(size_t i = 0; i < objlist_.size(); ++i){
+        // double curDistance = objlist_[i]->getIntersection(ray);
+        // if(!mgm::isZero(curDistance) && curDistance < distance){
+            // distance = curDistance;
+            // crossObj = i;
+        // }
+    // }
+    if(crossObject == nullptr) // It seems unsafe but NoInertsecton is +INF so it's ok.
     {   
         // return (depth != 0) ? ambient_ : getSkyGradient(ray.dir());
         return ambient_;
     }
 
-    objlist_[crossObj]->getIntersection(ray, &pt);
+    crossObject->getIntersection(ray, &pt);
 
     if(pt.material->isSource){
         return pt.material->srcColor;
@@ -190,7 +192,7 @@ void Raytracer::paintSegment(uint32_t x0, uint32_t w0) const
     {
         for(uint32_t y = 0; y < rect_.h; ++y)
         {
-            mgm::Ray3f ray(camera_, mgm::Point3f((x - 0.5 * rect_.w), (y - 0.5 * rect_.h), 0.));
+            mgm::Ray3f ray = currentView_.getRay(x, y); //(, mgm::Point3f((x - 0.5 * rect_.w), (y - 0.5 * rect_.h), 0.));
 
             AvgColor antialiasing{};
             antialiasing += getRayColor(ray);
@@ -200,7 +202,7 @@ void Raytracer::paintSegment(uint32_t x0, uint32_t w0) const
                 Vec aliasShift = {mgm::randomDouble(-1, 1), mgm::randomDouble(-1, 1), 0};
                 aliasShift *= qS_.antialiasMaxShift;
                 aliasDir += aliasShift;
-                Ray aliasRay(camera_, aliasDir);
+                Ray aliasRay(ray.start(), aliasDir);
                 antialiasing += getRayColor(aliasRay);
             }
         
@@ -281,6 +283,7 @@ Raytracer::Color Raytracer::getSkyGradient(const Vec& v)
 
 void Raytracer::addObject(RenderObject* object)
 {
-    objlist_.push_back(object);
+    mFatal << "Usage of deprecated function\n";
+    scene_->addObject(object);
 }
 
