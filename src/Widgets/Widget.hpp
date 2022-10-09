@@ -36,8 +36,6 @@ namespace aGL {
         
         const Rect& getRect() const {return rect_;}
 
-        [[deprecated]] void handleSignal(int /*signal*/, void* /*data*/ = nullptr) override {}
-
     // Non-copyable declaration.
         Widget(const Widget&)            = delete;
         Widget& operator=(const Widget&) = delete;

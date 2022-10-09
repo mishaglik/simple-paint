@@ -47,8 +47,6 @@ public:
     
     ~Application() override;
 
-    void handleSignal(int signal, void*) override;
-
     int exec();
 
     aGL::EventHandlerState handleEvent(const aGL::Event* event) override;

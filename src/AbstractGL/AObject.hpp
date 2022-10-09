@@ -9,7 +9,6 @@ namespace aGL {
     class AObject : public SignalObject
     {
     public:
-        [[deprecated]] virtual void handleSignal(int /*signal*/, void* /*data*/ = nullptr) {MLG_UIMPLEMENTED}
         virtual EventHandlerState handleEvent(const Event* /*event*/) {return static_cast<EventHandlerState>(0);}
         virtual ~AObject() {}
     };

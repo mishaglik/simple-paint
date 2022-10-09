@@ -33,7 +33,7 @@ namespace aGL {
             pressed_ = false;
             if(mgm::contains(rect_, event->mbed.point))
             {
-                eventObject_->handleSignal(eventSignal_);
+                clicked.emit();
             }
             return EventHandlerState::Accepted;
         }

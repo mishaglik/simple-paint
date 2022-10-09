@@ -23,7 +23,7 @@ namespace aGL {
         virtual EventHandlerState onMouseScrollEvent        (const Event* event) override { return emanager_.handleEvent(event);}
         virtual EventHandlerState onTimerEvent              (const Event* event) override { update(); return emanager_.handleEvent(event);}
 
-        
+        bool subscribe(Widget* object) { return emanager_.subscribe(object); }
     };
 }
 

@@ -26,14 +26,15 @@ Application::Application() :
     fillScene();
 
     exitButton  = new aGL::Button("Exit", 0, 400);
-    exitButton->setEventFunction(this, Slots::Quit);
+    aGL::connect(exitButton, &aGL::Button::clicked, this, &Application::quit);
 
     eventManager_.subscribeOn(aGL::EventType::MouseButtonPressed, exitButton);
     eventManager_.subscribeOn(aGL::EventType::Paint, exitButton);
     
 
     resetButton = new aGL::Button("Reset", 200, 400);
-    resetButton->setEventFunction(this, Slots::Reset);
+    aGL::connect(resetButton, &aGL::Button::clicked, this, &Application::reset);
+    // resetButton->setEventFunction(this, Slots::Reset);
 
     eventManager_.subscribeOn(aGL::EventType::MouseButtonPressed, resetButton);
     eventManager_.subscribeOn(aGL::EventType::Paint, resetButton);
@@ -168,19 +169,3 @@ void Application::reset(){
     plotRotator_->setVector({10, 0});
 }
 
-void Application::handleSignal(int s, void*){
-    Slots signal = static_cast<Slots>(s);
-
-    switch (signal) {
-    case Slots::Nothing:
-    break;
-    
-    case Slots::Quit:
-        quit();
-    break;
-
-    case Slots::Reset:
-        reset();
-    break;
-    }
-}

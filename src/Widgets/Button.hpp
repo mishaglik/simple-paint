@@ -22,6 +22,8 @@ namespace aGL {
 
         Button(const char* text, uint32_t x, uint32_t y);
 
+        Signal<> clicked;
+
         void setEventFunction(AObject* eventObject, int eventSignal);
         
         EventHandlerState onMouseButtonPressEvent(const Event* event) override; 
