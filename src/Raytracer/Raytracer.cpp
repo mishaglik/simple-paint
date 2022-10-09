@@ -218,7 +218,7 @@ void Raytracer::paintSegment(uint32_t x0, uint32_t w0) const
         #endif
         }
 
-        mInfo << mlg::Logger::CoStyle::Green <<"Done layer: " << x << mlg::endl;
+        mDebug << mlg::Logger::CoStyle::Green <<"Done layer: " << x << mlg::endl;
     }
 }
 

@@ -1,7 +1,7 @@
 #ifndef ABSTRACTGL_EVENT_HPP
 #define ABSTRACTGL_EVENT_HPP
 #include <MGeomerty/Geometry.hpp>
-
+#include <LogUtils/LogUtils.hpp>
 namespace aGL {
 
     using Point = mgm::Point2i;
@@ -177,10 +177,9 @@ namespace aGL {
         Event() : type(EventType::ERROR) {}
     };
 
-    enum class EventHandlerState{
+    enum EventHandlerState : bool{
         Dropped = 0,
-        Accepted,
-        Owned,
+        Accepted = 1,
     };
 
     inline Point getRelPoint(const Point& pt, const mgm::Rect2u& rect)
@@ -190,6 +189,8 @@ namespace aGL {
             pt.y - static_cast<int>(rect.y)
         };
     }
+
+    mlg::Logger& operator<<(mlg::Logger& log, Event& event);
 
 }
 

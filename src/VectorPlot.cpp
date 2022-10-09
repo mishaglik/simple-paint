@@ -78,26 +78,28 @@ aGL::EventHandlerState VectorPlot::onMouseMoveEvent (const aGL::Event* event)
 {
     mAssert(event->type == aGL::EventType::MouseMoved);
     if(!captured || !mgm::contains(aGL::Widget::rect_, event->mmed.point)) return aGL::EventHandlerState::Dropped;
-    vec_ = rTransform(aGL::getRelPoint(event->mmed.point, aGL::Widget::rect_)) - startPoint_;
-    return aGL::EventHandlerState::Owned;
+    vec_ = rTransform(event->mmed.point) - startPoint_;
+    return aGL::EventHandlerState::Accepted;
 }
 
 aGL::EventHandlerState VectorPlot::onMouseButtonPressEvent(const aGL::Event* event)
 {
     if(event->type == aGL::EventType::MouseButtonPressed && mgm::contains(aGL::Widget::rect_, event->mbed.point)){
-        aGL::Point pt = aGL::getRelPoint(event->mbed.point, aGL::Widget::rect_);
+        aGL::Point pt = event->mbed.point;
         vec_ = rTransform(pt) - startPoint_;
         angle_ = 0;
         captured = true;
-        return aGL::EventHandlerState::Owned;
-    }
-
-    if(captured && event->type == aGL::EventType::MouseButtonReleased){
-        captured = false;
-        return aGL::EventHandlerState::Owned;
+        return aGL::EventHandlerState::Accepted;
     }
     return aGL::EventHandlerState::Dropped;
 }
+
+aGL::EventHandlerState VectorPlot::onMouseButtonReleaseEvent(const aGL::Event* event)
+{
+    captured = false;
+    return aGL::EventHandlerState::Accepted;
+}
+
 
 void VectorPlot::update(){
     if(!captured) addAngle(speed_);

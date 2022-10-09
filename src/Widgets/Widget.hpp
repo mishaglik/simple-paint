@@ -10,31 +10,39 @@ namespace aGL {
     protected:
         Rect rect_;
         Surface* surface; //TODO: Make abstract drawable.
+
     public:
 
         Widget() : rect_({0, 0, 100, 100}), surface(new RenderSurface(100, 100)) {}
         Widget(const Rect& rect) : rect_(rect), surface(new RenderSurface(rect.w, rect.h)) {}
         Widget(const Rect& rect, RenderSurface* surf) : rect_(rect), surface(surf) {}
+        virtual ~Widget() {}
 
         virtual void render(const Window &window) const;
         virtual void render(const Window *window) const {render(*window);}
 
-        virtual EventHandlerState handleEvent               (const Event* ) override { return EventHandlerState::Dropped;}
-        virtual EventHandlerState onPaintEvent              (const Event* ) { return EventHandlerState::Accepted;}
-        virtual EventHandlerState onKeyPressedEvent         (const Event* ) { return EventHandlerState::Dropped;}
-        virtual EventHandlerState onKeyReleasedEvent        (const Event* ) { return EventHandlerState::Dropped;}
-        virtual EventHandlerState onShortcutEvent           (const Event* ) { return EventHandlerState::Dropped;}
-        virtual EventHandlerState onMouseMoveEvent          (const Event* ) { return EventHandlerState::Dropped;}
-        virtual EventHandlerState onMouseButtonPressEvent   (const Event* ) { return EventHandlerState::Dropped;}
-        virtual EventHandlerState onMouseButtonReleaseEvent (const Event* ) { return EventHandlerState::Dropped;}
-        virtual EventHandlerState onMouseScrollEvent        (const Event* ) { return EventHandlerState::Dropped;}
-        virtual EventHandlerState onTimerEvent              (const Event* ) { update(); return EventHandlerState::Accepted;}
+        virtual EventHandlerState handleEvent               (const Event*  ) { return EventHandlerState::Dropped;}
+        virtual EventHandlerState onPaintEvent              (const Event*  ) { return EventHandlerState::Accepted;}
+        virtual EventHandlerState onKeyPressedEvent         (const Event*  ) { return EventHandlerState::Dropped;}
+        virtual EventHandlerState onKeyReleasedEvent        (const Event*  ) { return EventHandlerState::Dropped;}
+        virtual EventHandlerState onShortcutEvent           (const Event*  ) { return EventHandlerState::Dropped;}
+        virtual EventHandlerState onMouseMoveEvent          (const Event*  ) { return EventHandlerState::Dropped;}
+        virtual EventHandlerState onMouseButtonPressEvent   (const Event* e) { if(e->mbed.button == aGL::MouseButton::Left) return EventHandlerState::Accepted; else return EventHandlerState::Dropped;}
+        virtual EventHandlerState onMouseButtonReleaseEvent (const Event* e) { if(e->mbed.button == aGL::MouseButton::Left) return EventHandlerState::Accepted; else return EventHandlerState::Dropped;}
+        virtual EventHandlerState onMouseScrollEvent        (const Event*  ) { return EventHandlerState::Dropped;}
+        virtual EventHandlerState onMouseEnterEvent         (const Event*  ) { return EventHandlerState::Accepted;}
+        virtual EventHandlerState onMouseLeaveEvent         (const Event*  ) { return EventHandlerState::Accepted;}
+        virtual EventHandlerState onGainFocusEvent          (const Event*  ) { return EventHandlerState::Accepted;}
+        virtual EventHandlerState onLoseFocusEvent          (const Event*  ) { return EventHandlerState::Accepted;}
+        virtual EventHandlerState onTimerEvent              (const Event*  ) { update(); return EventHandlerState::Dropped;}
         
         virtual void update() {}
         virtual void resize(uint32_t w, uint32_t h);
         virtual void resize(const mgm::Vector2u& v);
         
         const Rect& getRect() const {return rect_;}
+        const Point getEventCorner() const { return rect_.getCornerLL(); }
+        bool hasEventPoint(const Point& pt) { return mgm::contains(rect_, pt); }
 
     // Non-copyable declaration.
         Widget(const Widget&)            = delete;

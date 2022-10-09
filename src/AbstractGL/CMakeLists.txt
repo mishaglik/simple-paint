@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.10)
 set (AGL_SOURCES
     Color.cpp
     EventManager.cpp
+    Event.cpp
 )
 
 set (AGL_HEADERS
@@ -11,6 +12,7 @@ set (AGL_HEADERS
     AText.hpp
     EventManager.hpp
     Signals.hpp
+    Event.hpp
 )
 
 set (AGL_SFML_SOURCES

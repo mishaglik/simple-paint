@@ -28,11 +28,28 @@ namespace mgm {
     }
 
     template<typename num_t>
+    Point2<num_t> operator-= (Point2<num_t>& pt, const Vector2<num_t>& v)
+    {
+        pt.x -= v.x;
+        pt.y -= v.y;
+        return pt;
+    }
+
+    template<typename num_t>
     Point3<num_t> operator+= (Point3<num_t>& pt, const Vector3<num_t>& v)
     {
         pt.x += v.x;
         pt.y += v.y;
         pt.z += v.z;
+        return pt;
+    }
+
+    template<typename num_t>
+    Point3<num_t> operator-= (Point3<num_t>& pt, const Vector3<num_t>& v)
+    {
+        pt.x -= v.x;
+        pt.y -= v.y;
+        pt.z -= v.z;
         return pt;
     }
 

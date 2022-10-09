@@ -6,15 +6,16 @@
 #include <Widgets/Button.hpp>
 #include <AbstractGL/EventManager.hpp>
 #include <Raytracer/Raytracer.hpp>
+#include <Widgets/WindowWidget.hpp>
 
 class Application : public aGL::AObject{
-    aGL::Window* window_     = nullptr;
+    aGL::WWindow* window_     = nullptr;
     VectorPlot* plotRotator_ = nullptr;
 
     Raytracer* raytracer_    = nullptr;
     
-    aGL::Button* exitButton  = nullptr;
-    aGL::Button* resetButton = nullptr;
+    aGL::AbstractButton* exitButton  = nullptr;
+    aGL::AbstractButton* resetButton = nullptr;
 
     mlg::ConsoleLogger logger;
     Scene* scene_ = nullptr;
@@ -45,11 +46,11 @@ public:
     Application();
     Application(int , const char** ) : Application() {}
     
-    ~Application() override;
+    ~Application();
 
     int exec();
 
-    aGL::EventHandlerState handleEvent(const aGL::Event* event) override;
+    aGL::EventHandlerState handleEvent(const aGL::Event* event);
 
     void quit ();
     void reset();

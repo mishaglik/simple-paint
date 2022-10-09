@@ -9,35 +9,34 @@
 Application::Application() : 
     logger(std::cerr)
 {
-    logger.setLogLevel(mlg::Logger::LogLevel::WARNING);
+    logger.setLogLevel(mlg::Logger::LogLevel::INFO);
     setGlobalLogger(&logger);
 
-    window_ = new aGL::Window(800, 600, "Vecplot window");
+    window_ = new aGL::WWindow(800, 600, "Vecplot window");
+    eventManager_.subscribe(window_);
+    aGL::connect(window_, &aGL::WWindow::quited, this, &Application::quit);
+
     plotRotator_ = new VectorPlot(10, 30, 300, 300, -10, 10, 10, -10);
     plotRotator_->setVector({10, 0});
 
-    eventManager_.subscribeOn(aGL::EventType::MouseButtonPressed, plotRotator_);
-    eventManager_.subscribeOn(aGL::EventType::MouseMoved, plotRotator_);
-    eventManager_.subscribeOn(aGL::EventType::Paint, plotRotator_);
+    window_->subscribe(plotRotator_);
     
     scene_ = new Scene();
     raytracer_ = new Raytracer(scene_, 300, 0 ,500, 500);
     
     fillScene();
 
-    exitButton  = new aGL::Button("Exit", 0, 400);
-    aGL::connect(exitButton, &aGL::Button::clicked, this, &Application::quit);
+    exitButton  = new aGL::AbstractButton("Exit", 0, 400);
+    aGL::connect(exitButton, &aGL::AbstractButton::clicked, this, &Application::quit);
 
-    eventManager_.subscribeOn(aGL::EventType::MouseButtonPressed, exitButton);
-    eventManager_.subscribeOn(aGL::EventType::Paint, exitButton);
+    window_->subscribe(exitButton);
     
 
-    resetButton = new aGL::Button("Reset", 200, 400);
-    aGL::connect(resetButton, &aGL::Button::clicked, this, &Application::reset);
+    resetButton = new aGL::AbstractButton("Reset", 200, 400);
+    aGL::connect(resetButton, &aGL::AbstractButton::clicked, this, &Application::reset);
     // resetButton->setEventFunction(this, Slots::Reset);
 
-    eventManager_.subscribeOn(aGL::EventType::MouseButtonPressed, resetButton);
-    eventManager_.subscribeOn(aGL::EventType::Paint, resetButton);
+    window_->subscribe(resetButton);
 
     state_ = AppState::Ready;
 }
@@ -102,10 +101,10 @@ int Application::exec()
         auto fpsCapTimepoint = clock.now();
 
         aGL::Event event;
-        while(window_->pollEvent(event))
-        {
-            eventManager_.handleEvent(&event);
-        }
+        // while(window_->pollEvent(event))
+        // {
+        //     eventManager_.handleEvent(&event);
+        // }
 
         window_->clear(0x999999FF);
 
@@ -116,9 +115,12 @@ int Application::exec()
         exitButton  ->render(*window_);
         resetButton ->render(*window_);        
         raytracer_  ->render(*window_);
-    
-        plotRotator_->update();
-        window_->update();
+
+        event.type = aGL::EventType::TimerTicked;
+        eventManager_.handleEvent(&event);
+
+        // plotRotator_->update();
+        // window_->update();
 
         std::this_thread::sleep_until(fpsCapTimepoint + cap);
         

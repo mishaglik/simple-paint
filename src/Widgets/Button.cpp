@@ -4,7 +4,7 @@
 
 namespace aGL {
 
-    Button::Button(const char* text, uint32_t x, uint32_t y) :
+    AbstractButton::AbstractButton(const char* text, uint32_t x, uint32_t y) :
         Widget({x, y, 1, 1}), text_(text, horizontalMargin, verticalMargin + 2)
     {
         text_.setColor(Colors::Red);
@@ -13,21 +13,17 @@ namespace aGL {
         Widget::resize(textRect.w + 2 * horizontalMargin, textRect.h + 2 * verticalMargin);
     }
 
-    void Button::setEventFunction(AObject* eventObject, int eventSignal)
+    void AbstractButton::setEventFunction(AObject* eventObject, int eventSignal)
     {
         eventObject_ = eventObject;
         eventSignal_ = eventSignal;
     }
 
 
-    EventHandlerState Button::onMouseButtonPressEvent(const Event* event) 
+    EventHandlerState AbstractButton::onMouseButtonPressEvent(const Event* event) 
     {
-        if(event->type == EventType::MouseButtonPressed && event->mbed.button == MouseButton::Left &&
-                                                                            mgm::contains(rect_, event->mbed.point))
-        {
-            pressed_ = true;
-        }
-
+        pressed_ = true;
+        return Accepted;
         if(pressed_ && event->type == EventType::MouseButtonReleased && event->mbed.button == MouseButton::Left)
         {
             pressed_ = false;
@@ -40,7 +36,14 @@ namespace aGL {
         return EventHandlerState::Dropped;
     }
 
-    EventHandlerState Button::onPaintEvent(const Event* ) 
+    EventHandlerState AbstractButton::onMouseButtonReleaseEvent(const Event* event)
+    {
+        clicked.emit(); //TODO: Ultimate click support
+        pressed_ = false;
+        return Accepted;
+    }
+
+    EventHandlerState AbstractButton::onPaintEvent(const Event* ) 
     {
         surface->drawRect({0, 0, rect_.w, rect_.h}, pressed_ ? pressedColor_ : defaultColor_); //TODO: Two pictures different transpatency
         

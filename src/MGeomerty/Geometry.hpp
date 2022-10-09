@@ -34,7 +34,7 @@ namespace mgm {
 
         }while(v.len2() > 1);
         return normalize(v);
-    }
+    }   
 
     inline mlg::Logger& operator<<(mlg::Logger& out, const Line3f& line)
     {

@@ -6,32 +6,25 @@
 
 namespace aGL {
     class Widget;
-    class AObject;
 
     class EventManager
     {
-
-        struct Subscriber
-        {
-            bool isWidget;
-            AObject* object;
-            EventType type;
-
-            Subscriber(Widget* widget, EventType _type);
-            Subscriber(AObject* _object);
-        };
-
-        mvc::Vector<Subscriber> subscibers_;
+        EventHandlerState spreadEvent(const Event* event, EventHandlerState (Widget::*function)(const Event*), bool forced = false) const;
+        mvc::Vector<Widget* > subscibers_;
         int curUserEvent_ = static_cast<int>(EventType::UserMin);
+        Point prevMousePosition_ = {0, 0};
+        Widget* focused_ = nullptr;
+        static void eventPointTransform(Event* e, const Point& pt);
+        static void eventPointTransformR(Event* e, const Point& pt);
     public:
         EventManager();
         ~EventManager(); 
 
         int registerUserEvent();
-        bool subscribeOn(EventType eventType, Widget* widget);
-        bool subscribe(AObject* object);
-        bool subscribe(Widget* object) {subscibers_.push_back({object, EventType::ERROR}); return true;}
-        EventHandlerState handleEvent(const Event* event) const;
+        bool subscribe(Widget* object) {subscibers_.push_back(object); return true;}
+        EventHandlerState handleEvent(Event* event);
+
+        void setFocused(Widget* w);
 
         EventManager(const EventManager&) = delete;
         EventManager& operator=(const EventManager& ) = delete; 
