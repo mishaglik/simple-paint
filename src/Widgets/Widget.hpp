@@ -8,6 +8,7 @@ namespace aGL {
     {
     private:
     protected:
+        bool focused_ = false; 
         Rect rect_;
         Surface* surface; //TODO: Make abstract drawable.
 
@@ -32,8 +33,8 @@ namespace aGL {
         virtual EventHandlerState onMouseScrollEvent        (const Event*  ) { return EventHandlerState::Dropped;}
         virtual EventHandlerState onMouseEnterEvent         (const Event*  ) { return EventHandlerState::Accepted;}
         virtual EventHandlerState onMouseLeaveEvent         (const Event*  ) { return EventHandlerState::Accepted;}
-        virtual EventHandlerState onGainFocusEvent          (const Event*  ) { return EventHandlerState::Accepted;}
-        virtual EventHandlerState onLoseFocusEvent          (const Event*  ) { return EventHandlerState::Accepted;}
+        virtual EventHandlerState onGainFocusEvent          (const Event*  ) { focused_ = true;  return EventHandlerState::Accepted;}
+        virtual EventHandlerState onLoseFocusEvent          (const Event*  ) { focused_ = false; return EventHandlerState::Accepted;}
         virtual EventHandlerState onTimerEvent              (const Event*  ) { update(); return EventHandlerState::Dropped;}
         
         virtual void update() {}

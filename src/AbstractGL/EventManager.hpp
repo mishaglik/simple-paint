@@ -12,7 +12,7 @@ namespace aGL {
         EventHandlerState spreadEvent(const Event* event, EventHandlerState (Widget::*function)(const Event*), bool forced = false) const;
         mvc::Vector<Widget* > subscibers_;
         int curUserEvent_ = static_cast<int>(EventType::UserMin);
-        Point prevMousePosition_ = {0, 0};
+        Point prevMousePosition_ = {-1, -1};
         Widget* focused_ = nullptr;
         static void eventPointTransform(Event* e, const Point& pt);
         static void eventPointTransformR(Event* e, const Point& pt);

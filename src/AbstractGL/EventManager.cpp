@@ -71,25 +71,28 @@ namespace aGL {
             break;
         
         case EventType::MouseMoved:
+        {
+            size_t upper = 0;
             for(size_t i = subscibers_.size(); i > 0; --i)
             {
                 Widget* w = subscibers_[i-1];
-                if(w->hasEventPoint(prevMousePosition_) && !w->hasEventPoint(event->mmed.point))
+                if(w->hasEventPoint(prevMousePosition_) && (!w->hasEventPoint(event->mmed.point) || upper != 0 ))
                 {
                     w->onMouseLeaveEvent(nullptr);
+                    if(upper) subscibers_[upper-1]->onMouseEnterEvent(nullptr);
+                    upper = 0;
                     break;
+                }
+                if(w->hasEventPoint(event->mmed.point) && upper == 0) {
+                    upper = i;
                 }
             }
 
-            for(size_t i = subscibers_.size(); i > 0; --i)
+            if(upper != 0 && !subscibers_[upper -1 ]->hasEventPoint(prevMousePosition_))
             {
-                Widget* w = subscibers_[i-1];
-                if(!w->hasEventPoint(prevMousePosition_) && w->hasEventPoint(event->mmed.point))
-                {
-                    w->onMouseEnterEvent(nullptr);
-                    break;
-                }
+                subscibers_[upper - 1]->onMouseEnterEvent(nullptr);
             }
+            prevMousePosition_ = event->mmed.point;
 
             for(size_t i = subscibers_.size(); i > 0; --i)
             {
@@ -102,7 +105,8 @@ namespace aGL {
                     if(resp == EventHandlerState::Accepted) return resp;
                 }
             }
-            break;
+        }
+        break;
 
         case EventType::MouseWheeled:
             for(size_t i = subscibers_.size(); i > 0; --i)
@@ -144,6 +148,7 @@ namespace aGL {
 
     EventHandlerState EventManager::spreadEvent(const Event* event, EventHandlerState (Widget::*function)(const Event*), bool forced) const
     {
+        if(subscibers_.size() == 0) mError << mlg::Logger::CoStyle::Red << "Empty subs" << mlg::endl;
         for(Widget* w : subscibers_)
         {
             EventHandlerState resp = (w->*function)(event);

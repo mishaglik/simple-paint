@@ -4,7 +4,7 @@
 #include <utility>
 
 namespace aGL {
-    
+    //Hello, Yarick! I made Qt Signals))
     class SignalObject{};
 
     template<class... Args>
