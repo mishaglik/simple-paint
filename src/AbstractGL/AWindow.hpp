@@ -8,16 +8,16 @@
 #include <AbstractGL/AObject.hpp>
 #include <AbstractGL/AText.hpp>
 #include <AbstractGL/ARenderSurface.hpp>
-
+#include <AbstractGL/Surface.hpp>
 namespace aGL {
 
-    using Point = mgm::Point2u;
+    using Point = mgm::Point2i;
     using Rect  = mgm::Rect2<unsigned>;
-
+    
 
     class Window_;
 
-    class Window : public AObject
+    class Window : public Surface 
     {
         Window_* wp_;
     public:
@@ -25,21 +25,18 @@ namespace aGL {
         Window(uint32_t width, uint32_t height, const char* title);
         ~Window() override;
 
-        void resize(uint32_t width, uint32_t height);
-        void drawText    (const Text& text) const;
+        void resize(uint32_t width, uint32_t height) override;
         bool pollEvent(Event& event);
+        void drawText    (const Text& text) const override;
 
-        void drawLine    (Point p1, Point p2, Color color = Colors::Black) const;
-        void drawPoint   (Point p, Color color = Colors::Black) const ; 
-        void drawRect    (const Rect& rect, Color color = Colors::Black) const;
-        void drawSurf    (Point pt, const RenderSurface& surf) const;
-        void clear(Color color = Colors::Gray);
+        void drawLine    (Point p1, Point p2, Color color = Colors::Black) const override;
+        void drawPoint   (Point p, Color color = Colors::Black) const override; 
+        void drawRect    (const Rect& rect, Color color = Colors::Black) const override;
+        void drawSurf    (Point pt, const RenderSurface& surf) const override;
+        void clear(Color color = Colors::Gray) const override;
         void show();
         void hide();
         void update();
-
-        void handleSignal(int, void* = nullptr) override {}
-
     // Make class non-copyable
         Window(const Window&)             = delete;
         Window& operator= (const Window&) = delete;

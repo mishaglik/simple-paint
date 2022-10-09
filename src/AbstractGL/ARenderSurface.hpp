@@ -3,12 +3,12 @@
 
 #include "AText.hpp"
 #include "Color.hpp"
-
+#include <AbstractGL/Surface.hpp>
 namespace aGL {
 
     class RenderSurface_;
 
-    class RenderSurface
+    class RenderSurface : public Surface
     {
     private:
         RenderSurface_* rsp_;
@@ -16,18 +16,18 @@ namespace aGL {
         
         RenderSurface(uint32_t w, uint32_t h);
      
-        ~RenderSurface();
+        ~RenderSurface() override;
      
 
-        void drawText    (const Text& text) const;
+        void drawText    (const Text& text) const override;
 
-        void drawLine    (Point p1, Point p2, Color color = Colors::Black) const;
-        void drawPoint   (Point p, Color color = Colors::Black) const ; 
-        void drawRect    (const Rect& rect, Color color = Colors::Black) const;
-        void drawSurf    (Point pt, const RenderSurface& surf) const;
+        void drawLine    (Point p1, Point p2, Color color = Colors::Black) const override;
+        void drawPoint   (Point p, Color color = Colors::Black) const override; 
+        void drawRect    (const Rect& rect, Color color = Colors::Black) const override;
+        void drawSurf    (Point pt, const RenderSurface& surf) const override;
 
-        void clear(Color color = Colors::Gray);
-        void resize(uint32_t w, uint32_t h);
+        void clear(Color color = Colors::Gray) const override;
+        void resize(uint32_t w, uint32_t h) override;
      
         friend class Window;    // Allow window to access private rsp_;
     };

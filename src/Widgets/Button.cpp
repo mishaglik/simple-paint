@@ -44,10 +44,13 @@ namespace aGL {
     {
         surface->drawRect({0, 0, rect_.w, rect_.h}, pressed_ ? pressedColor_ : defaultColor_); //TODO: Two pictures different transpatency
         
-        surface->drawLine({      0,       0}, {      0, rect_.h}, Colors::LGray);
-        surface->drawLine({      0, rect_.h}, {rect_.w, rect_.h}, Colors::LGray);
-        surface->drawLine({rect_.w, rect_.h}, {rect_.w,       0}, Colors::LGray);
-        surface->drawLine({rect_.w,       0}, {      0,       0}, Colors::LGray);
+        int w = static_cast<int>(rect_.w);
+        int h = static_cast<int>(rect_.h);
+
+        surface->drawLine({0, 0}, {0, h}, Colors::LGray);
+        surface->drawLine({0, h}, {w, h}, Colors::LGray);
+        surface->drawLine({w, h}, {w, 0}, Colors::LGray);
+        surface->drawLine({w, 0}, {0, 0}, Colors::LGray);
         
         surface->drawText(text_);
         return EventHandlerState::Accepted;

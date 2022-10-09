@@ -210,7 +210,7 @@ void Raytracer::paintSegment(uint32_t x0, uint32_t w0) const
             multithreadContext_->drawMutex.lock();
         #endif
 
-            surface->drawPoint({x, y}, aGL::gammaCorrect(antialiasing.getAvg(), qS_.gamma));
+            surface->drawPoint(mgm::Point2i{static_cast<int>(x), static_cast<int>(y)}, aGL::gammaCorrect(antialiasing.getAvg(), qS_.gamma));
             // mInfo << "Point " << x << ' ' << y << " gotten" << mlg::endl;
 
         #ifdef RAYTRACER_MULTITHREADING

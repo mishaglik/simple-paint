@@ -30,6 +30,7 @@ namespace aGL {
         int registerUserEvent();
         bool subscribeOn(EventType eventType, Widget* widget);
         bool subscribe(AObject* object);
+        bool subscribe(Widget* object);
         EventHandlerState handleEvent(const Event* event) const;
 
         EventManager(const EventManager&) = delete;

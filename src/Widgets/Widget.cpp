@@ -18,7 +18,9 @@ namespace aGL {
 
     void Widget::render(const Window &window) const 
     {
-        window.drawSurf(rect_.getCornerLL(), *surface);
+        if(RenderSurface* rs = dynamic_cast<RenderSurface*>(surface)){
+            window.drawSurf(rect_.getCornerLL(), *rs);
+        }
     }
     
 }

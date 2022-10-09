@@ -35,8 +35,6 @@ class Raytracer: public aGL::Widget{
     
     Color ambient_ = 0x6da6bdff;
 
-    [[deprecated]] uint64_t labertianDepth_ = 5;
-
     Color getRayColor(const mgm::Ray3f& ray, int depth = 0) const;
     [[deprecated]] Color getLambert(const RTObjs::SurfacePoint& surface) const;
     Color getTrueLambert(const RTObjs::SurfacePoint& surfPoint, int depth) const;

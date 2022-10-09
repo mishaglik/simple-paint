@@ -45,7 +45,7 @@ namespace aGL {
         wp_->setVisible(false);
     }
 
-    void Window::clear(Color color)
+    void Window::clear(Color color) const
     {
         wp_->clear(sf::Color(color));
     }
@@ -145,8 +145,8 @@ namespace aGL {
                 event.type = EventType::MouseWheeled;
                 event.mwed.delta = sfEvent.mouseWheel.delta;
                 event.mwed.point = {
-                                    static_cast<uint32_t>(sfEvent.mouseWheel.x),
-                                    static_cast<uint32_t>(sfEvent.mouseWheel.y)
+                                    sfEvent.mouseWheel.x,
+                                    sfEvent.mouseWheel.y
                                 };
                 break;
 
@@ -154,23 +154,23 @@ namespace aGL {
                 event.type = EventType::MouseButtonPressed;
                 event.mbed.button = getMouseButton(sfEvent.mouseButton.button);
                 event.mbed.point = {
-                                    static_cast<uint32_t>(sfEvent.mouseButton.x),
-                                    static_cast<uint32_t>(sfEvent.mouseButton.y)
+                                    (sfEvent.mouseButton.x),
+                                    (sfEvent.mouseButton.y)
                                 };
                 break;
             case sf::Event::MouseButtonReleased:
                 event.type = EventType::MouseButtonReleased;
                 event.mbed.button = getMouseButton(sfEvent.mouseButton.button);
                 event.mbed.point = {
-                                    static_cast<uint32_t>(sfEvent.mouseButton.x),
-                                    static_cast<uint32_t>(sfEvent.mouseButton.y)
+                                    (sfEvent.mouseButton.x),
+                                    (sfEvent.mouseButton.y)
                                 };
                 break;
             case sf::Event::MouseMoved:
                 event.type = EventType::MouseMoved;
                 event.mmed.point = {
-                                    static_cast<uint32_t>(sfEvent.mouseMove.x),
-                                    static_cast<uint32_t>(sfEvent.mouseMove.y)
+                                    (sfEvent.mouseMove.x),
+                                    (sfEvent.mouseMove.y)
                                 };
                 break;
             case sf::Event::Resized:
@@ -183,7 +183,7 @@ namespace aGL {
                 view.reset(sf::FloatRect(0, 0, static_cast<float>(sfEvent.size.width), static_cast<float>(sfEvent.size.height)));
                 wp_->setView(view);
             }
-                break;
+                return false; //TODO: Add resize event;
             case sf::Event::MouseWheelScrolled:
             case sf::Event::LostFocus:
             case sf::Event::GainedFocus:
@@ -200,8 +200,10 @@ namespace aGL {
             case sf::Event::TouchEnded:
             case sf::Event::SensorChanged:
             case sf::Event::Count:
-                event.type = EventType::Other;
-            break;
+                // event.type = EventType::Other;
+                mDebug << "Other event: " << sfEvent.type << mlg::endl;
+                return false; //TODO: Implement
+            // break;
             }
             return true;
         }

@@ -1,5 +1,5 @@
-#ifndef ABSTRACTGL_WIDGET_HPP
-#define ABSTRACTGL_WIDGET_HPP
+#ifndef WIDGETS_WIDGET_HPP
+#define WIDGETS_WIDGET_HPP
 #include <AbstractGL/AWindow.hpp>
 
 namespace aGL {
@@ -9,7 +9,7 @@ namespace aGL {
     private:
     protected:
         Rect rect_;
-        RenderSurface* surface;
+        Surface* surface; //TODO: Make abstract drawable.
     public:
 
         Widget() : rect_({0, 0, 100, 100}), surface(new RenderSurface(100, 100)) {}
@@ -17,6 +17,7 @@ namespace aGL {
         Widget(const Rect& rect, RenderSurface* surf) : rect_(rect), surface(surf) {}
 
         virtual void render(const Window &window) const;
+        virtual void render(const Window *window) const {render(*window);}
 
         virtual EventHandlerState handleEvent               (const Event* ) override { return EventHandlerState::Dropped;}
         virtual EventHandlerState onPaintEvent              (const Event* ) { return EventHandlerState::Accepted;}
@@ -35,7 +36,7 @@ namespace aGL {
         
         const Rect& getRect() const {return rect_;}
 
-        void handleSignal(int /*signal*/, void* /*data*/ = nullptr) override {}
+        [[deprecated]] void handleSignal(int /*signal*/, void* /*data*/ = nullptr) override {}
 
     // Non-copyable declaration.
         Widget(const Widget&)            = delete;
@@ -44,4 +45,4 @@ namespace aGL {
 
 }
 
-#endif /* ABSTRACTGL_WIDGET_HPP */
+#endif /* WIDGETS_WIDGET_HPP */

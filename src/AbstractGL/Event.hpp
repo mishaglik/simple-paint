@@ -4,7 +4,7 @@
 
 namespace aGL {
 
-    using Point = mgm::Point2u;
+    using Point = mgm::Point2i;
 
     enum class EventType{
         ERROR,
@@ -186,8 +186,8 @@ namespace aGL {
     inline Point getRelPoint(const Point& pt, const mgm::Rect2u& rect)
     {
         return Point{
-            pt.x - rect.x,
-            pt.y - rect.y
+            pt.x - static_cast<int>(rect.x),
+            pt.y - static_cast<int>(rect.y)
         };
     }
 

@@ -57,7 +57,7 @@ namespace aGL {
         rsp_->draw(sprite);
     }
 
-    void RenderSurface::clear(Color color)
+    void RenderSurface::clear(Color color) const 
     {
         rsp_->clear(sf::Color(color));
     }

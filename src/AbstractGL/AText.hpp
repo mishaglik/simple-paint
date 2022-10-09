@@ -7,7 +7,7 @@
 namespace aGL {
     extern const char* const systemFont;
     using Rect  = mgm::Rect2u;
-    using Point = mgm::Point2u;
+    using Point = mgm::Point2i;
 
     class Text
     {
