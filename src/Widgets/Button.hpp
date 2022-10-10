@@ -23,6 +23,7 @@ namespace aGL {
     public:
 
         AbstractButton(const char* text, uint32_t x, uint32_t y, bool togglable = false);
+        AbstractButton(const char* text, uint32_t x, uint32_t y, uint32_t w, uint32_t h, bool togglable = false);
 
         Signal<> clicked;
         Signal<> pressed;
@@ -38,6 +39,9 @@ namespace aGL {
         
 
         EventHandlerState onPaintEvent(const Event* event) override;
+
+        void setTextColor(const Color& color);
+        void setTextCharacterSize(unsigned size);
 
     };
 

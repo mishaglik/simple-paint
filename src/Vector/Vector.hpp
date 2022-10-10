@@ -13,6 +13,7 @@ namespace mvc {
     {
         OutOfMemory,
         OutOfRangeError,
+        InvalidStack,
     };
 
     template<class T>
@@ -68,46 +69,70 @@ namespace mvc {
             resize(size);
         }
 
-        ~Vector()
-        {
-            for(size_t i = 0; i < size_; ++i)
-            {
-                data_[i].~T();
-            }
-
-            delete [] reinterpret_cast<char*>(data_);    // We alloced as char* so will free as char*
-        }
-
         Vector(const Vector& oth)
         {
             operator=(oth);
         }
 
+        ~Vector()
+        {
+            lowDestroy(data_, size_);
+
+            delete [] reinterpret_cast<char*>(data_);    // We alloced as char* so will free as char*
+            data_ = nullptr;
+            size_ = 0;
+            capacity_ = 0;
+        }
+
         Vector& operator=(const Vector& other)
         {
-            resize(other.size_);
+            T* newData = nullptr;
 
-            for(size_t i = 0; i < other.size_; ++i)
+            newData = reinterpret_cast<T*>(new char[other.capacity_ * sizeof(T)]);
+
+            lowInitCopy(newData, other.data_, other.size_);
+
+            if(data_)
             {
-                data_[i] = other[i];
+                lowDestroy(data_, size_);
             }
-
+            size_ = other.size_;
+            capacity_ = other.capacity_;
+            data_ = newData;
 
             return *this;
         } 
 
+        void dump(mlg::Logger& log) const
+        {
+            log << "Vector[" << this << "]" << mlg::endl << 
+                    "{" << mlg::endl <<
+                    ".size = " << size_ << mlg::endl <<
+                    ".capacity = " << mlg::endl <<
+                    ".data[" << data_ << "] {" << mlg::endl;
+            if(data_ != nullptr){
+                for(size_t i = 0; i < size_; ++i)
+                {
+                    log << "\t.[" << i << "] = "  << data_[i] << mlg::endl;
+                }
+            }
+            log << '}' << mlg::endl << "}" << mlg::endl;
+
+        }
+
+        void validate() const
+        {
+            if(data_ == nullptr)  throw Exception::InvalidStack;
+            if(size_ > capacity_) throw Exception::InvalidStack;
+        }
 
         void reserve(size_t newCap)
         {
             if(newCap <= capacity_) return;
 
             T* newArr = nullptr;
-            try {
-                newArr = reinterpret_cast<T*>(new char[newCap * sizeof(T)]);
-            
-            } catch (const std::bad_alloc&) {
-                throw Exception::OutOfMemory;
-            }
+
+            newArr = reinterpret_cast<T*>(new char[newCap * sizeof(T)]);
             
             if (data_ == nullptr)
             {
@@ -116,22 +141,8 @@ namespace mvc {
                 return;
             }
             // Copying array to new place
-            
-            for(size_t i = 0; i < size_; ++i)
-            {
-                try{
-                    new (newArr + i) T(data_[i]);
-                }
-                catch(...){
-                    for(size_t j = 0; j < i; ++j)
-                        newArr[i].~T();
-                    delete [] reinterpret_cast<char*>(newArr);
-                    std::rethrow_exception(std::current_exception());
-                }
-            }
-
-            for(size_t i = 0; i < size_; ++i)
-                data_[i].~T();
+            lowInitCopy(newArr, data_, size_);
+            lowDestroy(data_, size_);
 
             capacity_ = newCap;
 
@@ -142,6 +153,7 @@ namespace mvc {
 
         void resize(size_t newSize)
         {
+            validate();
             if(newSize > capacity_)
             {
                 reserve(newSize);
@@ -156,16 +168,12 @@ namespace mvc {
                     }
                     catch(...)
                     {
-                        for(size_t j = size_; j < i; ++j)
-                            data_[i].~T();
-                        std::rethrow_exception(std::current_exception());
+                        lowDestroy(data_ + i, i - size_);
+                        throw;
                     }
                 }
             } else {
-                for(size_t i = newSize; i < size_; ++i)
-                {
-                    data_[i].~T();
-                }
+                lowDestroy(data_ + newSize, size_ - newSize);
             }
 
             size_ = newSize;
@@ -173,12 +181,14 @@ namespace mvc {
 
         void push_back(const T& value)
         {
+            validate();
             if(size_ == capacity_)
             {
                 reserve(2 * capacity_);
             }
 
-            new (data_ + size_++) T(value);
+            new (data_ + size_) T(value);
+            size_++;
         }
 
         ConstIterator<T> begin() const {return ConstIterator<T>(data_);}
@@ -186,6 +196,7 @@ namespace mvc {
 
         const T& operator[] (size_t i) const 
         { 
+            validate();
             if(i < size_) 
                 return data_[i];
             else throw Exception::OutOfRangeError;
@@ -193,12 +204,39 @@ namespace mvc {
         
         T& operator[] (size_t i)
         { 
+            validate();
             if(i < size_) 
                 return data_[i];
             else throw Exception::OutOfRangeError;
         }
         
-        size_t size() const { return size_; }
+        size_t size() const { validate(); return size_; }
+
+        private:
+
+            void lowInitCopy(T* dst, const T* src, size_t n)
+            {
+                size_t copied = 0;
+                try{
+                    for(size_t i = 0; i < n; ++i)
+                    {
+                        new (dst + i) T(src);
+                        copied++;
+                    }
+                }
+                catch(...)
+                {
+                    lowDestroy(dst, copied);
+                    throw;
+                }
+            }
+
+            size_t lowDestroy(T* toDestroy, size_t n)
+            {
+                for(size_t i = 0; i < n; ++i)
+                    toDestroy[i].~T();
+            }
+            
     };
     
     template<class T>

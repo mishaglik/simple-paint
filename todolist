@@ -58,3 +58,11 @@
 // На каждый catch генерится функция, анализирующая совметимость типов.
 // При линковке, файлов скопилированных разными версиями компилятора все может сломаться.
 // Статья: c++ injection in depth
+
+// Window with scroll bar & raytracer 
+// Status bar. Progress bar
+// Render control panel. = set of button. (Mb move object.)
+// Main menu.
+// Non rectangle advertisment. 
+// Реклама спускается и дергается. И еще fullscreen рекалма с счетчиком секунд.
+// ded32.net.ru/wooo.mp3

@@ -17,7 +17,7 @@ namespace aGL {
         void emit(Args... args){ for(auto [obj, f] : slots_) (obj->*f)(args...);}
 
         Signal() : slots_() {}
-        Signal(const Signal&) : slots_() {}
+        Signal(const Signal&) = delete;
         Signal& operator= (const Signal&) = delete;
         ~Signal(){}
     };
