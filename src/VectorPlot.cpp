@@ -84,20 +84,24 @@ aGL::EventHandlerState VectorPlot::onMouseMoveEvent (const aGL::Event* event)
 
 aGL::EventHandlerState VectorPlot::onMouseButtonPressEvent(const aGL::Event* event)
 {
-    if(event->type == aGL::EventType::MouseButtonPressed && mgm::contains(aGL::Widget::rect_, event->mbed.point)){
+    if(event->mbed.button == aGL::MouseButton::Left && mgm::contains(aGL::Widget::rect_, event->mbed.point)){
         aGL::Point pt = event->mbed.point;
         vec_ = rTransform(pt) - startPoint_;
         angle_ = 0;
         captured = true;
         return aGL::EventHandlerState::Accepted;
     }
-    return aGL::EventHandlerState::Dropped;
+    return aGL::Widget::onMouseButtonReleaseEvent(event);
 }
 
 aGL::EventHandlerState VectorPlot::onMouseButtonReleaseEvent(const aGL::Event* event)
 {
-    captured = false;
-    return aGL::EventHandlerState::Accepted;
+    if(event->mbed.button == aGL::MouseButton::Left)
+    {
+        captured = false;
+        return aGL::EventHandlerState::Accepted;
+    }
+    return aGL::Widget::onMouseButtonReleaseEvent(event);
 }
 
 

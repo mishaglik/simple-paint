@@ -10,7 +10,7 @@ namespace aGL {
     protected:
         bool focused_ = false; 
         Rect rect_;
-        Surface* surface; //TODO: Make abstract drawable.
+        Surface* surface;
 
     public:
 

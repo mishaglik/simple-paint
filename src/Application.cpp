@@ -26,7 +26,7 @@ Application::Application() :
     
     fillScene();
 
-    exitButton  = new aGL::AbstractButton("Exit", 5, 400, 80, 40);
+    exitButton  = new aGL::AbstractButton("Exit", 5, 400, 500, 40);
     aGL::connect(exitButton, &aGL::AbstractButton::clicked, this, &Application::quit);
 
     window_->subscribe(exitButton);

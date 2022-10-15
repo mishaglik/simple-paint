@@ -18,6 +18,11 @@ namespace aGL {
     {
         text_.setColor(Colors::Red);
         text_.setCharacterSize(3 * h / 4);
+        Rect textRect = text_.getRect();
+        if(textRect.w + 2 * horizontalMargin < w)
+        {
+            Widget::resize(textRect.w + 2 * horizontalMargin, h);
+        }
     }
 
 

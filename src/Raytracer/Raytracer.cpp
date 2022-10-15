@@ -20,6 +20,9 @@ Raytracer::Raytracer(Scene* scene, uint32_t x, uint32_t y, uint32_t w, uint32_t 
 
 void Raytracer::raytraceThread(MulithreadContext* context)
 {
+    static std::atomic_int nThread = 0;
+    int nCurThread = nThread++;
+    mInfo << "threadStarted:"  << nCurThread << mlg::endl;
     uint32_t x = 0;
     uint32_t w = context->rt->getRect().w;
     while (!context->finish)
@@ -34,6 +37,7 @@ void Raytracer::raytraceThread(MulithreadContext* context)
 
         context->rt->paintSegment(x, 1);
     }
+    mInfo << "threadFinished:" << nCurThread << mlg::endl;
 }
 
 
@@ -48,7 +52,7 @@ Raytracer::~Raytracer()
     }
     delete multithreadContext_;
 #endif
-
+    // return;
     // for(size_t i = 0; i < objlist_.size(); ++i)
         // delete objlist_[i];
 }

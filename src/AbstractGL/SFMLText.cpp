@@ -12,7 +12,7 @@ namespace aGL {
         setFont(font_);
         setString(text);
         setPosition( static_cast<float>(x), 
-                     static_cast<float>(y - getCharacterSize() * 0.0));
+                     static_cast<float>(y));
     }
 
     Text::Text(const char* fontName, const char* text, uint32_t x, uint32_t y)
@@ -35,7 +35,7 @@ namespace aGL {
     {
         tp_->setPosition(
             static_cast<float>(x),
-            static_cast<float>(y - tp_->getCharacterSize() * 0.0)
+            static_cast<float>(y)
         );
     }
 

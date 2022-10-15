@@ -3,7 +3,7 @@
 #include <cstdlib>
 #include <LogUtils/Logger.hpp>
 #include <exception>
-#include <new>
+#include <new>  
 
 void* operator new (size_t, void* mem) noexcept;
 
@@ -27,6 +27,7 @@ namespace mvc {
         ConstIterator& operator++()    {ptr_++; return *this;}
         ConstIterator  operator++(int) {ConstIterator retval = *this; ptr_++; return retval;}
         T* operator->() {return ptr_;}
+        
         template<class U>
         friend bool operator==(const ConstIterator<U>&, const ConstIterator<U>&);
     };
@@ -220,7 +221,7 @@ namespace mvc {
                 try{
                     for(size_t i = 0; i < n; ++i)
                     {
-                        new (dst + i) T(src);
+                        new (dst + i) T(src[i]);
                         copied++;
                     }
                 }
@@ -231,7 +232,7 @@ namespace mvc {
                 }
             }
 
-            size_t lowDestroy(T* toDestroy, size_t n)
+            void lowDestroy(T* toDestroy, size_t n)
             {
                 for(size_t i = 0; i < n; ++i)
                     toDestroy[i].~T();

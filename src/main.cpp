@@ -9,5 +9,7 @@ int main(int argc, const char* argv[]){
    
    Application app(argc, argv);
 
-   return app.exec();
+   app.exec();
+   mInfo << "Finished" << mlg::endl;
+   return 0;
 }

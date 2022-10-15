@@ -120,11 +120,11 @@ namespace aGL {
             break;
 
         case EventType::KeyPressed:
-            if(focused_->onKeyPressedEvent(event)) return Accepted;
+            if(focused_ && focused_->onKeyPressedEvent(event)) return Accepted;
             return spreadEvent(event, &Widget::onKeyPressedEvent);
 
         case EventType::KeyReleased:
-            if(focused_->onKeyReleasedEvent(event)) return Accepted;
+            if(focused_ && focused_->onKeyReleasedEvent(event)) return Accepted;
             return spreadEvent(event, &Widget::onKeyReleasedEvent);
 
         case EventType::TimerTicked:

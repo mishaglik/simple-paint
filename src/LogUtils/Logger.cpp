@@ -3,7 +3,11 @@
 
 namespace mlg {
 
-    static NullLogger NULL_LOGGER{};
+    extern mlg::NullLogger& NULL_LOGGER;
+    const mlg::NullLogger nullLogger{};
+
+    NullLogger& NULL_LOGGER = const_cast<NullLogger&>(nullLogger);
+
 
     void endl(Logger& log)
     {

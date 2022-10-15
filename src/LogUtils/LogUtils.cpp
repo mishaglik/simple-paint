@@ -1,8 +1,10 @@
 #include "LogUtils.hpp"
 
-static mlg::NullLogger NULL_LOG{};
+namespace mlg {
+    extern mlg::NullLogger& NULL_LOGGER;
+}
 
-static mlg::Logger* LOG = &NULL_LOG;
+static mlg::Logger* LOG = &mlg::NULL_LOGGER;
 
 mlg::Logger& getGlobalLogger()
 {

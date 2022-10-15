@@ -4,6 +4,11 @@
 //TODO: Camera
 //TODO: Scene
 
+//TODO: Image loading
+//TODO: Hiding widgets
+//TODO: Disabled widgets
+//TODO: Reisizable widgets
+
 // Менеджер X - он владеет ресурсами X, а всем раздает только указатели.
 // Правило 3 - если кто то переопределен из A(A&), ~A, op=(A&), то должны быть переопределены остальные.
 // Правило 0 - никого не переопределять.

@@ -145,7 +145,7 @@ namespace mlg {
          * @brief Destroy the Logger object
          * 
          */
-        virtual ~Logger() {}
+        virtual ~Logger() = default;
 
 
         virtual Logger& operator<<(char x)     = 0;
