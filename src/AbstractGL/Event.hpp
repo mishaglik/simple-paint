@@ -14,6 +14,7 @@ namespace aGL {
         MouseWheeled,
         KeyPressed,
         KeyReleased,
+        TextEntered,
         TimerTicked,
         Paint,
         Quited,
@@ -172,6 +173,7 @@ namespace aGL {
             MouseMoveEventData   mmed;
             MouseWheelEventData  mwed;
             KeyEventData          ked;
+            uint32_t             text;
         };
 
         Event() : type(EventType::ERROR) {}

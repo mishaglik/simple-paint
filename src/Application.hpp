@@ -7,6 +7,7 @@
 #include <AbstractGL/EventManager.hpp>
 #include <Raytracer/Raytracer.hpp>
 #include <Widgets/WindowWidget.hpp>
+#include <Widgets/Menubar.hpp>
 
 class Application : public aGL::AObject{
     aGL::WWindow* window_     = nullptr;
@@ -14,8 +15,10 @@ class Application : public aGL::AObject{
 
     Raytracer* raytracer_    = nullptr;
     
-    aGL::AbstractButton* exitButton  = nullptr;
-    aGL::AbstractButton* resetButton = nullptr;
+    aGL::Menubar* menubar_ = nullptr;
+
+    aGL::PushButton* exitButton  = nullptr;
+    aGL::PushButton* resetButton = nullptr;
 
     mlg::ConsoleLogger logger;
     Scene* scene_ = nullptr;
@@ -33,12 +36,6 @@ class Application : public aGL::AObject{
     };
 
     AppState state_ = AppState::UnInit;
-
-    enum Slots : int{
-        Nothing,
-        Quit,
-        Reset,
-    };
 
     void fillScene();
 

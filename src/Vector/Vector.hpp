@@ -192,6 +192,15 @@ namespace mvc {
             size_++;
         }
 
+        const T& back() const 
+        {
+            validate();
+            if(size_ == 0) throw Exception::OutOfRangeError;
+            return data_[size_ - 1];
+        }
+
+        bool empty() const { return size_ == 0;}
+
         ConstIterator<T> begin() const {return ConstIterator<T>(data_);}
         ConstIterator<T> end  () const {return ConstIterator<T>(data_ + size_);}
 
@@ -212,6 +221,10 @@ namespace mvc {
         }
         
         size_t size() const { validate(); return size_; }
+
+        T* data() { return data_; }
+
+        const T* data() const { return data_; } 
 
         private:
 

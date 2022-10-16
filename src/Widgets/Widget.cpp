@@ -16,10 +16,19 @@ namespace aGL {
         surface->resize(v.x, v.y);
     }
 
-    void Widget::render(const Window &window) const 
+    void Widget::render(const Window& window) const 
     {
+        if(hidden_) return;
         if(RenderSurface* rs = dynamic_cast<RenderSurface*>(surface)){
             window.drawSurf(rect_.getCornerLL(), *rs);
+        }
+    }
+
+    void Widget::render(const Surface* surf) const 
+    {
+        if(hidden_) return;
+        if(RenderSurface* rs = dynamic_cast<RenderSurface*>(surface)){
+            surf->drawSurf(rect_.getCornerLL(), *rs);
         }
     }
     

@@ -1,6 +1,6 @@
 #ifndef WIDGETS_WINDOWWIDGET_HPP
 #define WIDGETS_WINDOWWIDGET_HPP
-#include <Widgets/ContainterWidget.hpp>
+#include <Widgets/ContainerWidget.hpp>
 #include <AbstractGL/AWindow.hpp>
 
 namespace aGL {

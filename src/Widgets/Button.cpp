@@ -4,17 +4,18 @@
 
 namespace aGL {
 
-    AbstractButton::AbstractButton(const char* text, uint32_t x, uint32_t y, bool togglable) :
-        Widget({x, y, 1, 1}), text_(text, horizontalMargin, verticalMargin + 2), togglable_(togglable)
+    PushButton::PushButton(const char* text, uint32_t x, uint32_t y) :
+        AbstractButton({x, y, 1, 1}, text)
     {
+        togglable_ = false;
         text_.setColor(Colors::Red);
 
         Rect textRect = text_.getRect();
         Widget::resize(textRect.w + 2 * horizontalMargin, textRect.h + 2 * verticalMargin);
     }
 
-    AbstractButton::AbstractButton(const char* text, uint32_t x, uint32_t y, uint32_t w, uint32_t h, bool togglable) :
-        Widget({x, y, w, h}), text_(text, horizontalMargin, 0), togglable_(togglable)
+    PushButton::PushButton(const char* text, uint32_t x, uint32_t y, uint32_t w, uint32_t h) :
+        AbstractButton({x, y, w, h}, text)
     {
         text_.setColor(Colors::Red);
         text_.setCharacterSize(3 * h / 4);
@@ -51,7 +52,7 @@ namespace aGL {
         return Dropped;
     }
 
-    EventHandlerState AbstractButton::onPaintEvent(const Event* ) 
+    EventHandlerState PushButton::onPaintEvent(const Event* ) 
     {
         if(!needsRepaint_) return Accepted;
 
@@ -76,7 +77,7 @@ namespace aGL {
 
     EventHandlerState AbstractButton::onMouseEnterEvent(const Event*)
     {
-        mInfo << mlg::Logger::CoStyle::Green << "Entered" << mlg::endl;
+        // mInfo << mlg::Logger::CoStyle::Green << "Entered" << mlg::endl;
         hovered_ = true;
         needsRepaint_ = true;
         return Accepted;
@@ -84,7 +85,7 @@ namespace aGL {
 
     EventHandlerState AbstractButton::onMouseLeaveEvent(const Event*)
     {
-        mInfo << mlg::Logger::CoStyle::Green << "Leaved\n" << mlg::endl;
+        // mInfo << mlg::Logger::CoStyle::Green << "Leaved\n" << mlg::endl;
         hovered_ = false;
         needsRepaint_ = true;
         return Accepted;

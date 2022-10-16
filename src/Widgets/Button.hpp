@@ -6,13 +6,7 @@ namespace aGL {
 
     class AbstractButton : public Widget
     {
-        static constexpr Color defaultColor_ = 0x232323ff;
-        static constexpr Color hoveredColor_ = 0x2a2a2aff;
-        static constexpr Color pressedColor_ = 0x353535ff;
-
-        uint32_t verticalMargin   = 13;
-        uint32_t horizontalMargin = 5;
-        
+    protected:
         Text text_;
         bool pressed_ = false;
         bool hovered_ = false;
@@ -22,8 +16,8 @@ namespace aGL {
 
     public:
 
-        AbstractButton(const char* text, uint32_t x, uint32_t y, bool togglable = false);
-        AbstractButton(const char* text, uint32_t x, uint32_t y, uint32_t w, uint32_t h, bool togglable = false);
+        AbstractButton(const Rect& rect, const char* text) : Widget(rect), text_(text) {}
+        virtual ~AbstractButton() override {}
 
         Signal<> clicked;
         Signal<> pressed;
@@ -37,12 +31,27 @@ namespace aGL {
         EventHandlerState onGainFocusEvent(const Event* event) override; 
         EventHandlerState onLoseFocusEvent(const Event* event) override; 
         
-
-        EventHandlerState onPaintEvent(const Event* event) override;
-
         void setTextColor(const Color& color);
         void setTextCharacterSize(unsigned size);
 
+    };
+
+    class PushButton : public AbstractButton
+    {
+        static constexpr Color defaultColor_ = 0x232323ff;
+        static constexpr Color hoveredColor_ = 0x2a2a2aff;
+        static constexpr Color pressedColor_ = 0x353535ff;
+
+        uint32_t verticalMargin   = 13;
+        uint32_t horizontalMargin = 5;
+
+    public:
+
+        PushButton(const char* text, uint32_t x, uint32_t y);
+        PushButton(const char* text, uint32_t x, uint32_t y, uint32_t w, uint32_t h);
+        ~PushButton() override {}
+        
+        EventHandlerState onPaintEvent(const Event* event) override;
     };
 
 }

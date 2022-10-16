@@ -12,7 +12,12 @@ namespace aGL {
         using Callable = void (SignalObject::*)(Args...);
         mvc::Vector<std::pair<SignalObject*, Callable>> slots_;
     public:
-        void connect(SignalObject* obj, Callable f) {slots_.push_back({obj, f});}
+        template<class T>
+        void connect(T* obj, void (T::*f)(Args...))
+        {
+            slots_.push_back({static_cast<SignalObject*>(obj), static_cast<Callable>(f)});
+        }
+        
         
         void emit(Args... args){ for(auto [obj, f] : slots_) (obj->*f)(args...);}
 
@@ -25,7 +30,7 @@ namespace aGL {
     template<class T, class U, typename... Args>
     void connect(T* sender, Signal<Args...> T::* signal, U* reciever, void (U::*slot)(Args...))
     {
-        (sender->*signal).connect(static_cast<SignalObject*>(reciever), static_cast<void (SignalObject::*)(Args...)>(slot));
+        (sender->*signal).connect(reciever, slot);
     }
 
 }

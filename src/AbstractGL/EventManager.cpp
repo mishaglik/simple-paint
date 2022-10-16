@@ -3,7 +3,7 @@
 
 namespace aGL {
 
-    EventManager::EventManager() {}
+    EventManager::EventManager(const Point& corner) : corner_(corner) {}
 
     EventManager::~EventManager() {}
 
@@ -28,7 +28,6 @@ namespace aGL {
         case EventType::MouseButtonPressed:
             for(size_t i = subscibers_.size(); i > 0; --i)
             {
-                
                 Widget* w = subscibers_[i-1];
                 if(w->hasEventPoint(event->mbed.point))
                 {
@@ -72,28 +71,26 @@ namespace aGL {
         
         case EventType::MouseMoved:
         {
-            size_t upper = 0;
+            Widget* curTop = nullptr;
             for(size_t i = subscibers_.size(); i > 0; --i)
             {
                 Widget* w = subscibers_[i-1];
-                if(w->hasEventPoint(prevMousePosition_) && (!w->hasEventPoint(event->mmed.point) || upper != 0 ))
+                if(w->hasEventPoint(event->mmed.point))
                 {
-                    w->onMouseLeaveEvent(nullptr);
-                    if(upper) subscibers_[upper-1]->onMouseEnterEvent(nullptr);
-                    upper = 0;
+                    curTop = w;
                     break;
                 }
-                if(w->hasEventPoint(event->mmed.point) && upper == 0) {
-                    upper = i;
-                }
             }
 
-            if(upper != 0 && !subscibers_[upper -1 ]->hasEventPoint(prevMousePosition_))
+            if(top_ != curTop)
             {
-                subscibers_[upper - 1]->onMouseEnterEvent(nullptr);
+                if(top_) top_->onMouseLeaveEvent(event);
+                if(curTop) curTop->onMouseEnterEvent(event);
+                top_ = curTop;
             }
-            prevMousePosition_ = event->mmed.point;
 
+            prevMousePosition_ = event->mmed.point;
+            
             for(size_t i = subscibers_.size(); i > 0; --i)
             {
                 Widget* w = subscibers_[i-1];
@@ -163,13 +160,13 @@ namespace aGL {
 
         case EventType::MouseButtonPressed:
         case EventType::MouseButtonReleased:
-            e->mbed.point -= mgm::asVector(pt);
+            e->mbed.point -= pt - corner_;
             break;
         case EventType::MouseMoved:
-            e->mmed.point -= mgm::asVector(pt);
+            e->mmed.point -= pt - corner_;
             break;
         case EventType::MouseWheeled:
-            e->mwed.point -= mgm::asVector(pt);
+            e->mwed.point -= pt - corner_;
             break;
         case EventType::ERROR:
         case EventType::KeyPressed:
@@ -191,13 +188,13 @@ namespace aGL {
 
         case EventType::MouseButtonPressed:
         case EventType::MouseButtonReleased:
-            e->mbed.point += mgm::asVector(pt);
+            e->mbed.point += pt - corner_;
             break;
         case EventType::MouseMoved:
-            e->mmed.point += mgm::asVector(pt);
+            e->mmed.point += pt - corner_;
             break;
         case EventType::MouseWheeled:
-            e->mwed.point += mgm::asVector(pt);
+            e->mwed.point += pt - corner_;
             break;
         case EventType::ERROR:
         case EventType::KeyPressed:

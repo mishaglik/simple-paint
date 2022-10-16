@@ -7,6 +7,7 @@ namespace aGL {
     class Widget : public AObject 
     {
     private:
+        bool hidden_ = false;
     protected:
         bool focused_ = false; 
         Rect rect_;
@@ -21,6 +22,7 @@ namespace aGL {
 
         virtual void render(const Window &window) const;
         virtual void render(const Window *window) const {render(*window);}
+        virtual void render(const Surface *surface) const;
 
         virtual EventHandlerState handleEvent               (const Event*  ) { return EventHandlerState::Dropped;}
         virtual EventHandlerState onPaintEvent              (const Event*  ) { return EventHandlerState::Accepted;}
@@ -40,10 +42,14 @@ namespace aGL {
         virtual void update() {}
         virtual void resize(uint32_t w, uint32_t h);
         virtual void resize(const mgm::Vector2u& v);
+
+        void show() { hidden_ = false; }
+        void hide() { hidden_ = true; }
+        bool isHidden() const { return hidden_; }
         
         const Rect& getRect() const {return rect_;}
         const Point getEventCorner() const { return rect_.getCornerLL(); }
-        bool hasEventPoint(const Point& pt) { return mgm::contains(rect_, pt); }
+        virtual bool hasEventPoint(const Point& pt) { return hidden_ ? false : mgm::contains(rect_, pt); }
 
     // Non-copyable declaration.
         Widget(const Widget&)            = delete;

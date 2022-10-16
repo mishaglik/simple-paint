@@ -26,17 +26,37 @@ Application::Application() :
     
     fillScene();
 
-    exitButton  = new aGL::AbstractButton("Exit", 5, 400, 500, 40);
-    aGL::connect(exitButton, &aGL::AbstractButton::clicked, this, &Application::quit);
+    exitButton  = new aGL::PushButton("Exit", 5, 400, 500, 40);
+    aGL::connect<aGL::AbstractButton>(exitButton, &aGL::AbstractButton::clicked, this, &Application::quit);
 
     window_->subscribe(exitButton);
     
 
-    resetButton = new aGL::AbstractButton("Reset", 200, 400, 50, 100);
-    aGL::connect(resetButton, &aGL::AbstractButton::clicked, this, &Application::reset);
-    // resetButton->setEventFunction(this, Slots::Reset);
+    resetButton = new aGL::PushButton("Reset", 200, 400, 50, 100);
+    aGL::connect<aGL::AbstractButton>(resetButton, &aGL::AbstractButton::clicked, this, &Application::reset);
 
     window_->subscribe(resetButton);
+    
+    menubar_ = new aGL::Menubar(0,0, 800, 20);
+    menubar_->addMenuEntry("File");
+    menubar_->entries()[0]->addMenuEntry("Aboba");
+    menubar_->entries()[0]->addMenuEntry("Quit");
+    menubar_->entries()[0]->buttons()[1]->clicked.connect(this, &Application::quit);
+
+    menubar_->addMenuEntry("Vecplot");
+    aGL::Menubar::Menu* vecplotMenu = menubar_->entries()[1];
+    vecplotMenu->addMenuEntry("Reset");
+    vecplotMenu->buttons()[0]->clicked.connect(this, &Application::reset);
+    vecplotMenu->addMenuEntry("Show");
+    vecplotMenu->buttons()[1]->clicked.connect<VectorPlot>(plotRotator_, &VectorPlot::show);
+    vecplotMenu->addMenuEntry("Hide");
+    vecplotMenu->buttons()[2]->clicked.connect<VectorPlot>(plotRotator_, &VectorPlot::hide);
+
+    menubar_->addMenuEntry("Raytracer");
+
+
+    window_->subscribe(menubar_);
+
 
     state_ = AppState::Ready;
 }
@@ -115,6 +135,7 @@ int Application::exec()
         exitButton  ->render(*window_);
         resetButton ->render(*window_);        
         raytracer_  ->render(*window_);
+        menubar_    ->render(*window_);
 
         event.type = aGL::EventType::TimerTicked;
         eventManager_.handleEvent(&event);

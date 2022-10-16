@@ -14,10 +14,13 @@ namespace aGL {
         int curUserEvent_ = static_cast<int>(EventType::UserMin);
         Point prevMousePosition_ = {-1, -1};
         Widget* focused_ = nullptr;
-        static void eventPointTransform(Event* e, const Point& pt);
-        static void eventPointTransformR(Event* e, const Point& pt);
+        Widget* top_ = nullptr;
+        void eventPointTransform(Event* e, const Point& pt);
+        void eventPointTransformR(Event* e, const Point& pt);
+
+        Point corner_;
     public:
-        EventManager();
+        EventManager(const Point& corner = {0, 0});
         ~EventManager(); 
 
         int registerUserEvent();
