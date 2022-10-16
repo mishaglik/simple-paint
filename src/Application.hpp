@@ -2,6 +2,7 @@
 #define APPLICATION_HPP
 
 #include "VectorPlot.hpp"
+#include "Widgets/Scrollbar.hpp"
 #include <AbstractGL/AWindow.hpp>
 #include <Widgets/Button.hpp>
 #include <AbstractGL/EventManager.hpp>
@@ -16,6 +17,7 @@ class Application : public aGL::AObject{
     Raytracer* raytracer_    = nullptr;
     
     aGL::Menubar* menubar_ = nullptr;
+    aGL::Scrollbar* scrollbar_ = nullptr;
 
     aGL::PushButton* exitButton  = nullptr;
     aGL::PushButton* resetButton = nullptr;
@@ -39,6 +41,9 @@ class Application : public aGL::AObject{
 
     void fillScene();
 
+    bool vecPlotVisible = true;
+    void toggleVecplotVisibility();
+
 public:
     Application();
     Application(int , const char** ) : Application() {}
@@ -51,6 +56,7 @@ public:
 
     void quit ();
     void reset();
+
 
     Application(const Application& app)             = delete;
     Application& operator= (const Application& app) = delete;

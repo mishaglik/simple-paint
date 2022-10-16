@@ -2,6 +2,8 @@
 #define ABSTRACTGL_EVENT_HPP
 #include <MGeomerty/Geometry.hpp>
 #include <LogUtils/LogUtils.hpp>
+#include <chrono>
+
 namespace aGL {
 
     using Point = mgm::Point2i;
@@ -167,6 +169,7 @@ namespace aGL {
     class Event //TODO: Make abstract.
     {
     public:
+        using Timepoint = std::chrono::system_clock::time_point;
         EventType type;
         union{
             MouseButtonEventData mbed;
@@ -174,6 +177,7 @@ namespace aGL {
             MouseWheelEventData  mwed;
             KeyEventData          ked;
             uint32_t             text;
+            Timepoint            time;
         };
 
         Event() : type(EventType::ERROR) {}

@@ -119,6 +119,10 @@ namespace aGL {
         case EventType::KeyPressed:
             if(focused_ && focused_->onKeyPressedEvent(event)) return Accepted;
             return spreadEvent(event, &Widget::onKeyPressedEvent);
+        
+        case EventType::TextEntered:
+            if(focused_ && focused_->onKeyPressedEvent(event)) return Accepted;
+            return spreadEvent(event, &Widget::onTextEnteredEvent);
 
         case EventType::KeyReleased:
             if(focused_ && focused_->onKeyReleasedEvent(event)) return Accepted;
@@ -177,6 +181,7 @@ namespace aGL {
         case EventType::UserMin:
         case EventType::UserMax:
         case EventType::Other:
+        case EventType::TextEntered:
             mError << "Inappropriate usage of EventPointTransform\n";
           break;
         }
@@ -204,6 +209,7 @@ namespace aGL {
         case EventType::Quited:
         case EventType::UserMin:
         case EventType::UserMax:
+        case EventType::TextEntered:
         case EventType::Other:
             mError << "Inappropriate usage of EventPointTransform\n";
           break;

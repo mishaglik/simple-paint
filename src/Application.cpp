@@ -45,17 +45,17 @@ Application::Application() :
 
     menubar_->addMenuEntry("Vecplot");
     aGL::Menubar::Menu* vecplotMenu = menubar_->entries()[1];
-    vecplotMenu->addMenuEntry("Reset");
-    vecplotMenu->buttons()[0]->clicked.connect(this, &Application::reset);
-    vecplotMenu->addMenuEntry("Show");
-    vecplotMenu->buttons()[1]->clicked.connect<VectorPlot>(plotRotator_, &VectorPlot::show);
     vecplotMenu->addMenuEntry("Hide");
-    vecplotMenu->buttons()[2]->clicked.connect<VectorPlot>(plotRotator_, &VectorPlot::hide);
+    vecplotMenu->buttons()[0]->clicked.connect(this, &Application::toggleVecplotVisibility);
+    vecplotMenu->addMenuEntry("Reset");
+    vecplotMenu->buttons()[1]->clicked.connect(this, &Application::reset);
 
     menubar_->addMenuEntry("Raytracer");
-
-
     window_->subscribe(menubar_);
+
+    scrollbar_ = new aGL::Scrollbar(20, 400);
+    window_->subscribe(scrollbar_);
+
 
 
     state_ = AppState::Ready;
@@ -96,6 +96,8 @@ Application::~Application()
     delete raytracer_;
     delete scene_;
     delete plotRotator_;
+    delete menubar_;
+    delete scrollbar_;
     delete window_;
 }
 
@@ -136,8 +138,11 @@ int Application::exec()
         resetButton ->render(*window_);        
         raytracer_  ->render(*window_);
         menubar_    ->render(*window_);
+        scrollbar_  ->render(*window_);
 
         event.type = aGL::EventType::TimerTicked;
+        event.time = clock.now();
+
         eventManager_.handleEvent(&event);
 
         // plotRotator_->update();
@@ -192,3 +197,19 @@ void Application::reset(){
     plotRotator_->setVector({10, 0});
 }
 
+void Application::toggleVecplotVisibility()
+{
+    if(vecPlotVisible)
+    {
+        plotRotator_->hide();
+        menubar_->entries()[1]->buttons()[0]->setString("Show");
+        menubar_->entries()[1]->buttons()[1]->hide();
+    }
+    else {
+        plotRotator_->show();
+        menubar_->entries()[1]->buttons()[0]->setString("Hide");
+        menubar_->entries()[1]->buttons()[1]->show();
+    }
+
+    vecPlotVisible = !vecPlotVisible;
+}

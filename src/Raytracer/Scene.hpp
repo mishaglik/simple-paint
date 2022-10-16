@@ -34,6 +34,8 @@ public:
      */
     const RenderObject* getObjectOnRay(const Ray& ray) const;
 
+    const Vector<RenderObject* >& objects() const { return objectPool_; }
+
     Scene(const Scene&) = delete;
     Scene& operator=(const Scene&) = delete;
 

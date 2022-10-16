@@ -34,6 +34,9 @@ namespace aGL {
         void setTextColor(const Color& color);
         void setTextCharacterSize(unsigned size);
 
+        void setString(const char* string)     { needsRepaint_ = true; text_.setString(string); }
+        void setString(const uint32_t* string) { needsRepaint_ = true; text_.setString(string); }
+
     };
 
     class PushButton : public AbstractButton

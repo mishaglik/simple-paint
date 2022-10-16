@@ -3,9 +3,9 @@ cmake_minimum_required(VERSION 3.10)
 set (AGL_WIDGETS_SOURCES
     Button.cpp
     Widget.cpp
-    ContainerWidget.cpp
     WindowWidget.cpp
     Menubar.cpp
+    Scrollbar.cpp
 )
 
 set (AGL_WIDGETS_HEADERS
@@ -14,6 +14,7 @@ set (AGL_WIDGETS_HEADERS
     ContainerWidget.hpp
     WindowWidget.hpp
     Menubar.hpp
+    Scrollbar.hpp
 )
 
 

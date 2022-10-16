@@ -26,6 +26,9 @@ namespace aGL {
         case EventType::Other:
             log << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA}";
           break;
+        case EventType::TextEntered:
+            log << "Text entered:" << event.text;
+          break;
         }
         return log;
     }

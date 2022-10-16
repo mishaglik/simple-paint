@@ -11,6 +11,7 @@ namespace aGL {
         sf::Font font_;
     public:
         Text_(const char* fontName, const char* text, uint32_t x, uint32_t y);
+        Text_(const char* fontName, const uint32_t* text, uint32_t x, uint32_t y);
     };
 
 }

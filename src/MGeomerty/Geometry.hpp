@@ -46,6 +46,12 @@ namespace mgm {
         return out << "Ray3f{ " << line.point() << ", " << line.dir() << '}';
     }
 
+    template<class T>
+    inline mlg::Logger& operator<<(mlg::Logger& out, const Rect2<T>& rect)
+    {
+        return out << "Rect2{ " << rect.x << ", " << rect.y << ", " << rect.w << ", " << rect.h << '}';
+    }
+
 
 }
 

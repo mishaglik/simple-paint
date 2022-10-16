@@ -15,12 +15,30 @@ namespace aGL {
                      static_cast<float>(y));
     }
 
+    Text::Text_::Text_(const char* fontFilename, const uint32_t* text, uint32_t x, uint32_t y)
+    {
+        if(!font_.loadFromFile(fontFilename))
+        {
+            mAssert(0 && "Font not loaded");
+        }
+        setFont(font_);
+        setString(text);
+        setPosition( static_cast<float>(x), 
+                     static_cast<float>(y));
+    }
+
     Text::Text(const char* fontName, const char* text, uint32_t x, uint32_t y)
     {
         tp_ = new Text_(fontName, text, x, y);
     }
 
     Text::Text(const char* text, uint32_t x, uint32_t y, const char* const fontName)
+    {
+        tp_ = new Text_(fontName, text, x, y);
+    }
+
+
+    Text::Text(const uint32_t* text, uint32_t x, uint32_t y, const char* const fontName)
     {
         tp_ = new Text_(fontName, text, x, y);
     }
@@ -69,6 +87,16 @@ namespace aGL {
                 static_cast<uint32_t>(rect.width), 
                 static_cast<uint32_t>(rect.height)
             };
+    }
+
+    void Text::setString(const char* string)
+    {
+        tp_->setString(string);
+    }
+    
+    void Text::setString(const uint32_t* string)
+    {
+        tp_->setString(string);
     }
 
 }

@@ -9,12 +9,13 @@ namespace aGL {
     private:
         bool hidden_ = false;
     protected:
+        using Timepoint = Event::Timepoint;
         bool focused_ = false; 
         Rect rect_;
         Surface* surface;
+        Timepoint time_;
 
     public:
-
         Widget() : rect_({0, 0, 100, 100}), surface(new RenderSurface(100, 100)) {}
         Widget(const Rect& rect) : rect_(rect), surface(new RenderSurface(rect.w, rect.h)) {}
         Widget(const Rect& rect, RenderSurface* surf) : rect_(rect), surface(surf) {}
@@ -28,6 +29,7 @@ namespace aGL {
         virtual EventHandlerState onPaintEvent              (const Event*  ) { return EventHandlerState::Accepted;}
         virtual EventHandlerState onKeyPressedEvent         (const Event*  ) { return EventHandlerState::Dropped;}
         virtual EventHandlerState onKeyReleasedEvent        (const Event*  ) { return EventHandlerState::Dropped;}
+        virtual EventHandlerState onTextEnteredEvent        (const Event*  ) { return EventHandlerState::Dropped;}
         virtual EventHandlerState onShortcutEvent           (const Event*  ) { return EventHandlerState::Dropped;}
         virtual EventHandlerState onMouseMoveEvent          (const Event*  ) { return EventHandlerState::Dropped;}
         virtual EventHandlerState onMouseButtonPressEvent   (const Event* e) { if(e->mbed.button == aGL::MouseButton::Left) return EventHandlerState::Accepted; else return EventHandlerState::Dropped;}
@@ -37,7 +39,7 @@ namespace aGL {
         virtual EventHandlerState onMouseLeaveEvent         (const Event*  ) { return EventHandlerState::Accepted;}
         virtual EventHandlerState onGainFocusEvent          (const Event*  ) { focused_ = true;  return EventHandlerState::Accepted;}
         virtual EventHandlerState onLoseFocusEvent          (const Event*  ) { focused_ = false; return EventHandlerState::Accepted;}
-        virtual EventHandlerState onTimerEvent              (const Event*  ) { update(); return EventHandlerState::Dropped;}
+        virtual EventHandlerState onTimerEvent              (const Event* e) { time_ = e->time; update(); return EventHandlerState::Dropped;}
         
         virtual void update() {}
         virtual void resize(uint32_t w, uint32_t h);
