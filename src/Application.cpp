@@ -53,8 +53,15 @@ Application::Application() :
     menubar_->addMenuEntry("Raytracer");
     window_->subscribe(menubar_);
 
-    scrollbar_ = new aGL::Scrollbar(20, 400);
-    window_->subscribe(scrollbar_);
+    scrollbarX_ = new aGL::Scrollbar(300, 400, 400);
+    scrollbarX_->setMaxValue(100);
+    scrollbarX_->valueChanged.connect(raytracer_, &Raytracer::setStartX);
+    window_->subscribe(scrollbarX_);
+
+    scrollbarY_ = new aGL::Scrollbar(700, 0, 20, 400, aGL::Scrollbar::Vertical);
+    scrollbarY_->setMaxValue(100);
+    scrollbarY_->valueChanged.connect(raytracer_, &Raytracer::setStartY);
+    window_->subscribe(scrollbarY_);
 
 
 
@@ -97,7 +104,7 @@ Application::~Application()
     delete scene_;
     delete plotRotator_;
     delete menubar_;
-    delete scrollbar_;
+    delete scrollbarX_;
     delete window_;
 }
 
@@ -138,7 +145,8 @@ int Application::exec()
         resetButton ->render(*window_);        
         raytracer_  ->render(*window_);
         menubar_    ->render(*window_);
-        scrollbar_  ->render(*window_);
+        scrollbarX_  ->render(*window_);
+        scrollbarY_  ->render(*window_);
 
         event.type = aGL::EventType::TimerTicked;
         event.time = clock.now();

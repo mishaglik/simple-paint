@@ -16,6 +16,7 @@ namespace aGL {
         virtual void drawPoint   (Point p, Color color = Colors::Black) const = 0; 
         virtual void drawRect    (const Rect& rect, Color color = Colors::Black) const = 0;
         virtual void drawSurf    (Point pt, const RenderSurface& surf) const = 0;
+        virtual void drawSurf    (Point pt, const RenderSurface& surf, const Rect& rect) const = 0;
         virtual void clear(Color color = Colors::Gray) const = 0;
         virtual void resize(uint32_t width, uint32_t height) = 0;
 

@@ -8,7 +8,9 @@
 //TODO: Hiding widgets
 //TODO: Disabled widgets
 //TODO: Reisizable widgets
-//TODO: Menu bar
+//TODO: Texture manager
+//TODO: Tiny xml - lib
+//Winamp skins
 
 // Менеджер X - он владеет ресурсами X, а всем раздает только указатели.
 // Правило 3 - если кто то переопределен из A(A&), ~A, op=(A&), то должны быть переопределены остальные.

@@ -72,6 +72,6 @@ namespace aGL {
 
 
     void Scrollbar::update()
-    {
+    {   
     }
 }

@@ -62,7 +62,8 @@ Raytracer::~Raytracer()
 void Raytracer::render(const aGL::Window& window) const
 {
     multithreadContext_->drawMutex.lock();
-    aGL::Widget::render(window);
+    window.drawSurf(rect_.getCornerLL(), *static_cast<aGL::RenderSurface*>(surface), {startX_, startY_, 400, 400});
+    // aGL::Widget::render(window);
     multithreadContext_->drawMutex.unlock();
 }
 #endif

@@ -101,6 +101,24 @@ namespace aGL {
             wp_->draw(sprite);
     }
 
+    void Window::drawSurf(Point pt, const RenderSurface &surf, const Rect& rect) const
+    {
+        sf::Sprite sprite(surf.rsp_->getTexture());
+            sprite.setTextureRect({
+                    static_cast<int>(rect.x), 
+                    static_cast<int>(rect.h/2 - rect.y), 
+                    static_cast<int>(rect.w), 
+                    static_cast<int>(rect.h)
+                });
+            sprite.setOrigin(0, static_cast<float>(rect.h));
+            sprite.setScale(1, -1);
+            sprite.setPosition({
+                static_cast<float>(pt.x),
+                static_cast<float>(pt.y)
+            });
+            wp_->draw(sprite);
+    }
+
     static MouseButton getMouseButton(sf::Mouse::Button button)
     {
         switch (button) {

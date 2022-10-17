@@ -29,6 +29,8 @@ class Raytracer: public aGL::Widget{
     
     Scene* scene_;
     RTObjs::Camera currentView_;
+    uint32_t startX_ = 0;
+    uint32_t startY_ = 0;
 
     [[deprecated("Use scene_")]] Vector<RTObjs::RenderObject*> objlist_;
     [[deprecated("Use currentView_")]] Point camera_;
@@ -97,6 +99,9 @@ public:
         aGL::EventHandlerState onPaintEvent(const aGL::Event* ) override;
 
         void paintSegment(uint32_t x0, uint32_t w0) const;
+
+        void setStartX(int x) {startX_ = x;}
+        void setStartY(int y) {startY_ = y;}
 
         Raytracer(const Raytracer&) = delete;
         Raytracer& operator=(const Raytracer&) = delete;

@@ -17,7 +17,8 @@ class Application : public aGL::AObject{
     Raytracer* raytracer_    = nullptr;
     
     aGL::Menubar* menubar_ = nullptr;
-    aGL::Scrollbar* scrollbar_ = nullptr;
+    aGL::Scrollbar* scrollbarX_ = nullptr;
+    aGL::Scrollbar* scrollbarY_ = nullptr;
 
     aGL::PushButton* exitButton  = nullptr;
     aGL::PushButton* resetButton = nullptr;

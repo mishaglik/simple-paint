@@ -57,6 +57,22 @@ namespace aGL {
         rsp_->draw(sprite);
     }
 
+    void RenderSurface::drawSurf(Point pt, const RenderSurface& surf, const Rect& rect) const
+    {
+        sf::Sprite sprite(surf.rsp_->getTexture());
+        sprite.setTextureRect({
+                    static_cast<int>(rect.x), 
+                    static_cast<int>(rect.y), 
+                    static_cast<int>(rect.w), 
+                    static_cast<int>(rect.h
+                )});
+        sprite.setPosition({
+            static_cast<float>(pt.x),
+            static_cast<float>(pt.y)
+        });
+        rsp_->draw(sprite);
+    }
+
     void RenderSurface::clear(Color color) const 
     {
         rsp_->clear(sf::Color(color));
