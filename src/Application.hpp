@@ -3,6 +3,7 @@
 
 #include "VectorPlot.hpp"
 #include "Widgets/Scrollbar.hpp"
+#include "Widgets/TextInput.hpp"
 #include <AbstractGL/AWindow.hpp>
 #include <Widgets/Button.hpp>
 #include <AbstractGL/EventManager.hpp>
@@ -22,6 +23,8 @@ class Application : public aGL::AObject{
 
     aGL::PushButton* exitButton  = nullptr;
     aGL::PushButton* resetButton = nullptr;
+
+    aGL::TextInput* textInput_ = nullptr;
 
     mlg::ConsoleLogger logger;
     Scene* scene_ = nullptr;

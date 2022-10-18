@@ -6,6 +6,7 @@ set (AGL_WIDGETS_SOURCES
     WindowWidget.cpp
     Menubar.cpp
     Scrollbar.cpp
+    TextInput.cpp
 )
 
 set (AGL_WIDGETS_HEADERS
@@ -15,6 +16,7 @@ set (AGL_WIDGETS_HEADERS
     WindowWidget.hpp
     Menubar.hpp
     Scrollbar.hpp
+    TextInput.hpp
 )
 
 

@@ -206,6 +206,9 @@ namespace aGL {
             case sf::Event::LostFocus:
             case sf::Event::GainedFocus:
             case sf::Event::TextEntered:
+                event.type = EventType::TextEntered;
+                event.text = sfEvent.text.unicode;
+                break;
             case sf::Event::MouseEntered:
             case sf::Event::MouseLeft:
             case sf::Event::JoystickButtonPressed:

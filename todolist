@@ -10,6 +10,10 @@
 //TODO: Reisizable widgets
 //TODO: Texture manager
 //TODO: Tiny xml - lib
+
+//TODO: Phystech as Manchkin
+// Урони = закрытые сессии
+
 //Winamp skins
 
 // Менеджер X - он владеет ресурсами X, а всем раздает только указатели.

@@ -19,7 +19,6 @@ namespace RTObjs {
                 plane_(normal, pt), material_(material)
                 //Kill me with implict conversions bool <-> uint32_t; [[deprecated]]
             {
-                objName = "Plane";
             } 
             
             virtual ~RenderPlane() override {}

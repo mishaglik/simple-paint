@@ -18,7 +18,6 @@ namespace RTObjs{
             RenderSphere(const mgm::Point3f& center, double r, const Material& material = MaterialCollection::Mirror) : 
                 sph_(center, r), material_(material)
             {
-                objName="Sphere";
             }
             
             virtual ~RenderSphere() override {}

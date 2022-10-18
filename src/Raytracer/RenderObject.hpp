@@ -51,7 +51,6 @@ namespace RTObjs {
 
     class RenderObject{
         protected:
-        const char* objName = "";
     public:
         [[deprecated("Use material")]] bool isSource_ = false;
         RenderObject(){}

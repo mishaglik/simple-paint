@@ -64,6 +64,8 @@ Application::Application() :
     window_->subscribe(scrollbarY_);
 
 
+    textInput_ = new aGL::TextInput(10, 500, 100, 30);
+    window_->subscribe(textInput_);
 
     state_ = AppState::Ready;
 }
@@ -100,6 +102,7 @@ void Application::fillScene()
 Application::~Application()
 {
     state_ = AppState::Died;
+    delete textInput_;
     delete raytracer_;
     delete scene_;
     delete plotRotator_;
@@ -145,8 +148,9 @@ int Application::exec()
         resetButton ->render(*window_);        
         raytracer_  ->render(*window_);
         menubar_    ->render(*window_);
-        scrollbarX_  ->render(*window_);
-        scrollbarY_  ->render(*window_);
+        scrollbarX_ ->render(*window_);
+        scrollbarY_ ->render(*window_);
+        textInput_  ->render(*window_);
 
         event.type = aGL::EventType::TimerTicked;
         event.time = clock.now();

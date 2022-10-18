@@ -65,9 +65,9 @@ namespace mvc {
             reserve(8);
         }
 
-        explicit Vector(size_t size)
+        explicit Vector(size_t size, const T& t = T())
         {
-            resize(size);
+            resize(size, t);
         }
 
         Vector(const Vector& oth)
@@ -123,8 +123,8 @@ namespace mvc {
 
         void validate() const
         {
-            if(data_ == nullptr)  throw Exception::InvalidStack;
-            if(size_ > capacity_) throw Exception::InvalidStack;
+            // if(data_ == nullptr)  throw Exception::InvalidStack;
+            // if(size_ > capacity_) throw Exception::InvalidStack;
         }
 
         void reserve(size_t newCap)
@@ -152,7 +152,7 @@ namespace mvc {
             data_ = newArr;
         }
 
-        void resize(size_t newSize)
+        void resize(size_t newSize, const T& t = T())
         {
             validate();
             if(newSize > capacity_)
@@ -165,7 +165,7 @@ namespace mvc {
                 for(size_t i = size_; i < newSize; ++i)
                 {
                     try{
-                        new (data_ + i) T;
+                        new (data_ + i) T(t);
                     }
                     catch(...)
                     {
@@ -192,7 +192,20 @@ namespace mvc {
             size_++;
         }
 
+        void pop_back()
+        {
+            validate();
+            data_[--size_].~T();
+        }
+
         const T& back() const 
+        {
+            validate();
+            if(size_ == 0) throw Exception::OutOfRangeError;
+            return data_[size_ - 1];
+        }
+
+        T& back() 
         {
             validate();
             if(size_ == 0) throw Exception::OutOfRangeError;
