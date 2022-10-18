@@ -1,6 +1,7 @@
 #include "SFMLRenderSurface.hpp"
 #include "SFMLText.hpp"
 #include "ARenderSurface.hpp"
+#include "SFMLSprite.hpp"
 
 namespace aGL {
 
@@ -85,5 +86,19 @@ namespace aGL {
         delete old;
     }
 
+    void RenderSurface::drawSprite(Point pt, const Sprite& sprite) const
+    {
+        sprite.sp_->setPosition({
+            static_cast<float>(pt.x),
+            static_cast<float>(pt.y)
+        });
+        rsp_->draw(*sprite.sp_);
+        sprite.sp_->setPosition({0, 0});
+    }
 
+    const Texture& RenderSurface::getTexture() const //HACK: Need reference;
+    {
+        rsp_->display();
+        return rsp_->texture;
+    }
 }

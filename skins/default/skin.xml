@@ -5,6 +5,8 @@
         Default skin
     </title>
     <font>FreeMono.otf</font>
-    <image src="Button.png" id='5'/>
+    <PushButton>
+        <image src="Button.png"/>
+    </PushButton>
 
 </skin>

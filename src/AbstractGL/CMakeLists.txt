@@ -13,18 +13,24 @@ set (AGL_HEADERS
     EventManager.hpp
     Signals.hpp
     Event.hpp
+    ATexture.hpp
+    ASprite.hpp
 )
 
 set (AGL_SFML_SOURCES
     SFMLWindow.cpp
     SFMLText.cpp
     SFMLRenderSurface.cpp
+    SFMLTexture.cpp
+    SFMLSprite.cpp
 )
 
 set (AGL_SFML_HEADERS
     SFMLWindow.cpp
     SFMLText.cpp
     SFMLRenderSurface.cpp
+    SFMLTexture.hpp
+    SFMLSprite.hpp
 )
 
 add_library(AbstractGL ${AGL_SOURCES} ${AGL_HEADERS} ${AGL_SFML_SOURCES} ${AGL_SFML_HEADERS})

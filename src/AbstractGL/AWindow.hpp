@@ -34,6 +34,7 @@ namespace aGL {
         void drawRect    (const Rect& rect, Color color = Colors::Black) const override;
         void drawSurf    (Point pt, const RenderSurface& surf) const override;
         void drawSurf    (Point pt, const RenderSurface& surf, const Rect& rect) const override;
+        void drawSprite  (Point pt, const Sprite& sprite) const override;
         
         void clear(Color color = Colors::Gray) const override;
         void show();

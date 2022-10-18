@@ -2,6 +2,7 @@
 #include "AWindow.hpp"
 #include "SFMLText.hpp"
 #include "SFMLRenderSurface.hpp"
+#include "SFMLSprite.hpp"
 
 #include <LogUtils/LogUtils.hpp>
 #include <SFML/Graphics.hpp>
@@ -229,6 +230,17 @@ namespace aGL {
             return true;
         }
         return false;
+    }
+
+    void Window::drawSprite  (Point pt, const Sprite& sprite) const
+    {
+        sprite.sp_->setOrigin(0, static_cast<float>(sprite.sp_->getTextureRect().height));
+        sprite.sp_->setScale(1, -1);
+        sprite.sp_->setPosition({
+            static_cast<float>(pt.x),
+            static_cast<float>(pt.y)
+        });
+        wp_->draw(*sprite.sp_);
     }
 
 }
