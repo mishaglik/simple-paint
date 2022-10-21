@@ -1,28 +1,54 @@
 #ifndef WIDGETS_WIDGET_HPP
 #define WIDGETS_WIDGET_HPP
+#include "AbstractGL/ASprite.hpp"
+#include "AbstractGL/EventManager.hpp"
 #include <AbstractGL/AWindow.hpp>
 
 namespace aGL {
-
+    class SkinManager;
+    using TexId = size_t;
     class Widget : public AObject 
     {
     private:
         bool hidden_ = false;
+        
     protected:
+        mvc::Vector<Widget*> childen_;
+        EventManager* evMgr_ = nullptr;
+        Widget* parent_ = nullptr;
         using Timepoint = Event::Timepoint;
         bool focused_ = false; 
         Rect rect_;
         Surface* surface;
+        mutable Sprite sprite_;
         Timepoint time_;
-
+        const SkinManager* sm_ = nullptr;
+        TexId texId_ = 0;
     public:
-        Widget() : rect_({0, 0, 100, 100}), surface(new RenderSurface(100, 100)) {}
-        Widget(const Rect& rect) : rect_(rect), surface(new RenderSurface(rect.w, rect.h)) {}
-        Widget(const Rect& rect, RenderSurface* surf) : rect_(rect), surface(surf) {}
-        virtual ~Widget() {}
+        explicit Widget(Widget* parent = nullptr) : Widget(Rect{100,100,0,0}, parent) {}
+        explicit Widget(const Rect& rect, Widget* parent = nullptr) : parent_(parent), rect_(rect)
+        { 
+            if(parent_) parent_->addChild(this); 
+            RenderSurface* surf = new RenderSurface(rect.w, rect.h);
+            surface = surf;
+            sprite_ = Sprite(surf->getTexture());
+        }
+        Widget(const Rect& rect, RenderSurface* surf, Widget* parent = nullptr) : parent_(parent), rect_(rect), surface(surf) { if(parent_) parent_->addChild(this); }
+        virtual ~Widget() 
+        { 
+            for(Widget* w : childen_) 
+            { 
+                assert(w != this); 
+                delete  w;
+            } 
+            delete surface;
+        }
+
+        Widget& setSkinManager(const SkinManager* sm_);
+        virtual Widget& setEventManager(EventManager* em);
+        void addChild(Widget* child);
 
         virtual void render(const Window &window) const;
-        virtual void render(const Window *window) const {render(*window);}
         virtual void render(const Surface *surface) const;
 
         virtual EventHandlerState handleEvent               (const Event*  ) { return EventHandlerState::Dropped;}

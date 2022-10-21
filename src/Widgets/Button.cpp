@@ -1,11 +1,13 @@
 #include <AbstractGL/AText.hpp>
+#include "AbstractGL/ASprite.hpp"
 #include "Button.hpp"
+#include "SkinManager.hpp"
 #include <iostream>
 
 namespace aGL {
 
-    PushButton::PushButton(const char* text, uint32_t x, uint32_t y) :
-        AbstractButton({x, y, 1, 1}, text)
+    PushButton::PushButton(const char* text, uint32_t x, uint32_t y, Widget* parent) :
+        AbstractButton({x, y, 1000, 1000}, text, parent)
     {
         togglable_ = false;
         text_.setColor(Colors::Red);
@@ -14,8 +16,8 @@ namespace aGL {
         Widget::resize(textRect.w + 2 * horizontalMargin, textRect.h + 2 * verticalMargin);
     }
 
-    PushButton::PushButton(const char* text, uint32_t x, uint32_t y, uint32_t w, uint32_t h) :
-        AbstractButton({x, y, w, h}, text)
+    PushButton::PushButton(const char* text, uint32_t x, uint32_t y, uint32_t w, uint32_t h, Widget* parent) :
+        AbstractButton({x, y, w, h}, text, parent)
     {
         text_.setColor(Colors::Red);
         text_.setCharacterSize(3 * h / 4);
@@ -56,11 +58,18 @@ namespace aGL {
     {
         if(!needsRepaint_) return Accepted;
 
-        Color drawColor = defaultColor_;
-        if(hovered_) drawColor = hoveredColor_;
-        if(pressed_) drawColor = pressedColor_;
+        if(texId_ == 0)
+        {
+            Color drawColor = defaultColor_;
+            if(hovered_) drawColor = hoveredColor_;
+            if(pressed_) drawColor = pressedColor_;
 
-        surface->drawRect({0, 0, rect_.w, rect_.h}, drawColor); //TODO: Two pictures different transparency
+            surface->drawRect({0, 0, rect_.w, rect_.h}, drawColor); //TODO: Two pictures different transparency
+        }
+        else {
+            Sprite sp(sm_->getTexture(texId_));
+            surface->drawSprite({}, sp);
+        }
         
         int w = static_cast<int>(rect_.w);
         int h = static_cast<int>(rect_.h);

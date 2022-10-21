@@ -1,7 +1,7 @@
 #include "TextInput.hpp"
 
 namespace aGL {
-    TextInput::TextInput(uint32_t x, uint32_t y, uint32_t w, uint32_t h) : Widget({x, y, w, h}), string_(1, 0), text_("Text here") 
+    TextInput::TextInput(uint32_t x, uint32_t y, uint32_t w, uint32_t h, Widget* parent) : Widget({x, y, w, h}, parent), string_(1, 0), text_("Text here") 
     {
         text_.setCharacterSize(3 * h / 4);
         text_.setColor(Colors::Black);

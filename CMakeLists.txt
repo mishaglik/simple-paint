@@ -47,6 +47,7 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     add_link_options(${GNU_SANITIZE_FLAGS})
 endif()
 
+
 foreach(lib ${VP_LIBS})
     add_subdirectory(${VP_SOURCE_DIR}/${lib})
 endforeach()

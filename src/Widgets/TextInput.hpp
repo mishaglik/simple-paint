@@ -6,7 +6,7 @@ namespace aGL {
     class TextInput : public Widget 
     {
     public:
-        TextInput(uint32_t x, uint32_t y, uint32_t w, uint32_t h);
+        TextInput(uint32_t x, uint32_t y, uint32_t w, uint32_t h, Widget* parent = nullptr);
 
         Signal<const uint32_t*> textEntered;
         Signal<> textUpdated;

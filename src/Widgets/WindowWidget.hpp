@@ -8,7 +8,7 @@ namespace aGL {
     {
     public:
         WWindow(uint32_t w, uint32_t h, const char* title):
-            Window(w, h, title), ContainerWidget({0, 0, w, h}, nullptr) {}
+            Window(w, h, title), ContainerWidget({0, 0, w, h}, nullptr, nullptr) {}
 
         Signal<> quited;
 
@@ -23,6 +23,7 @@ namespace aGL {
         }
 
         void render(const Window &) const override { mFatal << "Window is tried to be drawn\n"; }
+        void render() const { ContainerWidget::render(this); }
         void update() override 
         {
             Event event = {};

@@ -17,7 +17,7 @@ public:
         mAssert(res);
     }
 
-    ~RenderSurface_()
+    ~RenderSurface_() override
     {
         texture.tp_ = nullptr; // Prevent deletion of sf::Texture set up in constructor.
     }

@@ -2,24 +2,21 @@
 
 namespace aGL {
 
-    Menubar::Menubar(uint32_t x, uint32_t y, uint32_t w, uint32_t h) :
-        ContainerWidget({x, y, w, h})
+    Menubar::Menubar(uint32_t x, uint32_t y, uint32_t w, uint32_t h, Widget* parent) :
+        ContainerWidget({x, y, w, h}, nullptr, parent)
     {
 
     }
 
     Menubar::~Menubar()
     {
-        for(Menu* menu : menus_)
-            delete menu;
     }
 
     size_t Menubar::addMenuEntry(const char* name)
     {
         uint32_t x = menus_.empty() ? 0 : menus_.back()->getRect().getCornerGL().x;
-        Menu* newMenu = new Menu(x, rect_.y, 100, rect_.h, name, &emanager_); //TODO: auto w
+        Menu* newMenu = new Menu(x, rect_.y, 100, rect_.h, name, this); //TODO: auto w
         menus_.push_back(newMenu);
-        subscribe(newMenu);
         newMenu->activated.connect(this, &Menubar::setActiveMenu);
         newMenu->deactivated.connect(this, &Menubar::setNoActiveMenu);
         return menus_.size() - 1;
@@ -30,25 +27,15 @@ namespace aGL {
         return ContainerWidget::hasEventPoint(pt) || (activeMenu ? activeMenu->hasEventPoint(pt) : false);
     }
 
-    void Menubar::render(const Window& w) const
+    Menubar::Menu::Menu(uint32_t x, uint32_t y, uint32_t w, uint32_t h, const char* name, Widget* parent) :
+        Widget({x, y, w, h}, nullptr, parent)
     {
-        for(Menu* menu : menus_)
-            menu->render(w);
-    }
-
-    Menubar::Menu::Menu(uint32_t x, uint32_t y, uint32_t w, uint32_t h, const char* name, EventManager* mgr) :
-        Widget({x, y, w, h}, nullptr), emgr_(mgr)
-    {
-        mainButton = new MenuButton(x, y, w, h, name);
-        emgr_->subscribe(mainButton);
+        mainButton = new MenuButton(x, y, w, h, name, this);
         mainButton->clicked.connect<Menu>(this, &Menu::toggle);
     }
 
     Menubar::Menu::~Menu()
     {
-        for(MenuButton* bt : buttons_)
-            delete bt;
-        delete mainButton;
     }
 
     EventHandlerState Menubar::Menu::onPaintEvent(const Event* e)
@@ -59,13 +46,13 @@ namespace aGL {
         return Accepted;
     }
 
-    void Menubar::Menu::render(const Window& w) const
+    void Menubar::Menu::render(const Surface* surf) const
     {
-        mainButton->render(w);
+        mainButton->render(surf);
         if(isActive_)
         {
             for(MenuButton* bt : buttons_)
-                bt->render(w);
+                bt->render(surf);
         }
     }
     
@@ -80,8 +67,7 @@ namespace aGL {
 
     size_t Menubar::Menu::addMenuEntry(const char* text)
     {
-        MenuButton* mb = new MenuButton(rect_.x, rect_.y + rect_.h * static_cast<uint32_t>(buttons_.size() + 1), rect_.w, rect_.h, text);
-        emgr_->subscribe(mb);
+        MenuButton* mb = new MenuButton(rect_.x, rect_.y + rect_.h * static_cast<uint32_t>(buttons_.size() + 1), rect_.w, rect_.h, text, this);
         mb->clicked.connect(this, &Menu::hide);
         buttons_.push_back(mb);
         return buttons_.size() - 1;
@@ -99,8 +85,8 @@ namespace aGL {
     
     
 
-    Menubar::MenuButton::MenuButton(uint32_t x, uint32_t y, uint32_t w, uint32_t h, const char* text)
-        : AbstractButton({x, y, w, h},text)
+    Menubar::MenuButton::MenuButton(uint32_t x, uint32_t y, uint32_t w, uint32_t h, const char* text, Widget* parent)
+        : AbstractButton({x, y, w, h},text, parent)
     {
         text_.setCharacterSize(3 * h / 4);
     }

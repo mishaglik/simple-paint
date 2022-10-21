@@ -1,8 +1,8 @@
 #include "Scrollbar.hpp"
 
 namespace aGL {
-    Scrollbar::Scrollbar(uint32_t x, uint32_t y, uint32_t w, uint32_t h, Orientation orientation) : 
-        Widget({x,y,w,h}), orientation_(orientation)
+    Scrollbar::Scrollbar(uint32_t x, uint32_t y, uint32_t w, uint32_t h, Orientation orientation, Widget* parent) : 
+        Widget({x,y,w,h}, parent), orientation_(orientation)
     {
         if(orientation == Vertical)
         {

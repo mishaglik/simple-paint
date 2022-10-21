@@ -13,7 +13,7 @@ namespace aGL {
             Horizontal,
         };
 
-        Scrollbar(uint32_t x, uint32_t y, uint32_t w = 200, uint32_t h = 20, Orientation orientation = Orientation::Horizontal);
+        Scrollbar(uint32_t x, uint32_t y, uint32_t w = 200, uint32_t h = 20, Orientation orientation = Orientation::Horizontal, Widget* parent = nullptr);
 
         void setMaxValue(int value) { maxValue_ = value; needsRepaint = true; }
         void setMinValue(int value) { minValue_ = value; needsRepaint = true; }

@@ -3,6 +3,7 @@
 
 #include "VectorPlot.hpp"
 #include "Widgets/Scrollbar.hpp"
+#include "Widgets/SkinManager.hpp"
 #include "Widgets/TextInput.hpp"
 #include <AbstractGL/AWindow.hpp>
 #include <Widgets/Button.hpp>
@@ -30,6 +31,8 @@ class Application : public aGL::AObject{
     Scene* scene_ = nullptr;
 
     aGL::EventManager eventManager_;
+
+    aGL::SkinManager sm;
 
     enum class AppState{
         UnInit = 0,

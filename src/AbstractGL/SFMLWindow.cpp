@@ -56,7 +56,7 @@ namespace aGL {
         wp_->draw(*text.tp_);
     }
 
-    void Window::update()
+    void Window::update() const
     {
         wp_->display();
     }
@@ -234,8 +234,8 @@ namespace aGL {
 
     void Window::drawSprite  (Point pt, const Sprite& sprite) const
     {
-        sprite.sp_->setOrigin(0, static_cast<float>(sprite.sp_->getTextureRect().height));
-        sprite.sp_->setScale(1, -1);
+        // sprite.sp_->setOrigin(0, static_cast<float>(sprite.sp_->getTextureRect().height));
+        // sprite.sp_->setScale(1, -1);
         sprite.sp_->setPosition({
             static_cast<float>(pt.x),
             static_cast<float>(pt.y)

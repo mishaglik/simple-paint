@@ -7,10 +7,11 @@ namespace aGL {
     {
     protected:
         EventManager emanager_;
+        EventManager* parEvManager_ = nullptr;
     public:
-        ContainerWidget() : Widget(), emanager_() {}
-        ContainerWidget(const Rect& rect) : Widget(rect), emanager_(rect.getCornerLL()) {}
-        ContainerWidget(const Rect& rect, RenderSurface* surf) : Widget(rect, surf), emanager_(rect.getCornerLL()) {}
+        explicit ContainerWidget(Widget* parent) : Widget(parent), emanager_() { parEvManager_ = evMgr_; evMgr_ = &emanager_; }
+        ContainerWidget(const Rect& rect, Widget* parent = nullptr) : Widget(rect, parent), emanager_(rect.getCornerLL()) { parEvManager_ = evMgr_; evMgr_ = &emanager_; }
+        ContainerWidget(const Rect& rect, RenderSurface* surf, Widget* parent = nullptr) : Widget(rect, surf, parent), emanager_(rect.getCornerLL()) { parEvManager_ = evMgr_; evMgr_ = &emanager_; }
 
 
         virtual EventHandlerState handleEvent               (const Event* event) override { return emanager_.handleEvent(const_cast<Event*>(event));}
@@ -26,6 +27,20 @@ namespace aGL {
         virtual EventHandlerState onTimerEvent              (const Event* event) override { update(); return emanager_.handleEvent(const_cast<Event*>(event));}
 
         bool subscribe(Widget* object) { return emanager_.subscribe(object); }
+
+        virtual ContainerWidget& setEventManager(EventManager* em) override 
+        {
+            if(parEvManager_)
+            {
+                MLG_UIMPLEMENTED //TODO: Implement
+                return *this;
+            }
+            parEvManager_ = em;
+            if(em)
+                em->subscribe(this);
+            return *this;
+        }
+
     };
 }
 

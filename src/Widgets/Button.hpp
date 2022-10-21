@@ -16,7 +16,7 @@ namespace aGL {
 
     public:
 
-        AbstractButton(const Rect& rect, const char* text) : Widget(rect), text_(text) {}
+        AbstractButton(const Rect& rect, const char* text, Widget* parent) : Widget(rect, parent), text_(text) {}
         virtual ~AbstractButton() override {}
 
         Signal<> clicked;
@@ -50,8 +50,8 @@ namespace aGL {
 
     public:
 
-        PushButton(const char* text, uint32_t x, uint32_t y);
-        PushButton(const char* text, uint32_t x, uint32_t y, uint32_t w, uint32_t h);
+        PushButton(const char* text, uint32_t x, uint32_t y, Widget* parent = nullptr);
+        PushButton(const char* text, uint32_t x, uint32_t y, uint32_t w, uint32_t h, Widget* parent = nullptr);
         ~PushButton() override {}
         
         EventHandlerState onPaintEvent(const Event* event) override;

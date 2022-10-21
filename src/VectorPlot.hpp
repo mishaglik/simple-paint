@@ -21,7 +21,7 @@ public:
     
     void update() override;
 
-    VectorPlot(uint32_t x, uint32_t y, uint32_t w, uint32_t h, double minX, double minY, double maxX, double maxY);
+    VectorPlot(uint32_t x, uint32_t y, uint32_t w, uint32_t h, double minX, double minY, double maxX, double maxY, aGL::Widget* parent = nullptr);
     
     ~VectorPlot() override;
 

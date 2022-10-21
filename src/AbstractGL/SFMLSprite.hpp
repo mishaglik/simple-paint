@@ -22,6 +22,7 @@ namespace aGL {
     public:
         Sprite_() : sf::Sprite() {}
         Sprite_(const Sprite_& oth) = default;
+        Sprite_& operator=(const Sprite_& oth) = default;
         Sprite_(const Texture& texture) : sf::Sprite(*texture.tp_) {}
         Sprite_(const Texture& texture, const Rect& rect) : sf::Sprite(*texture.tp_, getSFMLIntRect(rect)) {}
     };

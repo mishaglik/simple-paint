@@ -39,7 +39,7 @@ namespace aGL {
         void clear(Color color = Colors::Gray) const override;
         void show();
         void hide();
-        void update();
+        void update() const override;
     // Make class non-copyable
         Window(const Window&)             = delete;
         Window& operator= (const Window&) = delete;

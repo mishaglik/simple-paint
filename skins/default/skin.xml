@@ -4,9 +4,11 @@
     <title>
         Default skin
     </title>
-    <font>FreeMono.otf</font>
-    <PushButton>
+    <_default>
+        <font>FreeMono.otf</font>
+    </_default>
+    <aGL__PushButton>
         <image src="Button.png"/>
-    </PushButton>
+    </aGL__PushButton>
 
 </skin>

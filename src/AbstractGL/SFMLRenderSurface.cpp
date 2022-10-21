@@ -101,4 +101,8 @@ namespace aGL {
         rsp_->display();
         return rsp_->texture;
     }
+
+    void RenderSurface::update() const {
+        rsp_->display();
+    }
 }

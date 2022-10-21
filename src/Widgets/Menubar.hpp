@@ -11,7 +11,7 @@ namespace aGL {
         class MenuButton;
         class Menu;
 
-        Menubar(uint32_t x, uint32_t y, uint32_t w, uint32_t h);
+        Menubar(uint32_t x, uint32_t y, uint32_t w, uint32_t h, Widget* parent = nullptr);
         ~Menubar() override;
 
         size_t addMenuEntry(const char* name);
@@ -21,7 +21,6 @@ namespace aGL {
         Menu* operator[](size_t i) const { return menus_[i]; }
 
         bool hasEventPoint(const Point& pt) override;
-        virtual void render(const Window& ) const override;
 
 
     private:
@@ -35,11 +34,11 @@ namespace aGL {
     class Menubar::Menu : public Widget
     {
     public:
-        Menu(uint32_t x, uint32_t y, uint32_t w, uint32_t h, const char* name, EventManager* mgr);
+        Menu(uint32_t x, uint32_t y, uint32_t w, uint32_t h, const char* name, Widget* parent = nullptr);
         ~Menu() override;
 
         EventHandlerState onPaintEvent(const Event* ) override;
-        virtual void render(const Window& ) const override;
+        virtual void render(const Surface*) const override;
         
         void show() { if(!isActive_) activated.emit(this); isActive_ = true; }
         void hide() { isActive_ = false; deactivated.emit(); }
@@ -55,7 +54,6 @@ namespace aGL {
         Signal<> deactivated;
 
     private:
-        EventManager* emgr_ = nullptr;
         bool isActive_ = false;
 
         MenuButton* mainButton = nullptr;
@@ -67,7 +65,7 @@ namespace aGL {
     class Menubar::MenuButton : public AbstractButton
     {
     public:
-        MenuButton(uint32_t x, uint32_t y, uint32_t w, uint32_t h, const char* text);
+        MenuButton(uint32_t x, uint32_t y, uint32_t w, uint32_t h, const char* text, Widget* parent = nullptr);
         virtual EventHandlerState onPaintEvent(const Event*) override;
     private:
     };

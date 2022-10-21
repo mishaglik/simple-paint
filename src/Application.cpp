@@ -12,11 +12,13 @@ Application::Application() :
     logger.setLogLevel(mlg::Logger::LogLevel::INFO);
     setGlobalLogger(&logger);
 
+    sm.loadSkinset("/home/gms/progs++/vecplot/skins/default");
+
     window_ = new aGL::WWindow(800, 600, "Vecplot window");
-    eventManager_.subscribe(window_);
+    window_->setEventManager(&eventManager_);
     aGL::connect(window_, &aGL::WWindow::quited, this, &Application::quit);
 
-    plotRotator_ = new VectorPlot(10, 30, 300, 300, -10, 10, 10, -10);
+    plotRotator_ = new VectorPlot(10, 30, 300, 300, -10, 10, 10, -10, window_);
     plotRotator_->setVector({10, 0});
 
     window_->subscribe(plotRotator_);
@@ -26,18 +28,19 @@ Application::Application() :
     
     fillScene();
 
-    exitButton  = new aGL::PushButton("Exit", 5, 400, 500, 40);
+    exitButton  = new aGL::PushButton("Exit", 5, 400, 500, 40, window_);
     aGL::connect<aGL::AbstractButton>(exitButton, &aGL::AbstractButton::clicked, this, &Application::quit);
+    exitButton->setSkinManager(&sm);
 
     window_->subscribe(exitButton);
     
 
-    resetButton = new aGL::PushButton("Reset", 200, 400, 50, 100);
+    resetButton = new aGL::PushButton("Reset", 200, 400, 50, 100, window_);
     aGL::connect<aGL::AbstractButton>(resetButton, &aGL::AbstractButton::clicked, this, &Application::reset);
 
     window_->subscribe(resetButton);
     
-    menubar_ = new aGL::Menubar(0,0, 800, 20);
+    menubar_ = new aGL::Menubar(0,0, 800, 20, window_);
     menubar_->addMenuEntry("File");
     menubar_->entries()[0]->addMenuEntry("Aboba");
     menubar_->entries()[0]->addMenuEntry("Quit");
@@ -53,18 +56,18 @@ Application::Application() :
     menubar_->addMenuEntry("Raytracer");
     window_->subscribe(menubar_);
 
-    scrollbarX_ = new aGL::Scrollbar(300, 400, 400);
+    scrollbarX_ = new aGL::Scrollbar(300, 400, 400, 20, aGL::Scrollbar::Horizontal, window_);
     scrollbarX_->setMaxValue(100);
     scrollbarX_->valueChanged.connect(raytracer_, &Raytracer::setStartX);
     window_->subscribe(scrollbarX_);
 
-    scrollbarY_ = new aGL::Scrollbar(700, 0, 20, 400, aGL::Scrollbar::Vertical);
+    scrollbarY_ = new aGL::Scrollbar(700, 0, 20, 400, aGL::Scrollbar::Vertical, window_);
     scrollbarY_->setMaxValue(100);
     scrollbarY_->valueChanged.connect(raytracer_, &Raytracer::setStartY);
     window_->subscribe(scrollbarY_);
 
 
-    textInput_ = new aGL::TextInput(10, 500, 100, 30);
+    textInput_ = new aGL::TextInput(10, 500, 100, 30, window_);
     window_->subscribe(textInput_);
 
     state_ = AppState::Ready;
@@ -102,12 +105,8 @@ void Application::fillScene()
 Application::~Application()
 {
     state_ = AppState::Died;
-    delete textInput_;
     delete raytracer_;
     delete scene_;
-    delete plotRotator_;
-    delete menubar_;
-    delete scrollbarX_;
     delete window_;
 }
 
@@ -143,14 +142,15 @@ int Application::exec()
         event.type = aGL::EventType::Paint;
         eventManager_.handleEvent(&event);
 
-        plotRotator_->render(*window_); //TODO: change signature to window* 
-        exitButton  ->render(*window_);
-        resetButton ->render(*window_);        
+        // plotRotator_->render(*window_); //TODO: change signature to window* 
+        // exitButton  ->render(*window_);
+        // resetButton ->render(*window_);        
         raytracer_  ->render(*window_);
-        menubar_    ->render(*window_);
-        scrollbarX_ ->render(*window_);
-        scrollbarY_ ->render(*window_);
-        textInput_  ->render(*window_);
+        // menubar_    ->render(*window_);
+        // scrollbarX_ ->render(*window_);
+        // scrollbarY_ ->render(*window_);
+        // textInput_  ->render(*window_);
+        window_->render();
 
         event.type = aGL::EventType::TimerTicked;
         event.time = clock.now();
