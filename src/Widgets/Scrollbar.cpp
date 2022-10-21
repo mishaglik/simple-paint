@@ -28,6 +28,7 @@ namespace aGL {
 
     EventHandlerState Scrollbar::onMouseButtonPressEvent (const Event* event)
     {
+        mInfo << "Pressed \n";
         if(event->mbed.button == MouseButton::Left && mgm::contains(scroll_, event->mbed.point))
         {
             captured_ = true;
@@ -40,6 +41,8 @@ namespace aGL {
     {
         if(event->mbed.button == MouseButton::Left)
         {
+            // mInfo << "Released \n";
+
             captured_ = false;
             return Accepted;
         }
@@ -50,6 +53,7 @@ namespace aGL {
     {
         if(captured_)
         {
+            // mInfo << "Moved \n";
             int width = orientation_ ? rect_.w : rect_.h;
             int position = orientation_ ? event->mmed.point.x : event->mmed.point.y;
             position = std::max(width / 20, std::min(19 * width / 20, position)) - width / 20;

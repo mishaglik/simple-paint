@@ -15,6 +15,7 @@ namespace aGL {
         rect_.w = w;
         rect_.h = h;
         sprite_.setTextureRect({0,0,w,h});
+        resized.emit(w,h);
     }
 
     void Widget::resize(const mgm::Vector2u& v)
@@ -24,7 +25,7 @@ namespace aGL {
 
     void Widget::render(const Window& window) const 
     {
-        render(static_cast<const Surface*>(&window));
+        render(static_cast<const Surface* >(&window));
     }
 
     void Widget::render(const Surface* surf) const 
@@ -33,10 +34,11 @@ namespace aGL {
         const Surface* rSurface = surface ? surface : surf;
         for(Widget* child : childen_) child->render(rSurface);
 
-        if(RenderSurface* rs = dynamic_cast<RenderSurface*>(surface)){
+        if(RenderSurface* rs = dynamic_cast<RenderSurface*>(surface))
+        {
             rs->update();
-            // sprite_ = Sprite(rs->getTexture());
-            surf->drawSprite(rect_.getCornerLL(), sprite_);
+            Point pt = rect_.getCornerLL();
+            surf->drawSprite(pt, sprite_);
         }
     }
 
@@ -76,7 +78,8 @@ namespace aGL {
 
     Widget& Widget::setEventManager(EventManager* em) 
     {
-        if(evMgr_ != nullptr || em == nullptr) {
+        if(evMgr_ != nullptr || em == nullptr) 
+        {
             MLG_UIMPLEMENTED //TODO: Swap logic.
             return *this;
         }
@@ -90,4 +93,17 @@ namespace aGL {
         childen_.push_back(child);
         child->setEventManager(evMgr_);
     }
+
+    void Widget::setPoisition(uint32_t x, uint32_t y)
+    {
+        rect_.x = x;
+        rect_.y = y;
+    }
+
+    void Widget::move(uint32_t x, uint32_t y)
+    {
+        rect_.x += x;
+        rect_.y += y;
+    }
+
 }

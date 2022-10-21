@@ -1,7 +1,9 @@
 #ifndef RAYTRACER_RENDERSPHERE_HPP
 #define RAYTRACER_RENDERSPHERE_HPP
 
+#include "Widgets/Label.hpp"
 #include <Raytracer/RenderObject.hpp>
+#include "Widgets/ContainerWidget.hpp"
 
 namespace RTObjs{
 
@@ -10,6 +12,7 @@ namespace RTObjs{
     }
 
     class RenderSphere : public RenderObject {
+        class RenderSphereEditor;
         protected:
             mgm::Sphere3f sph_;
             Material material_;
@@ -29,6 +32,15 @@ namespace RTObjs{
             [[deprecated("Use material")]] virtual aGL::Color   getColor () const override;
             
             void setMaterial(const Material& material);
+            aGL::Widget* getEditorWidget(uint32_t w, aGL::Widget* parent) override;
+    };
+
+    class RenderSphere::RenderSphereEditor : public aGL::ContainerWidget
+    {
+        aGL::Label* label_;
+    public:
+        RenderSphereEditor(uint32_t w, aGL::Widget* parent);
+        
     };
 
 }

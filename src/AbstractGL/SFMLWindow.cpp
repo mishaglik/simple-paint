@@ -225,7 +225,6 @@ namespace aGL {
                 // event.type = EventType::Other;
                 mDebug << "Other event: " << sfEvent.type << mlg::endl;
                 return false; //TODO: Implement
-            // break;
             }
             return true;
         }
@@ -234,8 +233,6 @@ namespace aGL {
 
     void Window::drawSprite  (Point pt, const Sprite& sprite) const
     {
-        // sprite.sp_->setOrigin(0, static_cast<float>(sprite.sp_->getTextureRect().height));
-        // sprite.sp_->setScale(1, -1);
         sprite.sp_->move({
             static_cast<float>(pt.x),
             static_cast<float>(pt.y)

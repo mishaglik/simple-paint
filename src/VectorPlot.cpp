@@ -51,7 +51,7 @@ void VectorPlot::drawBackground() const
         surface->drawSprite(aGL::Point(
             -(static_cast<int>(rect.w) - static_cast<int>(aGL::Widget::rect_.w)) / 2,
             -(static_cast<int>(rect.h) - static_cast<int>(aGL::Widget::rect_.h)) / 2
-        ), sp);
+        ), sp); 
     }
     else surface->clear(aGL::Colors::White);
 }

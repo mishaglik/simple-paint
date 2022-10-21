@@ -1,10 +1,11 @@
 #ifndef RAYTRACER_RENDEROBJECT_HPP
 #define RAYTRACER_RENDEROBJECT_HPP
+#include "Widgets/Widget.hpp"
 #include <MGeomerty/Geometry.hpp>
 #include <AbstractGL/Color.hpp>
 #include <limits>
-namespace RTObjs {
 
+namespace RTObjs {
     const double NoIntersection = 1 / 0.0;
 
     using Point  = mgm::Point3f;
@@ -59,6 +60,8 @@ namespace RTObjs {
         virtual double getIntersection(const Ray& ray, SurfacePoint* pt = nullptr) const = 0;
         [[deprecated("Use material")]] virtual Point   getCenter() const = 0;
         [[deprecated("Use material")]] virtual Color   getColor () const = 0;
+
+        virtual aGL::Widget* getEditorWidget(uint32_t w, aGL::Widget* parent) = 0;
 
         RenderObject(const RenderObject&) = delete;
         RenderObject& operator=(const RenderObject&) = delete;

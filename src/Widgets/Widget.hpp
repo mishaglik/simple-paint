@@ -74,6 +74,11 @@ namespace aGL {
         virtual void resize(uint32_t w, uint32_t h);
         virtual void resize(const mgm::Vector2u& v);
 
+        virtual void setPoisition(uint32_t x, uint32_t y);
+        virtual void move(uint32_t x, uint32_t y);
+
+        Signal<uint32_t, uint32_t> resized;
+
         void show() { hidden_ = false; }
         void hide() { hidden_ = true; }
         bool isHidden() const { return hidden_; }

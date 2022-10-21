@@ -1,6 +1,8 @@
 #ifndef RAYTRACER_RENDERPLANE_HPP
 #define RAYTRACER_RENDERPLANE_HPP
 
+#include "Widgets/Label.hpp"
+#include "Widgets/ContainerWidget.hpp"
 #include <Raytracer/RenderObject.hpp>
 #include <MGeomerty/Plane.hpp>
 
@@ -8,6 +10,7 @@ namespace RTObjs {
 
     class RenderPlane : public RenderObject
     {
+        class RenderPlaneEditor;
         protected:
             mgm::Plane3f plane_;
             [[deprecated("Use material")]] aGL::Color color_;
@@ -29,6 +32,16 @@ namespace RTObjs {
             void setMaterial(const Material& material);
             
             virtual double getIntersection(const mgm::Ray3f& ray, SurfacePoint* pt = nullptr) const override;
+            virtual aGL::Widget* getEditorWidget(uint32_t w, aGL::Widget* parent) override;
+
+    };
+
+    class RenderPlane::RenderPlaneEditor : public aGL::ContainerWidget
+    {
+        aGL::Label* label_;
+    public:
+        RenderPlaneEditor(uint32_t w, aGL::Widget* parent);
+        
     };
 
 }

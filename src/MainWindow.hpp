@@ -2,6 +2,7 @@
 #define MAINWINDOW_HPP
 
 #include "Raytracer/Raytracer.hpp"
+#include "Raytracer/SceneEditor.hpp"
 #include "VectorPlot.hpp"
 #include "Widgets/Gui.hpp"
 #include "Widgets/WindowWidget.hpp"
@@ -20,6 +21,8 @@ class MainWindow final : public aGL::WWindow
     aGL::PushButton* resetButton = nullptr;
 
     aGL::TextInput* textInput_ = nullptr;
+
+    SceneEditor* sceneEditor_ = nullptr;
 
     void setupMenu();
     void toggleVecplotVisibility();

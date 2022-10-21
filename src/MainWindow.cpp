@@ -1,7 +1,7 @@
 #include "MainWindow.hpp"
 
 MainWindow::MainWindow(Scene* scene) :
-    aGL::WWindow(800, 600, "Nullptr")
+    aGL::WWindow(1000, 600, "Nullptr")
 {
     plotRotator_ = new VectorPlot(10, 30, 300, 300, -10, 10, 10, -10, this);
     plotRotator_->setVector({10, 0});
@@ -29,6 +29,8 @@ MainWindow::MainWindow(Scene* scene) :
     
 
     textInput_ = new aGL::TextInput(10, 500, 100, 30, this);
+
+    sceneEditor_ = new SceneEditor(scene, 800, 70, 200, 300, this);
 
 }
 

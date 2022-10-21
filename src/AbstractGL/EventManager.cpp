@@ -3,7 +3,7 @@
 
 namespace aGL {
 
-    EventManager::EventManager(const Point& corner) : corner_(corner) {}
+    EventManager::EventManager(const Point& ) /*: corner_(corner)*/ {}
 
     EventManager::~EventManager() {}
 

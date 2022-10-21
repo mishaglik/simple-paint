@@ -17,6 +17,11 @@ namespace aGL {
         EventHandlerState onPaintEvent(const Event*) override;
         EventHandlerState onGainFocusEvent(const Event*) override;
         EventHandlerState onLoseFocusEvent(const Event*) override;
+        EventHandlerState onMouseButtonPressEvent(const Event* e) override 
+        {
+            mInfo << "Pressed\n";
+            return Widget::onMouseButtonPressEvent(e);
+        }
     private:
         mvc::Vector<uint32_t> string_;
         Text text_;

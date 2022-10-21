@@ -1,4 +1,5 @@
 #include "RenderSphere.hpp"
+#include "Widgets/TextInput.hpp"
 
 
 namespace RTObjs {
@@ -38,4 +39,17 @@ namespace RTObjs {
     {
         material_ = material;
     }
+
+    RenderSphere::RenderSphereEditor::RenderSphereEditor(uint32_t w, aGL::Widget* parent) :
+        aGL::ContainerWidget({0, 0, w, 100}, parent)
+    {
+        label_ = new aGL::Label("Sphere", 1, 1, 14, this);
+        aGL::TextInput* xInput = new aGL::TextInput(0, 30, 50, 30, this);
+    }
+
+    aGL::Widget* RenderSphere::getEditorWidget(uint32_t w, aGL::Widget* parent)
+    {
+        return new RenderSphereEditor(w, parent);
+    }
+
 }

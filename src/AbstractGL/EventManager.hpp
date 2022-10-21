@@ -18,7 +18,7 @@ namespace aGL {
         void eventPointTransform(Event* e, const Point& pt);
         void eventPointTransformR(Event* e, const Point& pt);
 
-        Point corner_;
+        Point corner_ = {};
     public:
         EventManager(const Point& corner = {0, 0});
         ~EventManager(); 

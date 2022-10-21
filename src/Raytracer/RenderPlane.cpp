@@ -39,5 +39,16 @@ namespace RTObjs {
         material_ = material;
     }
 
+    aGL::Widget* RenderPlane::getEditorWidget(uint32_t w, aGL::Widget* parent)
+    {
+        return new RenderPlaneEditor(w, parent);
+    }
+
+    RenderPlane::RenderPlaneEditor::RenderPlaneEditor(uint32_t w, aGL::Widget* parent) :
+        aGL::ContainerWidget({0, 0, w, 50}, parent)
+    {
+        label_ = new aGL::Label("Plane", 1, 1, 14, this);
+    }
+
 
 }

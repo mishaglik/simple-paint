@@ -8,6 +8,7 @@ set (AGL_WIDGETS_SOURCES
     Scrollbar.cpp
     TextInput.cpp
     SkinManager.cpp
+    Label.cpp
 )
 
 set (AGL_WIDGETS_HEADERS
@@ -19,6 +20,7 @@ set (AGL_WIDGETS_HEADERS
     Scrollbar.hpp
     TextInput.hpp
     SkinManager.hpp
+    Label.hpp
 )
 
 find_library(tinyXML2 tinyxml2 PATHS "${PROJECT_SOURCE_DIR}/../libXML")
