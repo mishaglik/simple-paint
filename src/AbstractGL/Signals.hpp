@@ -30,6 +30,8 @@ namespace aGL {
     template<class T, class U, typename... Args>
     void connect(T* sender, Signal<Args...> T::* signal, U* reciever, void (U::*slot)(Args...))
     {
+        mAssert(sender != nullptr);
+        mAssert(reciever != nullptr);
         (sender->*signal).connect(reciever, slot);
     }
 

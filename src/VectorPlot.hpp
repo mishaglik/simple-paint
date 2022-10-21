@@ -34,6 +34,8 @@ public:
 
     void setSpeed(double speed);
 
+    void reset() { setAngle(0); setVector({10, 0}); }
+
     mgm::Vector2f& getVectorRef();
         aGL::EventHandlerState onMouseMoveEvent (const aGL::Event* event) override;
     aGL::EventHandlerState onMouseButtonPressEvent(const aGL::Event* event) override;

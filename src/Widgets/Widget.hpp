@@ -2,6 +2,7 @@
 #define WIDGETS_WIDGET_HPP
 #include "AbstractGL/ASprite.hpp"
 #include "AbstractGL/EventManager.hpp"
+#include "Widgets/SkinManager.hpp"
 #include <AbstractGL/AWindow.hpp>
 
 namespace aGL {
@@ -20,7 +21,7 @@ namespace aGL {
         bool focused_ = false; 
         Rect rect_;
         Surface* surface;
-        mutable Sprite sprite_;
+        Sprite sprite_;
         Timepoint time_;
         const SkinManager* sm_ = nullptr;
         TexId texId_ = 0;
@@ -45,6 +46,8 @@ namespace aGL {
         }
 
         Widget& setSkinManager(const SkinManager* sm_);
+        void setTexId(TexId id) { texId_ = id; }
+        void setTexId(const char* name);
         virtual Widget& setEventManager(EventManager* em);
         void addChild(Widget* child);
 
@@ -74,11 +77,11 @@ namespace aGL {
         void show() { hidden_ = false; }
         void hide() { hidden_ = true; }
         bool isHidden() const { return hidden_; }
+        bool skinned() const {return texId_ != NoTexture && texId_ != IgnoreTexture;}
         
         const Rect& getRect() const {return rect_;}
         const Point getEventCorner() const { return rect_.getCornerLL(); }
         virtual bool hasEventPoint(const Point& pt) { return hidden_ ? false : mgm::contains(rect_, pt); }
-
     // Non-copyable declaration.
         Widget(const Widget&)            = delete;
         Widget& operator=(const Widget&) = delete;

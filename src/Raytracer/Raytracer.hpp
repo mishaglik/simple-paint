@@ -91,7 +91,7 @@ public:
 
         [[deprecated]] aGL::Window* wind;
 
-        Raytracer(Scene* scene, uint32_t x, uint32_t y, uint32_t w, uint32_t h);
+        Raytracer(Scene* scene, uint32_t x, uint32_t y, uint32_t w, uint32_t h, aGL::Widget* parent);
         ~Raytracer() override;
 
         [[deprecated]] void addObject(RenderObject* object);

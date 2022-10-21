@@ -12,7 +12,8 @@ VectorPlot::VectorPlot(uint32_t x, uint32_t y, uint32_t w, uint32_t h, double mi
 
 }
 
-void VectorPlot::drawForeground() const {
+void VectorPlot::drawForeground() const 
+{
     mgm::Point2f finPoint = startPoint_;
     mgm::Vector2f vec = rotate(vec_, angle_);
 
@@ -38,8 +39,21 @@ void VectorPlot::drawForeground() const {
 
 }
 
-void VectorPlot::drawBackground() const {
-    surface->clear(aGL::Colors::White);
+void VectorPlot::drawBackground() const 
+{
+    if(skinned())
+    {
+        surface->clear(aGL::Colors::White);
+    
+        aGL::Sprite sp = sm_->getTexture(texId_);
+        aGL::Rect rect = sp.getTextureRect();
+        sp.setRotation(-angle_);
+        surface->drawSprite(aGL::Point(
+            -(static_cast<int>(rect.w) - static_cast<int>(aGL::Widget::rect_.w)) / 2,
+            -(static_cast<int>(rect.h) - static_cast<int>(aGL::Widget::rect_.h)) / 2
+        ), sp);
+    }
+    else surface->clear(aGL::Colors::White);
 }
 
 aGL::EventHandlerState VectorPlot::onPaintEvent(const aGL::Event*)
@@ -50,11 +64,13 @@ aGL::EventHandlerState VectorPlot::onPaintEvent(const aGL::Event*)
 }
 
 
-void VectorPlot::setVector(const mgm::Vector2f& vec){
+void VectorPlot::setVector(const mgm::Vector2f& vec)
+{
     vec_ = vec;
 }
 
-const mgm::Vector2f& VectorPlot::getVector() const {
+const mgm::Vector2f& VectorPlot::getVector() const 
+{
     return vec_;
 }
 

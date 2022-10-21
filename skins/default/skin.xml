@@ -10,5 +10,13 @@
     <aGL__PushButton>
         <image src="Button.png"/>
     </aGL__PushButton>
-
+    <aGL__Menubar__MenuButton>
+        <image src="./MenuButton.png"/>
+    </aGL__Menubar__MenuButton>
+    <MainWindow>
+        <image src="MainWindow2.jpeg"/>
+    </MainWindow>
+    <VectorPlot>
+        <image src="PlotRotator.jpg"/>
+    </VectorPlot>
 </skin>

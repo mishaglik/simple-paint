@@ -5,7 +5,8 @@
 #include <thread>
 #include <mutex>
 
-Raytracer::Raytracer(Scene* scene, uint32_t x, uint32_t y, uint32_t w, uint32_t h) : aGL::Widget({x, y, w, h}), scene_(scene), currentView_(w, h, 1), camera_({0, 0, -1000})
+Raytracer::Raytracer(Scene* scene, uint32_t x, uint32_t y, uint32_t w, uint32_t h, aGL::Widget* parent) : 
+    aGL::Widget({x, y, w, h}, parent), scene_(scene), currentView_(w, h, 1), camera_({0, 0, -1000})
 {
     sprite_.setTextureRect({0,0,400, 400});
     #ifdef RAYTRACER_MULTITHREADING

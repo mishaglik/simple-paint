@@ -24,6 +24,8 @@ namespace aGL {
         void setTexture(const Texture& texture);
         void setTextureRect(const Rect& rect);
         Rect getTextureRect() const;
+        void rotate(double angle);
+        void setRotation(double angle);
         Sprite crop(Rect& rect);
     };
 }

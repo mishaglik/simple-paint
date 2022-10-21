@@ -236,11 +236,15 @@ namespace aGL {
     {
         // sprite.sp_->setOrigin(0, static_cast<float>(sprite.sp_->getTextureRect().height));
         // sprite.sp_->setScale(1, -1);
-        sprite.sp_->setPosition({
+        sprite.sp_->move({
             static_cast<float>(pt.x),
             static_cast<float>(pt.y)
         });
         wp_->draw(*sprite.sp_);
+        sprite.sp_->move({
+            -static_cast<float>(pt.x),
+            -static_cast<float>(pt.y)
+        });
     }
 
 }

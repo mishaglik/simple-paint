@@ -96,22 +96,25 @@ namespace aGL {
         if(!needsRepaint_) return Accepted;
 
         static constexpr Color defaultColor_ = 0x232323ff;
-        static constexpr Color hoveredColor_ = 0x3a3a2aff;
+        static constexpr Color hoveredColor_ = 0xff108050;
         static constexpr Color pressedColor_ = 0x353535ff;
 
         Color drawColor = defaultColor_;
-        if(hovered_) drawColor = hoveredColor_;
         if(pressed_) drawColor = pressedColor_;
 
-        surface->drawRect({0, 0, rect_.w, rect_.h}, drawColor);
+        if(!skinned())
+            surface->drawRect({0, 0, rect_.w, rect_.h}, drawColor);
+        else
+            surface->drawSprite({}, sm_->getTexture(texId_));
+        if(hovered_) surface->drawRect({0, 0, rect_.w, rect_.h}, hoveredColor_);
         
         int w = static_cast<int>(rect_.w);
         int h = static_cast<int>(rect_.h);
 
-        surface->drawLine({0, 0}, {0, h}, (focused_ || hovered_) ? Colors::Red : Colors::LGray);
-        surface->drawLine({0, h}, {w, h}, (focused_ || hovered_) ? Colors::Red : Colors::LGray);
-        surface->drawLine({w, h}, {w, 0}, (focused_ || hovered_) ? Colors::Red : Colors::LGray);
-        surface->drawLine({w, 0}, {0, 0}, (focused_ || hovered_) ? Colors::Red : Colors::LGray);
+        surface->drawLine({0,   0  }, {0  , h-1}, (focused_ || hovered_) ? Colors::LGray : Colors::LGray);
+        surface->drawLine({0,   h-1}, {w-1, h-1}, (focused_ || hovered_) ? Colors::LGray : Colors::LGray);
+        surface->drawLine({w-1, h-1}, {w-1, 0  }, (focused_ || hovered_) ? Colors::LGray : Colors::LGray);
+        surface->drawLine({w-1, 0  }, {0  , 0  }, (focused_ || hovered_) ? Colors::LGray : Colors::LGray);
         
         surface->drawText(text_);
         needsRepaint_ = false;

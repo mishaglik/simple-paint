@@ -55,4 +55,16 @@ namespace aGL {
     {
         return Sprite{*this, rect};
     }
+
+    void Sprite::rotate(double angle)
+    {
+        sp_->rotate(static_cast<float>(180 * angle / std::numbers::pi));
+    }
+
+    void Sprite::setRotation(double angle)
+    {
+        const sf::IntRect& rect = sp_->getTextureRect(); 
+        sp_->setOrigin(rect.width * 0.5f , rect.height * 0.5f);
+        sp_->setRotation(static_cast<float>(180 * angle / std::numbers::pi));
+    }
 }

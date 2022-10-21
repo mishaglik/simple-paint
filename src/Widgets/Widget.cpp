@@ -43,8 +43,7 @@ namespace aGL {
     Widget& Widget::setSkinManager(const SkinManager* sm)
     {
         sm_ = sm;
-        texId_ = 0;
-        if(sm_ != nullptr)
+        if(sm_ != nullptr && texId_ == 0)
         {
             char* name = nullptr;
             size_t len = 0;
@@ -61,10 +60,22 @@ namespace aGL {
             texId_ = sm_->findTextureId(name);
             free(name);
         }
+
+        for(Widget* child : childen_)
+        {
+            child->setSkinManager(sm);
+        }
         return *this;
     }
 
-    Widget& Widget::setEventManager(EventManager* em) {
+    void Widget::setTexId(const char* name) 
+    {
+        if(!sm_) return;
+        texId_ = sm_->findTextureId(name);
+    }
+
+    Widget& Widget::setEventManager(EventManager* em) 
+    {
         if(evMgr_ != nullptr || em == nullptr) {
             MLG_UIMPLEMENTED //TODO: Swap logic.
             return *this;

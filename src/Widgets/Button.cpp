@@ -58,7 +58,7 @@ namespace aGL {
     {
         if(!needsRepaint_) return Accepted;
 
-        if(texId_ == 0)
+        if(!skinned())
         {
             Color drawColor = defaultColor_;
             if(hovered_) drawColor = hoveredColor_;

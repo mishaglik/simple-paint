@@ -66,12 +66,13 @@ namespace aGL {
     
     const Texture& SkinManager::operator[](TexId id) const
     {
+        if(id == IgnoreTexture) return skins_[0].texture;
         return skins_[id].texture;
     }
     
     TexId SkinManager::findTextureId(const char* entity) const
     {
-        if(!entity) return 0;
+        if(!entity) return NoTexture;
         for(size_t i = 1; i < skins_.size(); ++i)
         {
             if(skins_[i].name == entity)
@@ -79,7 +80,8 @@ namespace aGL {
                 return i;
             }
         }
-        return 0;
+        mInfo << "Asked for texture :\"" << entity <<"\" -- " << mlg::ConsoleLogger::CoStyle::Red << "not found" << mlg::endl;
+        return NoTexture;
     }
     
     const char* SkinManager::getFont()

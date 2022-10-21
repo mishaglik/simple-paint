@@ -8,6 +8,8 @@
 
 namespace aGL {
     using TexId = std::size_t;
+    const TexId NoTexture = 0;
+    const TexId IgnoreTexture = -1;
 
     class SkinManager
     {

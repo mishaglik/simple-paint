@@ -88,9 +88,10 @@ namespace aGL {
 
     void RenderSurface::drawSprite(Point pt, const Sprite& sprite) const
     {
+        sf::Vector2f origin = sprite.sp_->getOrigin();
         sprite.sp_->setPosition({
-            static_cast<float>(pt.x),
-            static_cast<float>(pt.y)
+            static_cast<float>(pt.x) + origin.x,
+            static_cast<float>(pt.y) + origin.y,
         });
         rsp_->draw(*sprite.sp_);
         sprite.sp_->setPosition({0, 0});

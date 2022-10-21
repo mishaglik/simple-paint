@@ -15,14 +15,14 @@ set(VP_SOURCES
     ${VP_SOURCE_DIR}/CoordinateSystem.cpp
     ${VP_SOURCE_DIR}/VectorPlot.cpp
     ${VP_SOURCE_DIR}/Application.cpp
-    # ${VP_SOURCE_DIR}/Raycaster.cpp
+    ${VP_SOURCE_DIR}/MainWindow.cpp
 )
 
 set(VP_HEADERS
     ${VP_SOURCE_DIR}/CoordinateSystem.hpp
     ${VP_SOURCE_DIR}/VectorPlot.hpp
     ${VP_SOURCE_DIR}/Application.hpp
-    # ${VP_SOURCE_DIR}/Raycaster.hpp
+    ${VP_SOURCE_DIR}/MainWindow.hpp
 )
 
 set(VP_LIBS
