@@ -11,7 +11,7 @@ Application::Application() :
     logger.setLogLevel(mlg::Logger::LogLevel::INFO);
     setGlobalLogger(&logger);
 
-    sm.loadSkinset("/home/gms/progs++/vecplot/skins/default");
+    sm.loadSkinset("/home/gms/progs++/vecplot/skins/minimalistic");
 
     scene_ = new Scene();
     fillScene();

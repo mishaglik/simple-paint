@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE skin>
+<skin>
+    <title>
+        Minimalistic style
+    </title>
+    <_default>
+        <font>FreeMono.otf</font>
+    </_default>
+    <aGL__PushButton>
+        <image src="Button.png"/>
+    </aGL__PushButton>
+    <aGL__Menubar__MenuButton>
+        <image src="MenuButton.png"/>
+    </aGL__Menubar__MenuButton>
+    <aGL__Menubar>
+        <image src="Menu.png"/>
+    </aGL__Menubar>
+    <VectorPlot>
+        <image src="PlotRotator.jpg"/>
+    </VectorPlot>
+    <aGL__Scrollbar>
+        <image src="Scrollbar.png"/>
+    </aGL__Scrollbar>
+    <SceneEditor>
+        <image src="SceneEdit.png"/>
+    </SceneEditor>
+    <MainWindow>
+        <image src="Window.png"/>
+    </MainWindow>
+</skin>

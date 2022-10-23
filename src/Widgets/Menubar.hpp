@@ -22,6 +22,8 @@ namespace aGL {
 
         bool hasEventPoint(const Point& pt) override;
 
+        void render(const Surface* surf) const override;
+
 
     private:
         mvc::Vector<Menu*> menus_;
@@ -40,9 +42,9 @@ namespace aGL {
         EventHandlerState onPaintEvent(const Event* ) override;
         virtual void render(const Surface*) const override;
         
-        void show() { if(!isActive_) activated.emit(this); isActive_ = true; }
-        void hide() { isActive_ = false; deactivated.emit(); }
-        void toggle() { isActive_ = !isActive_; (isActive_ ? activated.emit(this) : deactivated.emit()); }
+        void show();
+        void hide(); 
+        void toggle() { isActive_ ? hide() :  show(); }
 
         bool hasEventPoint(const Point& pt) override;
 
@@ -56,7 +58,7 @@ namespace aGL {
     private:
         bool isActive_ = false;
 
-        MenuButton* mainButton = nullptr;
+        MenuButton* mainButton_ = nullptr;
         mvc::Vector<MenuButton* > buttons_; 
         
     };
@@ -64,8 +66,12 @@ namespace aGL {
 
     class Menubar::MenuButton : public AbstractButton
     {
+        bool isMain_ = false;
+        bool isActive_ = false;
     public:
         MenuButton(uint32_t x, uint32_t y, uint32_t w, uint32_t h, const char* text, Widget* parent = nullptr);
+        void setMain() { isMain_ = true; }
+        void setActive(bool active) { isActive_ = active; needsRepaint_ = true; }
         virtual EventHandlerState onPaintEvent(const Event*) override;
     private:
     };

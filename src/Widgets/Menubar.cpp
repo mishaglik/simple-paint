@@ -14,8 +14,8 @@ namespace aGL {
 
     size_t Menubar::addMenuEntry(const char* name)
     {
-        uint32_t x = menus_.empty() ? 0 : menus_.back()->getRect().getCornerGL().x;
-        Menu* newMenu = new Menu(x, rect_.y, 100, rect_.h, name, this); //TODO: auto w
+        uint32_t x = menus_.empty() ? 0 : menus_.back()->getRect().getCornerGL().x - 1;
+        Menu* newMenu = new Menu(x, rect_.y, 102, rect_.h, name, this); //TODO: auto w
         menus_.push_back(newMenu);
         newMenu->activated.connect(this, &Menubar::setActiveMenu);
         newMenu->deactivated.connect(this, &Menubar::setNoActiveMenu);
@@ -30,8 +30,9 @@ namespace aGL {
     Menubar::Menu::Menu(uint32_t x, uint32_t y, uint32_t w, uint32_t h, const char* name, Widget* parent) :
         Widget({x, y, w, h}, nullptr, parent)
     {
-        mainButton = new MenuButton(x, y, w, h, name, this);
-        mainButton->clicked.connect<Menu>(this, &Menu::toggle);
+        mainButton_ = new MenuButton(x, y, w, h, name, this);
+        mainButton_->clicked.connect<Menu>(this, &Menu::toggle);
+        mainButton_->setMain();
     }
 
     Menubar::Menu::~Menu()
@@ -40,7 +41,7 @@ namespace aGL {
 
     EventHandlerState Menubar::Menu::onPaintEvent(const Event* e)
     {
-        mainButton->onPaintEvent(e);
+        mainButton_->onPaintEvent(e);
         for(MenuButton* bt : buttons_)
             bt->onPaintEvent(e);
         return Accepted;
@@ -48,7 +49,7 @@ namespace aGL {
 
     void Menubar::Menu::render(const Surface* surf) const
     {
-        mainButton->render(surf);
+        mainButton_->render(surf);
         if(isActive_)
         {
             for(MenuButton* bt : buttons_)
@@ -88,7 +89,8 @@ namespace aGL {
     Menubar::MenuButton::MenuButton(uint32_t x, uint32_t y, uint32_t w, uint32_t h, const char* text, Widget* parent)
         : AbstractButton({x, y, w, h},text, parent)
     {
-        text_.setCharacterSize(3 * h / 4);
+        text_.setCharacterSize(3 * h / 5);
+        text_.setPosition(2, 2);
     }
 
     EventHandlerState Menubar::MenuButton::onPaintEvent(const Event*)
@@ -103,22 +105,56 @@ namespace aGL {
         if(pressed_) drawColor = pressedColor_;
 
         if(!skinned())
+        {
             surface->drawRect({0, 0, rect_.w, rect_.h}, drawColor);
-        else
-            surface->drawSprite({}, sm_->getTexture(texId_));
-        if(hovered_) surface->drawRect({0, 0, rect_.w, rect_.h}, hoveredColor_);
-        
-        int w = static_cast<int>(rect_.w);
-        int h = static_cast<int>(rect_.h);
+            int w = static_cast<int>(rect_.w);
+            int h = static_cast<int>(rect_.h);
 
-        surface->drawLine({0,   0  }, {0  , h-1}, (focused_ || hovered_) ? Colors::LGray : Colors::LGray);
-        surface->drawLine({0,   h-1}, {w-1, h-1}, (focused_ || hovered_) ? Colors::LGray : Colors::LGray);
-        surface->drawLine({w-1, h-1}, {w-1, 0  }, (focused_ || hovered_) ? Colors::LGray : Colors::LGray);
-        surface->drawLine({w-1, 0  }, {0  , 0  }, (focused_ || hovered_) ? Colors::LGray : Colors::LGray);
+            surface->drawLine({0,   0  }, {0  , h-1}, (focused_ || hovered_) ? Colors::LGray : Colors::LGray);
+            surface->drawLine({0,   h-1}, {w-1, h-1}, (focused_ || hovered_) ? Colors::LGray : Colors::LGray);
+            surface->drawLine({w-1, h-1}, {w-1, 0  }, (focused_ || hovered_) ? Colors::LGray : Colors::LGray);
+            surface->drawLine({w-1, 0  }, {0  , 0  }, (focused_ || hovered_) ? Colors::LGray : Colors::LGray);
+            
+            if(hovered_) surface->drawRect({0, 0, rect_.w, rect_.h}, hoveredColor_);
+        }
+        else
+        {
+            text_.setColor(aGL::Colors::Black);
+            uint32_t texStart = (hovered_ || isActive_) ? 2 * rect_.w : 0;
+            if(!isMain_) texStart += rect_.w;
+            // mInfo << rect_.w << " " << texStart << mlg::endl;
+            surface->drawSprite({}, Sprite(sm_->getTexture(texId_), {texStart, 0, rect_.w, rect_.h}));
+        }
+        
         
         surface->drawText(text_);
         needsRepaint_ = false;
         return Accepted;
     }
+
+    void Menubar::Menu::hide()
+    {
+        isActive_ = false;
+        deactivated.emit();
+        mainButton_->setActive(false);
+    }
+
+    void Menubar::Menu::show() 
+    { 
+        if(!isActive_) activated.emit(this);
+        isActive_ = true;
+        mainButton_->setActive(true);
+    }
+
+    void Menubar::render(const Surface* surf) const
+    {
+        if(skinned())
+        {
+            const Texture& tx = sm_->getTexture(texId_);
+            surf->drawSprite({}, tx);
+        }
+        ContainerWidget::render(surf);
+    }
+
 
 }

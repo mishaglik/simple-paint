@@ -109,6 +109,7 @@ namespace aGL {
             for(size_t i = subscibers_.size(); i > 0; --i)
             {
                 Widget* w = subscibers_[i-1];
+                if(w->isHidden()) continue;
                 eventPointTransform(event, w->getEventCorner());
                 EventHandlerState resp = (w->onMouseMoveEvent(event));
                 eventPointTransformR(event, w->getEventCorner());

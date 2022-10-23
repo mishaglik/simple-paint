@@ -101,8 +101,8 @@ public:
         void paintSegment(uint32_t x0, uint32_t w0) const;
 
     
-        void setStartX(int x) {startX_ = x; sprite_.setTextureRect({startX_, startY_, 400, 400}); }
-        void setStartY(int y) {startY_ = y; sprite_.setTextureRect({startX_, startY_, 400, 400}); }
+        void setStartX(int x) {startX_ = x; currentView_.moveTo({static_cast<double>(startX_), static_cast<double>(startY_), -1000}); }
+        void setStartY(int y) {startY_ = y; currentView_.moveTo({static_cast<double>(startX_), static_cast<double>(startY_), -1000}); }
 
         Raytracer(const Raytracer&) = delete;
         Raytracer& operator=(const Raytracer&) = delete;
