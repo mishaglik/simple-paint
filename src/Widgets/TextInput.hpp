@@ -12,6 +12,7 @@ namespace aGL {
         Signal<> textUpdated;
         const uint32_t* getText() const { return string_.data(); }
         void setString(const uint32_t* text);
+        void setTextColor(aGL::Color color) { text_.setColor(color);}
 
         EventHandlerState onTextEnteredEvent(const Event*) override;
         EventHandlerState onPaintEvent(const Event*) override;

@@ -12,7 +12,6 @@ namespace aGL {
     {
     private:
         bool hidden_ = false;
-        
     protected:
         mvc::Vector<Widget*> childen_;
         EventManager* evMgr_ = nullptr;
@@ -27,14 +26,17 @@ namespace aGL {
         TexId texId_ = 0;
     public:
         explicit Widget(Widget* parent = nullptr) : Widget(Rect{100,100,0,0}, parent) {}
-        explicit Widget(const Rect& rect, Widget* parent = nullptr) : parent_(parent), rect_(rect)
+        explicit Widget(const Rect& rect, Widget* parent = nullptr) : parent_(parent), rect_(rect), maxW_(rect.w), maxH_(rect.h)
         { 
             if(parent_) parent_->addChild(this); 
             RenderSurface* surf = new RenderSurface(rect.w, rect.h);
             surface = surf;
             sprite_ = Sprite(surf->getTexture());
         }
-        Widget(const Rect& rect, RenderSurface* surf, Widget* parent = nullptr) : parent_(parent), rect_(rect), surface(surf) { if(parent_) parent_->addChild(this); }
+        Widget(const Rect& rect, RenderSurface* surf, Widget* parent = nullptr) : 
+            parent_(parent), rect_(rect), surface(surf), maxW_(rect.w), maxH_(rect.h)
+        { if(parent_) parent_->addChild(this); }
+
         virtual ~Widget() 
         { 
             for(Widget* w : childen_) 
@@ -49,7 +51,7 @@ namespace aGL {
         void setTexId(TexId id) { texId_ = id; }
         void setTexId(const char* name);
         virtual Widget& setEventManager(EventManager* em);
-        void addChild(Widget* child);
+        void addChild(Widget* child); //TODO: Make only container could have children.
 
         virtual void render(const Window &window) const;
         virtual void render(const Surface *surface) const;
@@ -90,6 +92,8 @@ namespace aGL {
     // Non-copyable declaration.
         Widget(const Widget&)            = delete;
         Widget& operator=(const Widget&) = delete;
+    private:
+        uint32_t maxW_ = 0, maxH_ = 0;
     };
 
 }

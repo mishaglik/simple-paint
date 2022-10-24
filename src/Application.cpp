@@ -11,7 +11,7 @@ Application::Application() :
     logger.setLogLevel(mlg::Logger::LogLevel::INFO);
     setGlobalLogger(&logger);
 
-    sm.loadSkinset("/home/gms/progs++/vecplot/skins/minimalistic");
+    sm_.loadSkinset("/home/gms/progs++/vecplot/skins/minimalistic");
 
     scene_ = new Scene();
     fillScene();
@@ -20,7 +20,8 @@ Application::Application() :
     window_->setEventManager(&eventManager_);
     aGL::connect<aGL::WWindow>(window_, &aGL::WWindow::quited, this, &Application::quit);
 
-    window_->setSkinManager(&sm);
+    window_->setSkinManager(&sm_);
+    aGL::connect(window_, &MainWindow::abobed, this, &Application::owlOnGlobe);
 
     state_ = AppState::Ready;
 }
@@ -29,12 +30,20 @@ Application::Application() :
 void Application::fillScene()
 {
     scene_->addObject(new RTObjs::RenderPlane ({   0,      1, 0.05}, {0, 150,0}));
+    globusImage_.loadFromFile("/home/gms/progs++/vecplot/Globus.jpg");
 
     RTObjs::Material material = RTObjs::MaterialCollection::Mirror;
+    RTObjs::Material materialTextured;
+    materialTextured.color = aGL::Colors::White;
+    materialTextured.diffCoef = 0.9;
+    materialTextured.reflCoef = 0.05;
+    materialTextured.tex = &globusImage_;
+    mAssert(materialTextured.tex != nullptr);
+
     material.color = RTObjs::Colors::Magenta;
     
     scene_->addObject(new RTObjs::RenderSphere({   0,     20, 1000}, 100, material));
-    scene_->addObject(new RTObjs::RenderSphere({ 300,    -20, 1000}, 100));
+    scene_->addObject(new RTObjs::RenderSphere({ 300,    -20, 1000}, 100, materialTextured));
     scene_->addObject(new RTObjs::RenderSphere({   0,   -1e5, 1000}, 5e4, RTObjs::MaterialCollection::Sun));
 
     RTObjs::Material yellowSun = RTObjs::MaterialCollection::Sun;
@@ -142,3 +151,7 @@ void Application::quit (){
 
 
 
+void Application::owlOnGlobe()
+{
+    globusImage_ = aGL::Image("/home/gms/progs++/vecplot/owl.png");
+}

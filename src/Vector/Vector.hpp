@@ -72,6 +72,7 @@ namespace mvc {
 
         Vector(const Vector& oth)
         {
+            
             operator=(oth);
         }
 
@@ -87,6 +88,7 @@ namespace mvc {
 
         Vector& operator=(const Vector& other)
         {
+            if(&other == this) return;
             T* newData = nullptr;
 
             newData = reinterpret_cast<T*>(new char[other.capacity_ * sizeof(T)]);

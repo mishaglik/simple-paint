@@ -28,4 +28,10 @@
     <MainWindow>
         <image src="Window.png"/>
     </MainWindow>
+    <RTObjs__RenderSphere__RenderSphereEditor>
+        <image src="SphereEdit.png"/>
+    </RTObjs__RenderSphere__RenderSphereEditor>
+    <RTObjs__RenderPlane__RenderPlaneEditor>
+        <image src="SphereEdit.png"/>
+    </RTObjs__RenderPlane__RenderPlaneEditor>
 </skin>

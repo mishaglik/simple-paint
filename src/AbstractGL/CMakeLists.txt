@@ -15,6 +15,7 @@ set (AGL_HEADERS
     Event.hpp
     ATexture.hpp
     ASprite.hpp
+    AImage.hpp
 )
 
 set (AGL_SFML_SOURCES
@@ -23,6 +24,7 @@ set (AGL_SFML_SOURCES
     SFMLRenderSurface.cpp
     SFMLTexture.cpp
     SFMLSprite.cpp
+    SFMLImage.cpp
 )
 
 set (AGL_SFML_HEADERS
@@ -31,6 +33,7 @@ set (AGL_SFML_HEADERS
     SFMLRenderSurface.cpp
     SFMLTexture.hpp
     SFMLSprite.hpp
+    SFMLImage.hpp
 )
 
 add_library(AbstractGL ${AGL_SOURCES} ${AGL_HEADERS} ${AGL_SFML_SOURCES} ${AGL_SFML_HEADERS})

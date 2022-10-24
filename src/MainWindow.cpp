@@ -45,6 +45,7 @@ void MainWindow::setupMenu()
     menubar_->addMenuEntry("File");
     menubar_->entries()[0]->addMenuEntry("Aboba");
     menubar_->entries()[0]->addMenuEntry("Quit");
+    menubar_->entries()[0]->buttons()[0]->clicked.connect<MainWindow>(this, &MainWindow::aboba);
     menubar_->entries()[0]->buttons()[1]->clicked.connect<MainWindow>(this, &MainWindow::quit);
 
     menubar_->addMenuEntry("Vecplot");

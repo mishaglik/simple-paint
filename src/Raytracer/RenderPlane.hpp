@@ -2,7 +2,7 @@
 #define RAYTRACER_RENDERPLANE_HPP
 
 #include "Widgets/Label.hpp"
-#include "Widgets/ContainerWidget.hpp"
+#include "Widgets/CollapsibleContainer.hpp"
 #include <Raytracer/RenderObject.hpp>
 #include <MGeomerty/Plane.hpp>
 
@@ -28,6 +28,8 @@ namespace RTObjs {
 
             [[deprecated("Use material")]] virtual mgm::Point3f getCenter() const override;
             [[deprecated("Use material")]] virtual aGL::Color getColor () const override;
+            virtual Color getSurfaceColor (const Point&) const override {return aGL::Colors::Black;}
+
 
             void setMaterial(const Material& material);
             
@@ -36,7 +38,7 @@ namespace RTObjs {
 
     };
 
-    class RenderPlane::RenderPlaneEditor : public aGL::ContainerWidget
+    class RenderPlane::RenderPlaneEditor : public aGL::CollapsibleContainer
     {
         aGL::Label* label_;
     public:

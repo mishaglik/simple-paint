@@ -6,7 +6,7 @@ namespace aGL {
 
     void Widget::resize(uint32_t w, uint32_t h)
     {
-        if(w > rect_.w || h > rect_.h)
+        if(w > maxW_ || h > maxH_)
         {
             MLG_UIMPLEMENTED
             return;

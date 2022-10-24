@@ -10,6 +10,7 @@ SceneEditor::SceneEditor(Scene* scene, uint32_t x, uint32_t y, uint32_t w, uint3
     for(RTObjs::RenderObject* obj : scene->objects())
     {
         editorEntries_.push_back(obj->getEditorWidget(w - 20, this));
+        aGL::connect<aGL::Widget>(editorEntries_.back(), &aGL::Widget::resized, this, &SceneEditor::childResized);
     }
     setStart(0); // We update size's of all elements;
 }
@@ -17,7 +18,13 @@ SceneEditor::SceneEditor(Scene* scene, uint32_t x, uint32_t y, uint32_t w, uint3
 void SceneEditor::setStart(int y)
 {
     start_ = y;
-    y = - y;
+    reLayout();
+}
+
+
+void SceneEditor::reLayout()
+{
+    int y = -start_;
     for(size_t i = 0; i < editorEntries_.size(); ++i)
     {
         editorEntries_[i]->setPoisition(0, y);

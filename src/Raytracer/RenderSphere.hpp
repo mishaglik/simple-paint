@@ -3,7 +3,7 @@
 
 #include "Widgets/Label.hpp"
 #include <Raytracer/RenderObject.hpp>
-#include "Widgets/ContainerWidget.hpp"
+#include "Widgets/CollapsibleContainer.hpp"
 
 namespace RTObjs{
 
@@ -33,14 +33,15 @@ namespace RTObjs{
             
             void setMaterial(const Material& material);
             aGL::Widget* getEditorWidget(uint32_t w, aGL::Widget* parent) override;
+            virtual Color getSurfaceColor (const Point& pt) const override;
+
     };
 
-    class RenderSphere::RenderSphereEditor : public aGL::ContainerWidget
+    class RenderSphere::RenderSphereEditor : public aGL::CollapsibleContainer
     {
         aGL::Label* label_;
     public:
         RenderSphereEditor(uint32_t w, aGL::Widget* parent);
-        
     };
 
 }

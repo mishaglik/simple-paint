@@ -39,7 +39,7 @@ class Raytracer: public aGL::Widget{
 
     Color getRayColor(const mgm::Ray3f& ray, int depth = 0) const;
     [[deprecated]] Color getLambert(const RTObjs::SurfacePoint& surface) const;
-    Color getTrueLambert(const RTObjs::SurfacePoint& surfPoint, int depth) const;
+    Color getTrueLambert(const RTObjs::SurfacePoint& surfPoint, int depth, Color surfColor) const;
 
     bool isRendered = false;
 
@@ -80,8 +80,8 @@ public:
 
         QualitySettings qS_
         {
-            .lamberthDepth     = 3,
-            .antialiasingLvl   = 0,
+            .lamberthDepth     = 5,
+            .antialiasingLvl   = 2,
             .maxRayRefl        = 20,
             .lamberthReflCost  = 5,
             .lamberthFastEdge  = 12,

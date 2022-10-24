@@ -21,6 +21,7 @@ set (AGL_WIDGETS_HEADERS
     TextInput.hpp
     SkinManager.hpp
     Label.hpp
+    CollapsibleContainer.hpp
 )
 
 find_library(tinyXML2 tinyxml2 PATHS "${PROJECT_SOURCE_DIR}/../libXML")

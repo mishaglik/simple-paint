@@ -30,6 +30,9 @@ class MainWindow final : public aGL::WWindow
 public:
     MainWindow(Scene* scene);
     ~MainWindow() override final;
+
+    aGL::Signal<> abobed;
+    void aboba() { abobed.emit(); }
 };
 
 #endif /* MAINWINDOW_HPP */

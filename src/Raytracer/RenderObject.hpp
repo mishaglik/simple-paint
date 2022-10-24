@@ -1,5 +1,6 @@
 #ifndef RAYTRACER_RENDEROBJECT_HPP
 #define RAYTRACER_RENDEROBJECT_HPP
+#include "AbstractGL/AImage.hpp"
 #include "Widgets/Widget.hpp"
 #include <MGeomerty/Geometry.hpp>
 #include <AbstractGL/Color.hpp>
@@ -23,6 +24,7 @@ namespace RTObjs {
         double diffCoef;
         double refrCoef; 
         double refrIndex;
+        const aGL::Image* tex = nullptr;
     };
 
     namespace MaterialCollection
@@ -60,6 +62,7 @@ namespace RTObjs {
         virtual double getIntersection(const Ray& ray, SurfacePoint* pt = nullptr) const = 0;
         [[deprecated("Use material")]] virtual Point   getCenter() const = 0;
         [[deprecated("Use material")]] virtual Color   getColor () const = 0;
+        virtual Color getSurfaceColor (const Point& pt) const = 0;
 
         virtual aGL::Widget* getEditorWidget(uint32_t w, aGL::Widget* parent) = 0;
 

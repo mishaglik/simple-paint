@@ -100,6 +100,7 @@ aGL::Color Raytracer::getRayColor(const mgm::Ray3f& ray, int depth) const
     if(pt.material->isSource){
         return pt.material->srcColor;
     }
+    aGL::Color surfColor = pt.material->tex ? crossObject->getSurfaceColor(pt.point) : pt.material->color;
     
     aGL::Color resultColor = aGL::Colors::Black;
 
@@ -119,13 +120,13 @@ aGL::Color Raytracer::getRayColor(const mgm::Ray3f& ray, int depth) const
         
         aGL::Color refRayColor = getRayColor(mgm::Ray3f{pt.point, refVec}, depth + 1) * pt.material->reflCoef;
 
-        refRayColor &= pt.material->color;
+        refRayColor &= surfColor;
         resultColor += refRayColor;
     } /* endif direct reflection. */
 
     if(!mgm::isZero(pt.material->diffCoef) && !pt.isInside)
     {
-        resultColor += getTrueLambert(pt, depth + 1) * pt.material->diffCoef;
+        resultColor += getTrueLambert(pt, depth + 1, surfColor) * pt.material->diffCoef;
     }
     
     if(!mgm::isZero(pt.material->refrCoef))
@@ -170,7 +171,7 @@ aGL::Color Raytracer::getRayColor(const mgm::Ray3f& ray, int depth) const
             v *= -1;
             v = mgm::getReflection(v, pt.normal);
             aGL::Color refRayColor = getRayColor(mgm::Ray3f{pt.point, v}, depth + 1) * pt.material->refrCoef;
-            refRayColor &= pt.material->color;
+            refRayColor &= surfColor;
             resultColor += refRayColor;
             mAssert(pt.isInside);
         }
@@ -230,7 +231,7 @@ void Raytracer::paintSegment(uint32_t x0, uint32_t w0) const
 }
 
 
-aGL::Color Raytracer::getTrueLambert(const RTObjs::SurfacePoint& surfPoint, int depth) const 
+aGL::Color Raytracer::getTrueLambert(const RTObjs::SurfacePoint& surfPoint, int depth, Color surfColor) const 
 {
     AvgColor avg = {};
 
@@ -248,7 +249,7 @@ aGL::Color Raytracer::getTrueLambert(const RTObjs::SurfacePoint& surfPoint, int 
 
     Color ret = avg.getAvg();
     // ret |= ambient_;
-    ret &= surfPoint.material->color;
+    ret &= surfColor;
     return ret;
 }
 

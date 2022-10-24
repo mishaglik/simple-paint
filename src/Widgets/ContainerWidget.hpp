@@ -10,7 +10,7 @@ namespace aGL {
         EventManager* parEvManager_ = nullptr;
     public:
         explicit ContainerWidget(Widget* parent) : Widget(parent), emanager_() { parEvManager_ = evMgr_; evMgr_ = &emanager_; }
-        ContainerWidget(const Rect& rect, Widget* parent = nullptr) : Widget(rect, parent), emanager_(rect.getCornerLL()) { parEvManager_ = evMgr_; evMgr_ = &emanager_; }
+        explicit ContainerWidget(const Rect& rect, Widget* parent = nullptr) : Widget(rect, parent), emanager_(rect.getCornerLL()) { parEvManager_ = evMgr_; evMgr_ = &emanager_; }
         ContainerWidget(const Rect& rect, RenderSurface* surf, Widget* parent = nullptr) : Widget(rect, surf, parent), emanager_(rect.getCornerLL()) { parEvManager_ = evMgr_; evMgr_ = &emanager_; }
 
 

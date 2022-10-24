@@ -18,6 +18,8 @@ public:
     aGL::EventHandlerState onPaintEvent(const aGL::Event *event) override;
 private:
     void setStart(int y);
+    void reLayout();
+    void childResized(uint32_t, uint32_t) { reLayout(); }
 };
 
 #endif /* RAYTRACER_SCENEEDITOR_HPP */

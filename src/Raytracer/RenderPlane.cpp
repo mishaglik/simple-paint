@@ -45,9 +45,10 @@ namespace RTObjs {
     }
 
     RenderPlane::RenderPlaneEditor::RenderPlaneEditor(uint32_t w, aGL::Widget* parent) :
-        aGL::ContainerWidget({0, 0, w, 50}, parent)
+        aGL::CollapsibleContainer({0, 0, w, 120}, 20, parent)
     {
         label_ = new aGL::Label("Plane", 1, 1, 14, this);
+        label_->setTextColor(aGL::Colors::Blue);
     }
 
 

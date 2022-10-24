@@ -1,6 +1,7 @@
 #ifndef APPLICATION_HPP
 #define APPLICATION_HPP
 
+#include "AbstractGL/AImage.hpp"
 #include "MainWindow.hpp"
 #include "Widgets/SkinManager.hpp"
 #include <AbstractGL/EventManager.hpp>
@@ -15,8 +16,8 @@ class Application : public aGL::AObject{
     Scene* scene_ = nullptr;
 
     aGL::EventManager eventManager_;
-
-    aGL::SkinManager sm;
+    aGL::Image globusImage_;
+    aGL::SkinManager sm_;
 
     enum class AppState{
         UnInit = 0,
@@ -44,7 +45,8 @@ public:
 
     void quit ();
     void reset();
-
+    
+    void owlOnGlobe();
 
     Application(const Application& app)             = delete;
     Application& operator= (const Application& app) = delete;
