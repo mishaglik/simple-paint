@@ -4,7 +4,7 @@ MainWindow::MainWindow(Scene* scene) :
     aGL::WWindow(1000, 600, "I've fucked up with design")
 {
 
-    raytracer_ = new Raytracer(scene, 180, 30, 620, 460, this); //TODO: Main widget
+    raytracer_ = new Raytracer(scene, 180, 30, 620, 460, 800, 600, this); //TODO: Main widget
     
     scrollbarX_ = new aGL::Scrollbar(180, 490, 620, 20, aGL::Scrollbar::Horizontal, this);
     scrollbarX_->setMaxValue(100);

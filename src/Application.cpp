@@ -4,6 +4,7 @@
 #include "Raytracer/RenderSphere.hpp"
 #include <chrono>
 #include <iostream>
+#include <thread>
 
 Application::Application() : 
     logger(std::cerr)
@@ -43,7 +44,7 @@ void Application::fillScene()
     material.color = RTObjs::Colors::Magenta;
     
     scene_->addObject(new RTObjs::RenderSphere({   0,     20, 1000}, 100, material));
-    scene_->addObject(new RTObjs::RenderSphere({ 300,    -20, 1000}, 100, materialTextured));
+    scene_->addObject(new RTObjs::RenderSphere({ 500,   -220, 1000}, 500, materialTextured));
     scene_->addObject(new RTObjs::RenderSphere({   0,   -1e5, 1000}, 5e4, RTObjs::MaterialCollection::Sun));
 
     RTObjs::Material yellowSun = RTObjs::MaterialCollection::Sun;

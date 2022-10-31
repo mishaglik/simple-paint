@@ -3,6 +3,7 @@
 
 namespace aGL {
     class RenderSurface;
+    class Image;
     class Texture
     {
         class Texture_;
@@ -21,6 +22,7 @@ namespace aGL {
         ~Texture();
 
         bool loadFromFile(const char* filename);
+        void loadFromImage(const Image& img);
         void setRepeated(bool);
     };
 }

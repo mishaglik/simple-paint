@@ -1,4 +1,5 @@
 #include "SFMLTexture.hpp"
+#include "SFMLImage.hpp"
 #include <SFML/Graphics.hpp>
 namespace aGL {
 
@@ -40,4 +41,10 @@ namespace aGL {
     Texture::Texture(const Texture_& tp) : tp_(new Texture::Texture_(tp))
     {
     }
+
+    void Texture::loadFromImage(const Image& img)
+    {
+        tp_->loadFromImage(*(img.ip_));
+    }
+
 }

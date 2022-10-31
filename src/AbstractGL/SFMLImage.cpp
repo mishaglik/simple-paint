@@ -23,4 +23,19 @@ namespace aGL {
         return {cl.r, cl.g, cl.b, cl.a};
     }
 
+    void Image::create(uint32_t w, uint32_t h, const Color& col)
+    {
+        ip_->create(w, h, sf::Color(col.r(), col.b(), col.b(), col.a()));
+    }
+
+    void Image::setPixel(unsigned int x, unsigned int y, const Color& color)
+    {
+        ip_->setPixel(x, y, sf::Color(color.color()));
+    }
+
+    void Image::saveToFile(const char* filename)
+    {
+        ip_->saveToFile(filename);
+    }
+
 }

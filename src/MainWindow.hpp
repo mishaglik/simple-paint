@@ -19,8 +19,6 @@ class MainWindow final : public aGL::WWindow
 
     aGL::PushButton* exitButton  = nullptr;
 
-    aGL::TextInput* textInput_ = nullptr;
-
     SceneEditor* sceneEditor_ = nullptr;
 
     void setupMenu();

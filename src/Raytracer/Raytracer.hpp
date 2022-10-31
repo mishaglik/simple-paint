@@ -38,6 +38,12 @@ class Raytracer: public aGL::Widget //TODO: Sort members
     
     Color ambient_ = 0x6da6bdff;
 
+    uint32_t iw_ = 0;
+    uint32_t ih_ = 0;
+
+    aGL::Image* image_ = nullptr;
+    aGL::Texture* tex_ = nullptr;
+
     Color getRayColor(const mgm::Ray3f& ray, int depth = 0) const;
     [[deprecated]] Color getLambert(const RTObjs::SurfacePoint& surface) const;
     Color getTrueLambert(const RTObjs::SurfacePoint& surfPoint, int depth, Color surfColor) const;
@@ -51,7 +57,7 @@ class Raytracer: public aGL::Widget //TODO: Sort members
         Finished,
     };
 
-    RenderState renderState_ = NeedsRepaint;
+    mutable RenderState renderState_ = NeedsRepaint;
 
 #ifdef RAYTRACER_MULTITHREADING
     struct MulithreadContext
@@ -61,6 +67,7 @@ class Raytracer: public aGL::Widget //TODO: Sort members
         std::mutex drawMutex;
         uint32_t x0 = 0;
         bool finish = false;
+        uint32_t activeThreads = 0;
     };
     
     static const size_t nThreads = 10;
@@ -90,9 +97,9 @@ public:
 
         QualitySettings qS_
         {
-            .lamberthDepth     = 5,
-            .antialiasingLvl   = 0,
-            .maxRayRefl        = 7,
+            .lamberthDepth     = 10,
+            .antialiasingLvl   = 5,
+            .maxRayRefl        = 25,
             .lamberthReflCost  = 5,
             .lamberthFastEdge  = 12,
             .antialiasMaxShift = .5,
@@ -101,7 +108,7 @@ public:
 
         [[deprecated]] aGL::Window* wind;
 
-        Raytracer(Scene* scene, uint32_t x, uint32_t y, uint32_t w, uint32_t h, aGL::Widget* parent);
+        Raytracer(Scene* scene, uint32_t x, uint32_t y, uint32_t w, uint32_t h, uint32_t iw, uint32_t ih, aGL::Widget* parent);
         ~Raytracer() override;
 
         [[deprecated]] void addObject(RenderObject* object);
@@ -117,8 +124,8 @@ public:
         aGL::Signal<uint32_t> progressChanged;
 
     
-        void setStartX(int x) {startX_ = x; currentView_.moveTo({static_cast<double>(startX_), static_cast<double>(startY_), -1000}); }
-        void setStartY(int y) {startY_ = y; currentView_.moveTo({static_cast<double>(startX_), static_cast<double>(startY_), -1000}); }
+        void setStartX(int x) {startX_ = x;}
+        void setStartY(int y) {startY_ = y;}
 
         Raytracer(const Raytracer&) = delete;
         Raytracer& operator=(const Raytracer&) = delete;
