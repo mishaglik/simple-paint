@@ -18,7 +18,6 @@ class MainWindow final : public aGL::WWindow
     aGL::Scrollbar* scrollbarY_ = nullptr;
 
     aGL::PushButton* exitButton  = nullptr;
-    aGL::PushButton* resetButton = nullptr;
 
     aGL::TextInput* textInput_ = nullptr;
 

@@ -12,6 +12,7 @@ namespace aGL {
         Signal<> textUpdated;
         const uint32_t* getText() const { return string_.data(); }
         void setString(const uint32_t* text);
+        void setString(const char* text);
         void setTextColor(aGL::Color color) { text_.setColor(color);}
 
         EventHandlerState onTextEnteredEvent(const Event*) override;
@@ -23,8 +24,9 @@ namespace aGL {
             mInfo << "Pressed\n";
             return Widget::onMouseButtonPressEvent(e);
         }
-    private:
+    protected:
         mvc::Vector<uint32_t> string_;
+    private:
         Text text_;
     };
 }

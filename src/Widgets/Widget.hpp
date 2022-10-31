@@ -41,8 +41,13 @@ namespace aGL {
         { 
             for(Widget* w : childen_) 
             { 
-                assert(w != this); 
-                delete  w;
+                if(w == this) 
+                {
+                    mFatal << "Widget: " << w << " == this" << mlg::endl;
+                    continue;
+                }
+
+                delete w;
             } 
             delete surface;
         }

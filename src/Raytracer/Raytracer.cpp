@@ -12,10 +12,10 @@ Raytracer::Raytracer(Scene* scene, uint32_t x, uint32_t y, uint32_t w, uint32_t 
         multithreadContext_ = new MulithreadContext{};
         multithreadContext_->rt = this;
         
-        for(size_t i = 0; i < nThreads; ++i)
-        {
-            threads[i] = new std::thread(Raytracer::raytraceThread, multithreadContext_);
-        }
+        // for(size_t i = 0; i < nThreads; ++i)
+        // {
+            // threads[i] = new std::thread(Raytracer::raytraceThread, multithreadContext_);
+        // }
     #endif
 }
 
@@ -30,14 +30,26 @@ void Raytracer::raytraceThread(MulithreadContext* context)
     {
         context->xMutex.lock();
         x = context->x0++;
+        context->xMutex.unlock();
         if(x >= w)
         {
-            x = context->x0 = 0;
+            break;
+            // x = context->x0 = 0;
         }
-        context->xMutex.unlock();
 
         context->rt->paintSegment(x, 1);
+        // if(x == w / 2 - ) break;
     }
+    
+    // sleep(10);
+    context->drawMutex.lock();   
+    context->rt->surface->update();
+    context->rt->surface->update();
+    context->rt->surface->update();
+    // for(int i = 0; i < 10000; ++i)
+    // context->rt->surface->drawPoint({});
+    context->drawMutex.unlock();
+
     mInfo << "threadFinished:" << nCurThread << mlg::endl;
 }
 
@@ -60,10 +72,13 @@ Raytracer::~Raytracer()
 
 
 #ifdef RAYTRACER_MULTITHREADING
-void Raytracer::render(const aGL::Window& window) const
+void Raytracer::render(const aGL::Surface* surf) const
 {
     multithreadContext_->drawMutex.lock();
-    aGL::Widget::render(window);
+    surface->setActive(true);
+    surface->update();
+    aGL::Widget::render(surf);
+    surface->setActive(false);
     // window.drawSurf(rect_.getCornerLL(), *static_cast<aGL::RenderSurface*>(surface), {startX_, startY_, 400, 400});
     // aGL::Widget::render(window);
     multithreadContext_->drawMutex.unlock();
@@ -77,21 +92,11 @@ aGL::Color Raytracer::getRayColor(const mgm::Ray3f& ray, int depth) const
     }
 
     RTObjs::SurfacePoint pt = {};
-    // size_t crossObj = 0;
-    // double distance = RTObjs::NoIntersection;
 
     const RTObjs::RenderObject* crossObject = scene_->getObjectOnRay(ray);
 
-    // for(size_t i = 0; i < objlist_.size(); ++i){
-        // double curDistance = objlist_[i]->getIntersection(ray);
-        // if(!mgm::isZero(curDistance) && curDistance < distance){
-            // distance = curDistance;
-            // crossObj = i;
-        // }
-    // }
     if(crossObject == nullptr) // It seems unsafe but NoInertsecton is +INF so it's ok.
     {   
-        // return (depth != 0) ? ambient_ : getSkyGradient(ray.dir());
         return ambient_;
     }
 
@@ -150,7 +155,7 @@ aGL::Color Raytracer::getRayColor(const mgm::Ray3f& ray, int depth) const
             Vec orthogonal = v;
             orthogonal -= parrallel;
 
-            mAssert(mgm::isZero(orthogonal.len() - sinF));
+            if(!mgm::isZero(orthogonal.len() - sinF)) { return aGL::Colors::Black; }
 
             orthogonal *= inRefrIndex / outRefrIndex;
 
@@ -183,7 +188,8 @@ aGL::Color Raytracer::getRayColor(const mgm::Ray3f& ray, int depth) const
 
 aGL::EventHandlerState Raytracer::onPaintEvent(const aGL::Event* ) 
 {
-    if(isRendered) return aGL::EventHandlerState::Accepted;
+    if(renderState_ != RenderState::NeedsRepaint) return aGL::EventHandlerState::Accepted;
+    else repaint();
 #ifndef RAYTRACER_MULTITHREADING
     for(uint32_t x = 0; x < rect_.w; x++)
     {  
@@ -195,7 +201,7 @@ aGL::EventHandlerState Raytracer::onPaintEvent(const aGL::Event* )
 
 void Raytracer::paintSegment(uint32_t x0, uint32_t w0) const
 {
-    if(isRendered) return;
+    if(renderState_ != InProgress) return;
     for(uint32_t x = x0; x < x0 + w0; ++x)
     {
         for(uint32_t y = 0; y < rect_.h; ++y)
@@ -216,17 +222,19 @@ void Raytracer::paintSegment(uint32_t x0, uint32_t w0) const
         
         #ifdef RAYTRACER_MULTITHREADING
             multithreadContext_->drawMutex.lock();
+            surface->setActive(true);
         #endif
-
             surface->drawPoint(mgm::Point2i{static_cast<int>(x), static_cast<int>(y)}, aGL::gammaCorrect(antialiasing.getAvg(), qS_.gamma));
+            surface->update();
             // mInfo << "Point " << x << ' ' << y << " gotten" << mlg::endl;
 
         #ifdef RAYTRACER_MULTITHREADING
+            surface->setActive(false);
             multithreadContext_->drawMutex.unlock();
         #endif
         }
 
-        mDebug << mlg::Logger::CoStyle::Green <<"Done layer: " << x << mlg::endl;
+        // mInfo << mlg::Logger::CoStyle::Green <<"Done layer: " << x << mlg::endl;
     }
 }
 
@@ -295,3 +303,37 @@ void Raytracer::addObject(RenderObject* object)
     scene_->addObject(object);
 }
 
+void Raytracer::repaint()
+{
+    if(renderState_ == RenderState::InProgress)
+    {
+        renderState_ = RenderState::Stopping;
+        multithreadContext_->finish = true;
+        for(size_t i = 0; i < nThreads; ++i)
+        {
+            if(!threads[i]) continue;
+            if(threads[i]->joinable()) threads[i]->join();
+            delete threads[i];
+            threads[i] = nullptr;
+        }
+    }
+    surface->setActive(false);
+    renderState_ = InProgress;
+    multithreadContext_->x0 = 0;
+    multithreadContext_->finish = false;
+    surface->clear(aGL::Colors::White);
+
+    for(size_t i = 0; i < nThreads; ++i)
+    {
+        threads[i] = new std::thread(Raytracer::raytraceThread, multithreadContext_);
+    }
+}
+
+void Raytracer::update()
+{
+    if(multithreadContext_->x0 >= rect_.w)
+    {
+        surface->update();
+        renderState_ = Finished;
+    }
+}

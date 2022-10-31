@@ -15,13 +15,14 @@ namespace aGL {
 
         Signal<bool> collapsedChanged;
 
-        virtual EventHandlerState onPaintEvent(const Event* ) override
+        virtual EventHandlerState onPaintEvent(const Event* e) override
         {
             if(skinned())
             {
+                surface->clear(aGL::Colors::Gray);
                 surface->drawSprite({}, Sprite(sm_->getTexture(texId_), {0, focused_ ? colH_ : 0, rect_.w, rect_.h}));
             }
-            return Accepted;
+            return ContainerWidget::onPaintEvent(e);
         }
         virtual EventHandlerState onGainFocusEvent(const Event* e) override
         {

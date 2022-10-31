@@ -30,6 +30,8 @@ namespace aGL {
         void update() const override;
 
         void clear(Color color = Colors::Gray) const override;
+        void setActive(bool active) const override;
+
         void resize(uint32_t w, uint32_t h) override;
      
         const Texture& getTexture() const;

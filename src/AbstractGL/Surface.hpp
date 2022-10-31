@@ -22,6 +22,7 @@ namespace aGL {
         virtual void clear(Color color = Colors::Gray) const = 0;
         virtual void resize(uint32_t width, uint32_t height) = 0;
         virtual void update() const = 0;
+        virtual void setActive(bool active = true) const = 0;
         virtual ~Surface() {}
     };
 }

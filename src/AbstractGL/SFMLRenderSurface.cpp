@@ -106,4 +106,9 @@ namespace aGL {
     void RenderSurface::update() const {
         rsp_->display();
     }
+
+    void RenderSurface::setActive(bool active) const
+    {
+        rsp_->setActive(active);
+    }
 }

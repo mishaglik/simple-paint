@@ -6,6 +6,6 @@
 #include "ContainerWidget.hpp"
 #include "Scrollbar.hpp"
 #include "TextInput.hpp"
-
+#include "NumInput.hpp"
 
 #endif /* WIDGETS_GUI_HPP */

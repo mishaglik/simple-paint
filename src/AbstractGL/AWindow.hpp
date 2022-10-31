@@ -37,6 +37,9 @@ namespace aGL {
         void drawSprite  (Point pt, const Sprite& sprite) const override;
         
         void clear(Color color = Colors::Gray) const override;
+
+        void setActive(bool active = true) const override;
+        
         void show();
         void hide();
         void update() const override;

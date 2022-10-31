@@ -8,7 +8,6 @@ namespace aGL {
         // text_.setPosition(0, h/3);
     }
 
-    void setString(const uint32_t* text);
 
     EventHandlerState TextInput::onTextEnteredEvent(const Event* e) 
     {
@@ -20,6 +19,7 @@ namespace aGL {
                 string_.pop_back();
                 string_.back() = 0;
                 text_.setString(string_.data());
+                textUpdated.emit();
                 return Accepted;
             }
             if(e->text == 13)
@@ -30,12 +30,8 @@ namespace aGL {
             
             string_[string_.size() - 1] = e->text;
             string_.push_back(0);
-            // mInfo << "str: ";
-            // for(uint32_t c : string_) 
-            // {
-            //     getGlobalLogger() << static_cast<int8_t>(c) << ' ';
-            // }
-            // getGlobalLogger() << '\n';
+
+            textUpdated.emit();
             text_.setString(string_.data());
 
             return Accepted;
@@ -62,7 +58,6 @@ namespace aGL {
     EventHandlerState TextInput::onLoseFocusEvent(const Event* e) 
     {
         textEntered.emit(string_.data());
-        textUpdated.emit();
         Widget::onLoseFocusEvent(e);
         mInfo << "Unfocused\n";
 
@@ -75,6 +70,24 @@ namespace aGL {
         return Widget::onGainFocusEvent(e);
     }
 
+    void TextInput::setString(const char* text)
+    {
+        string_.resize(0);
+        while (*text) {
+            string_.push_back(*(text++));
+        }
+        string_.push_back(0);
+        text_.setString(string_.data());
+        mInfo << "AAAA\n";
+    }
 
-
+    void TextInput::setString(const uint32_t* text)
+    {
+        string_.resize(0);
+        while (*text) {
+            string_.push_back(*(text++));
+        }
+        string_.push_back(0);
+        text_.setString(string_.data());
+    }
 }

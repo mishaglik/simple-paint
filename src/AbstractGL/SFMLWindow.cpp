@@ -244,4 +244,9 @@ namespace aGL {
         });
     }
 
+    void Window::setActive(bool active) const
+    {
+        wp_->setActive(active);
+    }
+
 }

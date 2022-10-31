@@ -9,6 +9,7 @@ set (AGL_WIDGETS_SOURCES
     TextInput.cpp
     SkinManager.cpp
     Label.cpp
+    NumInput.cpp
 )
 
 set (AGL_WIDGETS_HEADERS
@@ -22,6 +23,7 @@ set (AGL_WIDGETS_HEADERS
     SkinManager.hpp
     Label.hpp
     CollapsibleContainer.hpp
+    NumInput.hpp
 )
 
 find_library(tinyXML2 tinyxml2 PATHS "${PROJECT_SOURCE_DIR}/../libXML")

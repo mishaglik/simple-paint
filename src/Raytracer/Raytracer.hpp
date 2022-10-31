@@ -14,7 +14,8 @@
 #include <mutex>
 #endif 
 
-class Raytracer: public aGL::Widget{
+class Raytracer: public aGL::Widget //TODO: Sort members
+{
     template<typename T>
     using Vector = mvc::Vector<T>;
 
@@ -41,7 +42,16 @@ class Raytracer: public aGL::Widget{
     [[deprecated]] Color getLambert(const RTObjs::SurfacePoint& surface) const;
     Color getTrueLambert(const RTObjs::SurfacePoint& surfPoint, int depth, Color surfColor) const;
 
-    bool isRendered = false;
+    [[deprecated]] bool isRendered = false;
+
+    enum RenderState {
+        NeedsRepaint = 0,
+        InProgress,
+        Stopping,
+        Finished,
+    };
+
+    RenderState renderState_ = NeedsRepaint;
 
 #ifdef RAYTRACER_MULTITHREADING
     struct MulithreadContext
@@ -61,7 +71,7 @@ class Raytracer: public aGL::Widget{
     static void raytraceThread(MulithreadContext* context);
 
 public:
-    void render(const aGL::Window& window) const override;
+    void render(const aGL::Surface* surf) const override;
 private:
 #endif
 
@@ -81,8 +91,8 @@ public:
         QualitySettings qS_
         {
             .lamberthDepth     = 5,
-            .antialiasingLvl   = 2,
-            .maxRayRefl        = 20,
+            .antialiasingLvl   = 0,
+            .maxRayRefl        = 7,
             .lamberthReflCost  = 5,
             .lamberthFastEdge  = 12,
             .antialiasMaxShift = .5,
@@ -99,6 +109,12 @@ public:
         aGL::EventHandlerState onPaintEvent(const aGL::Event* ) override;
 
         void paintSegment(uint32_t x0, uint32_t w0) const;
+
+        void repaint();
+        void update() override;
+
+        uint32_t progress_ = 0;
+        aGL::Signal<uint32_t> progressChanged;
 
     
         void setStartX(int x) {startX_ = x; currentView_.moveTo({static_cast<double>(startX_), static_cast<double>(startY_), -1000}); }

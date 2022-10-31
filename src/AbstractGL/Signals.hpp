@@ -35,6 +35,5 @@ namespace aGL {
         (sender->*signal).connect(reciever, slot);
     }
 
-}
 
 #endif /* ABSTRACTGL_SIGNALS_HPP */

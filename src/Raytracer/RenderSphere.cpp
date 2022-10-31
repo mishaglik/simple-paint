@@ -1,4 +1,5 @@
 #include "RenderSphere.hpp"
+#include "Widgets/NumInput.hpp"
 #include "Widgets/TextInput.hpp"
 
 
@@ -40,19 +41,21 @@ namespace RTObjs {
         material_ = material;
     }
 
-    RenderSphere::RenderSphereEditor::RenderSphereEditor(uint32_t w, aGL::Widget* parent) :
-        aGL::CollapsibleContainer({0, 0, w, 120}, 20, parent)
+    RenderSphere::RenderSphereEditor::RenderSphereEditor(RenderSphere* sph, uint32_t w, aGL::Widget* parent) :
+        aGL::CollapsibleContainer({0, 0, w, 120}, 20, parent), sphere_(sph)
     {
-        resize(w, 20);
         label_ = new aGL::Label("Sphere", 1, 1, 14, this);
         label_->setTextColor(aGL::Colors::Blue);
-        aGL::TextInput* xInput = new aGL::TextInput(0, 30, 50, 30, this);
+        aGL::NumInput* xInput = new aGL::NumInput(10, 20, 50, 25, this);
+        xInput->setNumber(sphere_->getX());
+        xInput->numberEntered.connect(this, &RenderSphereEditor::setX);
         xInput->setTextColor(aGL::Colors::Blue);
+
     }
 
     aGL::Widget* RenderSphere::getEditorWidget(uint32_t w, aGL::Widget* parent)
     {
-        return new RenderSphereEditor(w, parent);
+        return new RenderSphereEditor(this, w, parent);
     }
 
   
@@ -72,6 +75,8 @@ namespace RTObjs {
 
             // return aGL::Colors::Red;
             // return Color(255 * x / 800, 0, 0, 0xff);
+            x %= 800;
+            y %= 400;
             return material_.tex->getPixel(x, y);
         }
         // return norm.y > 0 ? aGL::Colors::Blue : aGL::Colors::Green;

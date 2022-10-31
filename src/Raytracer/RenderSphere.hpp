@@ -35,13 +35,20 @@ namespace RTObjs{
             aGL::Widget* getEditorWidget(uint32_t w, aGL::Widget* parent) override;
             virtual Color getSurfaceColor (const Point& pt) const override;
 
+            void setX(int64_t x) {sph_.setCenter(Point(10 * x, sph_.center().y, sph_.center().z)); }
+            int64_t getX() {return sph_.center().x / 10; }
+
     };
 
     class RenderSphere::RenderSphereEditor : public aGL::CollapsibleContainer
     {
         aGL::Label* label_;
+        RenderSphere* sphere_;
     public:
-        RenderSphereEditor(uint32_t w, aGL::Widget* parent);
+        RenderSphereEditor(RenderSphere* sph, uint32_t w, aGL::Widget* parent);
+
+        void setX(int64_t x) {sphere_->setX(x);}
+        
     };
 
 }

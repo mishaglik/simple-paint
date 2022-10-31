@@ -18,7 +18,8 @@ MainWindow::MainWindow(Scene* scene) :
     plotRotator_->setVector({10, 0});
     
     exitButton  = new aGL::PushButton("Exit", 5, 400, 500, 40, this);
-    aGL::connect<aGL::AbstractButton, aGL::WWindow>(exitButton, &aGL::AbstractButton::clicked, this, &aGL::WWindow::quit);
+    // aGL::connect<aGL::AbstractButton, aGL::WWindow>(exitButton, &aGL::AbstractButton::clicked, this, &aGL::WWindow::quit);
+    aGL::connect<aGL::AbstractButton>(exitButton, &aGL::AbstractButton::clicked, raytracer_, &Raytracer::repaint);
     
 
     // resetButton = new aGL::PushButton("Reset", 200, 400, 50, 100, this);
@@ -28,8 +29,11 @@ MainWindow::MainWindow(Scene* scene) :
 
 
     // textInput_ = new aGL::TextInput(10, 500, 100, 30, this);
+    new aGL::NumInput(10, 500, 100, 30, this);
 
     sceneEditor_ = new SceneEditor(scene, 820, 30, 180, 460, this);
+
+
 
     menubar_ = new aGL::Menubar(0,0, 1000, 30, this);
     setupMenu();
