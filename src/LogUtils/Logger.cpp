@@ -11,6 +11,11 @@ namespace mlg {
 
     void endl(Logger& log)
     {
+        log.endline();
+    }
+
+    void newl(Logger& log)
+    {
         log.newline();
     }
 
@@ -35,6 +40,10 @@ namespace mlg {
         logLevel_ = logLevel;
     }
 
+    void Logger::setAbortLevel(LogLevel abortLevel){
+        abortLevel_ = abortLevel;
+    }
+
     void Logger::setVerbosity(uint64_t verbosity)
     {
         verbosity_ = verbosity;
@@ -53,6 +62,7 @@ namespace mlg {
     Logger& Logger::debug()
     {
         if(logLevel_ > LogLevel::DEBUG) return NULL_LOGGER;
+        curLevel_ = LogLevel::DEBUG; 
         operator<<(CoStyle::Reset);
         printLineStart();
         return *this << "[" << CoStyle::Blue << "Debug" << CoStyle::Reset << "  ]: ";
@@ -61,6 +71,7 @@ namespace mlg {
     Logger& Logger::info()
     {
         if(logLevel_ > LogLevel::INFO) return NULL_LOGGER;
+        curLevel_ = LogLevel::INFO;
         operator<<(CoStyle::Reset);
         printLineStart();
         return *this << "[Info   ]: ";
@@ -68,6 +79,7 @@ namespace mlg {
 
     Logger& Logger::warning(){
         if(logLevel_ > LogLevel::WARNING) return NULL_LOGGER;
+        curLevel_ = LogLevel::WARNING;
         operator<<(CoStyle::Reset);
         printLineStart();
         return *this << "[" << CoStyle::Yellow << "Warning" << CoStyle::Reset << "]: ";
@@ -76,6 +88,7 @@ namespace mlg {
     Logger& Logger::error()
     {
         if(logLevel_ > LogLevel::ERROR) return NULL_LOGGER;
+        curLevel_ = LogLevel::ERROR;
         operator<<(CoStyle::Reset);
         printLineStart();
         return *this << "[" << CoStyle::Red << "Error" << CoStyle::Reset << "  ]: ";
@@ -83,6 +96,7 @@ namespace mlg {
 
     Logger& Logger::fatal(){
         if(logLevel_ > LogLevel::FATAL) return NULL_LOGGER;
+        curLevel_ = LogLevel::FATAL;
         operator<<(CoStyle::Reset);
         printLineStart();
         return *this << "[" << CoStyle::Red << CoStyle::Bold << "Fatal" << CoStyle::Reset << "  ]: ";

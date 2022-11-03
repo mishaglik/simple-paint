@@ -32,10 +32,11 @@ set(VP_LIBS
     LogUtils
     Vector
     Widgets
+    GEditor
 )
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    add_compile_options(-Weverything -O1 -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-padded -Wno-weak-vtables -Wno-sign-conversion -Wno-covered-switch-default)
+    add_compile_options(-Weverything -O1 -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-padded -Wno-weak-vtables -Wno-sign-conversion -Wno-covered-switch-default -Werror=return-type)
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     # add_compile_options(-Wall -Wextra -Wno-error=padded -Wno-weak-vtables)
     set (GNU_SANITIZE_FLAGS
@@ -53,8 +54,10 @@ foreach(lib ${VP_LIBS})
 endforeach()
 
 add_executable(main ${VP_SOURCES} ${VP_HEADERS})
+add_executable(geditor src/GEMain.cpp)
 
 target_link_libraries(main PUBLIC ${VP_LIBS})
+target_link_libraries(geditor PUBLIC ${VP_LIBS})
 
 # target_include_directories(main PUBLIC 
     # ${VP_SOURCE_DIR}/MGeomerty

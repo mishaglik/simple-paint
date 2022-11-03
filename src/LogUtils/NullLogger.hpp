@@ -14,25 +14,26 @@ namespace mlg {
     {
     public:
         constexpr NullLogger() {}
-        ~NullLogger() override final {}
-        virtual Logger& operator<<(char) override {return *this;}
+        constexpr ~NullLogger() override final {}
+        virtual Logger& operator<<(char) override final {return *this;}
         
-        virtual Logger& operator<<(uint32_t)override {return *this;}
-        virtual Logger& operator<<(int32_t )override {return *this;}
-        virtual Logger& operator<<(uint64_t)override {return *this;}
-        virtual Logger& operator<<(int64_t )override {return *this;}
-        virtual Logger& operator<<(double  )override     {return *this;}
+        constexpr virtual Logger& operator<<(uint32_t)override final {return *this;}
+        constexpr virtual Logger& operator<<(int32_t )override final {return *this;}
+        constexpr virtual Logger& operator<<(uint64_t)override final {return *this;}
+        constexpr virtual Logger& operator<<(int64_t )override final {return *this;}
+        constexpr virtual Logger& operator<<(double  )override final {return *this;}
 
-        virtual Logger& operator<<(const char*) override {return *this;}
-        virtual Logger& operator<<(const void*) override {return *this;}
+        constexpr virtual Logger& operator<<(const char*) override final {return *this;}
+        constexpr virtual Logger& operator<<(const void*) override final {return *this;}
 
-        virtual void flush()   override {}
-        virtual void newline() override {}
-        virtual void printWelcome  () override {}
-        virtual void printFinish   () override {}
-        virtual void printLineStart() override {}
+        constexpr virtual void flush()   override final {}
+        constexpr virtual void newline() override final {}
+        constexpr virtual void endline() override final {}
+        constexpr virtual void printWelcome  () override final {}
+        constexpr virtual void printFinish   () override final {}
+        constexpr virtual void printLineStart() override final {}
 
-        virtual Logger& operator<<(CoStyle) override {return *this;}
+        constexpr virtual Logger& operator<<(CoStyle) override final {return *this;}
     };
 }
 

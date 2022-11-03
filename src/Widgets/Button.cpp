@@ -9,22 +9,27 @@ namespace aGL {
     PushButton::PushButton(const char* text, uint32_t x, uint32_t y, Widget* parent) :
         AbstractButton({x, y, 1000, 1000}, text, parent)
     {
-        togglable_ = false;
-        text_.setColor(Colors::Red);
+        if(hasText_)
+        {
+            text_.setColor(Colors::Red);
 
-        Rect textRect = text_.getRect();
-        Widget::resize(textRect.w + 2 * horizontalMargin, textRect.h + 2 * verticalMargin);
+            Rect textRect = text_.getRect();
+            Widget::resize(textRect.w + 2 * horizontalMargin, textRect.h + 2 * verticalMargin);
+        }
     }
 
     PushButton::PushButton(const char* text, uint32_t x, uint32_t y, uint32_t w, uint32_t h, Widget* parent) :
         AbstractButton({x, y, w, h}, text, parent)
     {
-        text_.setColor(Colors::Red);
-        text_.setCharacterSize(3 * h / 4);
-        Rect textRect = text_.getRect();
-        if(textRect.w + 2 * horizontalMargin < w)
+        if(hasText_)
         {
-            Widget::resize(textRect.w + 2 * horizontalMargin, h);
+            text_.setColor(Colors::Red);
+            text_.setCharacterSize(3 * h / 4);
+            Rect textRect = text_.getRect();
+            if(textRect.w + 2 * horizontalMargin < w)
+            {
+                Widget::resize(textRect.w + 2 * horizontalMargin, h);
+            }
         }
     }
 
@@ -35,10 +40,22 @@ namespace aGL {
             pressed_ = true;
             pressed.emit();
             needsRepaint_ = true;
+            if(togglable_)
+            {
+                toggle();
+            }
             return Accepted;
         }
         return Dropped;
     }
+
+    void AbstractButton::toggle()
+    {
+        state_ = !state_;
+        toggled.emit(state_);
+        needsRepaint_ = true;
+    }
+
 
     EventHandlerState AbstractButton::onMouseButtonReleaseEvent(const Event* event)
     {
@@ -58,7 +75,7 @@ namespace aGL {
     {
         if(!needsRepaint_) return Accepted;
 
-        if(!skinned()                                   )
+        if(!skinned())
         {
             Color drawColor = defaultColor_;
             if(hovered_) drawColor = hoveredColor_;
@@ -119,12 +136,14 @@ namespace aGL {
 
     void AbstractButton::setTextColor(const Color& color)
     {
-        text_.setColor(color);
+        if(hasText_)
+            text_.setColor(color);
     }
 
     void AbstractButton::setTextCharacterSize(uint32_t size)
     {
-        text_.setCharacterSize(size);
+        if(hasText_)
+            text_.setCharacterSize(size);
     }
 
 

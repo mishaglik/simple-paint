@@ -43,10 +43,12 @@ bool operator==(const Vector3f& lhs, const Vector3f& rhs){
     return isZero(lhs.x - rhs.x) && isZero(lhs.y - rhs.y) && isZero(lhs.z - rhs.z);
 }
 
+template<>
 bool operator==(const Point2f& lhs, const Point2f& rhs){
     return isZero(lhs.x - rhs.x) && isZero(lhs.y - rhs.y);
 }
 
+template<>
 bool operator==(const Point3f& lhs, const Point3f& rhs){
     return isZero(lhs.x - rhs.x) && isZero(lhs.y - rhs.y) && isZero(lhs.z - rhs.z);
 }

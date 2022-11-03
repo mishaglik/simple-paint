@@ -23,7 +23,7 @@ namespace aGL {
 
         bool loadFromFile(const char* filename);
         void loadFromImage(const Image& img);
-        void setRepeated(bool);
+        void setRepeated(bool) const;
     };
 }
 

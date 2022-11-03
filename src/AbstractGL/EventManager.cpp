@@ -150,7 +150,7 @@ namespace aGL {
 
     EventHandlerState EventManager::spreadEvent(const Event* event, EventHandlerState (Widget::*function)(const Event*), bool forced) const
     {
-        if(subscibers_.size() == 0) mError << mlg::Logger::CoStyle::Red << "Empty subs" << mlg::endl;
+        // if(subscibers_.size() == 0) mError << mlg::Logger::CoStyle::Red << "Empty subs" << mlg::endl;
         for(Widget* w : subscibers_)
         {
             EventHandlerState resp = (w->*function)(event);

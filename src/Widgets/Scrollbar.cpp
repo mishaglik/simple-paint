@@ -93,10 +93,10 @@ namespace aGL {
 
     void Scrollbar::updateScrollRect()
     {
-        uint32_t width  = orientation_ ? rect_.w : rect_.h;
-        uint32_t height = orientation_ ? rect_.h : rect_.w;
-        uint32_t len    = orientation_ ? scroll_.w : scroll_.h;
-        ((orientation_ == Orientation::Vertical) ? scroll_.y : scroll_.x) = std::min((width - 2 * height - len), std::max(0u,
+        int32_t width  = orientation_ ? rect_.w : rect_.h;
+        int32_t height = orientation_ ? rect_.h : rect_.w;
+        int32_t len    = orientation_ ? scroll_.w : scroll_.h;
+        ((orientation_ == Orientation::Vertical) ? scroll_.y : scroll_.x) = std::min((width - 2 * height - len), std::max(0,
             (value_ - minValue_) * (width - 2 * height - len) / (maxValue_ - minValue_))) + height;
     }
 

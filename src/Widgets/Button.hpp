@@ -10,13 +10,15 @@ namespace aGL {
         Text text_;
         bool pressed_ = false;
         bool hovered_ = false;
-        bool togglable_ = false;
+        const bool togglable_ = false;
+        const bool hasText_ = true;
         bool state_ = false;
         bool needsRepaint_ = true;
 
     public:
 
         AbstractButton(const Rect& rect, const char* text, Widget* parent) : Widget(rect, parent), text_(text) {}
+        AbstractButton(const Rect& rect, bool togglable, Widget* parent) : Widget(rect, parent), text_(""), togglable_(togglable), hasText_(false) {}
         virtual ~AbstractButton() override {}
 
         Signal<> clicked;
@@ -33,7 +35,8 @@ namespace aGL {
         
         void setTextColor(const Color& color);
         void setTextCharacterSize(unsigned size);
-
+        void toggle();
+        
         void setString(const char* string)     { needsRepaint_ = true; text_.setString(string); }
         void setString(const uint32_t* string) { needsRepaint_ = true; text_.setString(string); }
 

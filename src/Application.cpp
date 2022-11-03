@@ -1,5 +1,4 @@
 #include "Application.hpp"
-#include "AbstractGL/AWindow.hpp"
 #include "Raytracer/RenderPlane.hpp"
 #include "Raytracer/RenderSphere.hpp"
 #include <chrono>

@@ -37,6 +37,7 @@ namespace aGL {
             parent_(parent), rect_(rect), surface(surf), maxW_(rect.w), maxH_(rect.h)
         { if(parent_) parent_->addChild(this); }
 
+    protected:
         virtual ~Widget() 
         { 
             for(Widget* w : childen_) 
@@ -51,8 +52,10 @@ namespace aGL {
             } 
             delete surface;
         }
-
+    public:
         Widget& setSkinManager(const SkinManager* sm_);
+        virtual void onSkinChange();
+
         void setTexId(TexId id) { texId_ = id; }
         void setTexId(const char* name);
         virtual Widget& setEventManager(EventManager* em);

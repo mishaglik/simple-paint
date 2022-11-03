@@ -33,6 +33,19 @@ namespace mgm {
          */
         template <typename T>
         Point2(const Point2<T>& point) : x(point.x), y(point.y) {}
+
+        std::strong_ordering operator<=>(const Point2& oth) const
+        {
+            if((x <=> oth.x) != std::strong_ordering::equal) return x <=> oth.x;
+            return y <=> oth.y;
+        }
+
+        bool operator==(const Point2&) const = default;
+        bool operator!=(const Point2&) const = default;
+        bool operator<=(const Point2&) const = default;
+        bool operator>=(const Point2&) const = default;
+        bool operator> (const Point2&) const = default;
+        bool operator< (const Point2&) const = default;
     };
 
     /**
@@ -79,11 +92,36 @@ namespace mgm {
     using Point3u = Point3<uint32_t>;
     using Point3i = Point3<int32_t>;
 
-    bool operator==(const Point2f& lhs, const Point2f& rhs);
-    bool operator==(const Point3f& lhs, const Point3f& rhs);
+    // bool operator==(const Point2f& lhs, const Point2f& rhs);
+    // bool operator==(const Point3f& lhs, const Point3f& rhs);
 
-    bool operator!=(const Point2f& lhs, const Point2f& rhs);
-    bool operator!=(const Point3f& lhs, const Point3f& rhs);
+    // bool operator!=(const Point2f& lhs, const Point2f& rhs);
+    // bool operator!=(const Point3f& lhs, const Point3f& rhs);
+
+
+    template<typename num_t>
+    bool operator==(const Point2<num_t>& lhs, const Point2<num_t>& rhs)
+    {
+        return lhs.x == rhs.x && lhs.y == rhs.y;
+    }
+
+    template<typename num_t>
+    bool operator==(const Point3<num_t>& lhs, const Point3<num_t>& rhs)
+    {
+        return lhs.x == rhs.x && lhs.y == rhs.y && lhs.z == rhs.z;
+    }
+
+    template<typename num_t>
+    bool operator!=(const Point2<num_t>& lhs, const Point2<num_t>& rhs)
+    {
+        return !(lhs == rhs);
+    }
+
+    template<typename num_t>
+    bool operator!=(const Point3<num_t>& lhs, const Point3<num_t>& rhs)
+    {
+        return ! (lhs == rhs);
+    }
 
     template<typename num_t>
     mlg::Logger& operator<<(mlg::Logger& out, const Point2<num_t>& pt)

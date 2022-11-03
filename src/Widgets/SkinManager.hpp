@@ -27,7 +27,7 @@ namespace aGL {
 
         const Texture& getTexture(TexId id) const {return skins_[id].texture;}
         
-        TexId findTextureId(const char* entity) const;
+        TexId findTextureId(const char* entity, bool silent = false) const;
         const char* getFont();
 
     private:

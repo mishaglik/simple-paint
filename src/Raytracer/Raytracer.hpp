@@ -48,8 +48,6 @@ class Raytracer: public aGL::Widget //TODO: Sort members
     [[deprecated]] Color getLambert(const RTObjs::SurfacePoint& surface) const;
     Color getTrueLambert(const RTObjs::SurfacePoint& surfPoint, int depth, Color surfColor) const;
 
-    [[deprecated]] bool isRendered = false;
-
     enum RenderState {
         NeedsRepaint = 0,
         InProgress,

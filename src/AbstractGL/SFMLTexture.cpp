@@ -22,7 +22,7 @@ namespace aGL {
         return tp_->loadFromFile(filename);
     }
 
-    void Texture::setRepeated(bool b)
+    void Texture::setRepeated(bool b) const
     {
         tp_->setRepeated(b);
     }

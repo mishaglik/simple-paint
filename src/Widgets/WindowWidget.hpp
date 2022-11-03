@@ -10,12 +10,15 @@ namespace aGL {
         WWindow(uint32_t w, uint32_t h, const char* title):
             Window(w, h, title), ContainerWidget({0, 0, w, h}, nullptr, nullptr) {}
 
+        ~WWindow() override {}
+
         Signal<> quited;
         void quit() { quited.emit(); }
         virtual EventHandlerState handleEvent(const Event* event) override 
         {
             if(event->type == EventType::Quited)
             {
+                mDebug << "Window quited" << mlg::endl;
                 quited.emit();
                 return EventHandlerState::Accepted;
             }

@@ -24,6 +24,11 @@ namespace aGL {
         const Color* getPixels() const;
         Color getPixel(unsigned int x, unsigned int y) const;
         void setPixel(unsigned int x, unsigned int y, const Color& color);
+
+        uint32_t getW() const;
+        uint32_t getH() const;
+
+        bool isCreated() const;
     };
 }
 

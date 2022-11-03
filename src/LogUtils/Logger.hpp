@@ -2,6 +2,7 @@
 #define LOGUTILS_LOGGER_HPP
 
 #include <cstdint>
+#include <cstdlib>
 
 namespace mlg {
     
@@ -51,7 +52,9 @@ namespace mlg {
     protected:
 
         uint64_t verbosity_ = 0;
-        LogLevel logLevel_ = LogLevel::WARNING;
+        LogLevel logLevel_   = LogLevel::WARNING;
+        LogLevel abortLevel_ = LogLevel::WARNING;
+        LogLevel curLevel_   = LogLevel::DEBUG;
         uint64_t ident_ = 0;
         uint64_t identSize_ = 4;
 
@@ -121,6 +124,13 @@ namespace mlg {
         void setLogLevel(LogLevel logLevel);
 
         /**
+         * @brief Set the Abort Level object
+         * 
+         * @param abortLevel - new abort level
+         */
+        void setAbortLevel(LogLevel abortLevel);
+
+        /**
          * @brief Set the verbosity
          * 
          * @param verbosity - new Verbosity 
@@ -171,6 +181,20 @@ namespace mlg {
          */
         virtual void newline() = 0;
 
+        class LogAborted{};
+        /**
+         * @brief Ends current phrase.
+         * 
+         */
+        virtual void endline()
+        {
+            newline();
+            if(curLevel_ > abortLevel_)
+            {
+                throw LogAborted{};
+            }
+        }
+
         virtual void printWelcome  () = 0;
         virtual void printFinish   () = 0;
         virtual void printLineStart() = 0;
@@ -188,6 +212,7 @@ namespace mlg {
     };
 
     void endl(Logger& log);
+    void newl(Logger& log);
 
     void hex(Logger& log);
     void dec(Logger& log);

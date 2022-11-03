@@ -28,10 +28,31 @@
     <MainWindow>
         <image src="Window.png"/>
     </MainWindow>
+    <mge__MainWindow>
+        <image src="Window.png"/>
+    </mge__MainWindow>
     <RTObjs__RenderSphere__RenderSphereEditor>
         <image src="SphereEdit.png"/>
     </RTObjs__RenderSphere__RenderSphereEditor>
     <RTObjs__RenderPlane__RenderPlaneEditor>
         <image src="SphereEdit.png"/>
     </RTObjs__RenderPlane__RenderPlaneEditor>
+    <AplhaFiller>
+        <image src="Alpha.png"/>
+    </AplhaFiller>
+    <Pen>
+        <image src="Pen.png"/>
+    </Pen>
+    <RectFiller>
+        <image src="Rect.png"/>
+    </RectFiller>
+    <EllipseFiller>
+        <image src="Ellipse.png"/>
+    </EllipseFiller>
+    <Filler>
+        <image src="Filler.png"/>
+    </Filler>
+    <Pippet>
+        <image src="Pippet.png"/>
+    </Pippet>
 </skin>

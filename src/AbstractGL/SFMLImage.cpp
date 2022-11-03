@@ -38,4 +38,18 @@ namespace aGL {
         ip_->saveToFile(filename);
     }
 
+    uint32_t Image::getW() const
+    {
+        return ip_->getSize().x;
+    }
+    uint32_t Image::getH() const
+    {
+        return ip_->getSize().y;
+    }
+
+    bool Image::isCreated() const
+    {
+        return ip_->getSize() != sf::Vector2u{0, 0};
+    }
+
 }

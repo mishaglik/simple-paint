@@ -45,6 +45,16 @@ namespace aGL {
     Widget& Widget::setSkinManager(const SkinManager* sm)
     {
         sm_ = sm;
+        onSkinChange();
+        for(Widget* child : childen_)
+        {
+            child->setSkinManager(sm);
+        }
+        return *this;
+    }
+
+    void Widget::onSkinChange()
+    {
         if(sm_ != nullptr && texId_ == 0)
         {
             char* name = nullptr;
@@ -55,20 +65,15 @@ namespace aGL {
             if(res || !name)
             {
                 mError << "Error: demangling returned " << res << mlg::endl;
-                return *this;
+                return;
             }
             for(char* c = name; *c; c++) if(*c == ':') *c = '_';
 
             texId_ = sm_->findTextureId(name);
             free(name);
         }
-
-        for(Widget* child : childen_)
-        {
-            child->setSkinManager(sm);
-        }
-        return *this;
     }
+
 
     void Widget::setTexId(const char* name) 
     {

@@ -20,6 +20,18 @@ namespace mgm {
     }
 
     template<typename num_t>
+    const Point2<num_t>& asPoint(const Vector2<num_t>& pt)
+    {
+        return reinterpret_cast<const Point2<num_t>&>(pt);
+    }
+
+    template<typename num_t>
+    const Point3<num_t>& asPoint(const Vector3<num_t>& pt)
+    {
+        return reinterpret_cast<const Point3<num_t>&>(pt);
+    }
+
+    template<typename num_t>
     Point2<num_t> operator+= (Point2<num_t>& pt, const Vector2<num_t>& v)
     {
         pt.x += v.x;

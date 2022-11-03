@@ -20,7 +20,7 @@ namespace aGL {
         tinyxml2::XMLDocument doc;
         if(doc.LoadFile(xmlPath.c_str()) != 0)
         {
-            mError << "Error opening file" << mlg::endl;
+            mError << "SkinManager: Error opening file" << mlg::endl;
             return false;
         }
 
@@ -45,7 +45,7 @@ namespace aGL {
                 continue;
             }
 
-            if(TexId id = findTextureId(node->Name()))
+            if(TexId id = findTextureId(node->Name(), true))
             {
                 skins_[id].texture.loadFromFile(node->FirstChildElement("image")->Attribute("src"));
             }
@@ -70,7 +70,7 @@ namespace aGL {
         return skins_[id].texture;
     }
     
-    TexId SkinManager::findTextureId(const char* entity) const
+    TexId SkinManager::findTextureId(const char* entity, bool silent) const
     {
         if(!entity) return NoTexture;
         for(size_t i = 1; i < skins_.size(); ++i)
@@ -80,7 +80,8 @@ namespace aGL {
                 return i;
             }
         }
-        mInfo << "Asked for texture :\"" << entity <<"\" -- " << mlg::ConsoleLogger::CoStyle::Red << "not found" << mlg::endl;
+        if(!silent)
+            mInfo << "Asked for texture :\"" << entity <<"\" -- " << mlg::ConsoleLogger::CoStyle::Red << "not found" << mlg::endl;
         return NoTexture;
     }
     

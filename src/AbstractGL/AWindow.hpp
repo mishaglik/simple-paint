@@ -12,6 +12,7 @@
 namespace aGL {
 
     using Point = mgm::Point2i;
+    using Vec2i = mgm::Vector2i;
     using Rect  = mgm::Rect2<unsigned>;
     
 
