@@ -8,10 +8,19 @@ namespace aGL {
     class SignalObject{};
 
     template<class... Args>
-    class Signal{
+    class Signal : SignalObject
+    {
         using Callable = void (SignalObject::*)(Args...);
         mvc::Vector<std::pair<SignalObject*, Callable>> slots_;
     public:
+
+        template<class T>
+        void addResender(T* obj, Signal<Args...> T::* resender)
+        {
+            connect(&(obj->*resender), &Signal<Args...>::emit);
+        }
+
+
         template<class T>
         void connect(T* obj, void (T::*f)(Args...))
         {
@@ -33,6 +42,14 @@ namespace aGL {
         mAssert(sender != nullptr);
         mAssert(reciever != nullptr);
         (sender->*signal).connect(reciever, slot);
+    }
+
+    template<class T, class U, typename... Args>
+    void addResender(T* sender, Signal<Args...> T::* signal, U* reciever, Signal<Args...> U::* resender)
+    {
+        mAssert(sender != nullptr);
+        mAssert(reciever != nullptr);
+        (sender->*signal).addResender(reciever, resender);
     }
 
 }
