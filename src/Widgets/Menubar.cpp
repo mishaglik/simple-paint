@@ -3,10 +3,16 @@
 namespace aGL {
 
     Menubar::Menubar(uint32_t x, uint32_t y, uint32_t w, uint32_t h, Widget* parent) :
-        ContainerWidget({x, y, w, h}, nullptr, parent)
+        Menubar({x, y, w, h}, parent)
+    {
+    }
+    
+    Menubar::Menubar(const Rect& rect, Widget* parent) :
+        ContainerWidget(rect, nullptr, parent)
     {
 
     }
+
 
     Menubar::~Menubar()
     {

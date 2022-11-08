@@ -32,6 +32,7 @@ namespace mge {
         virtual void onMouseMove   (const ToolAction& action) = 0;
         virtual void onImageChange() = 0;
         virtual const char* getSkinName() const = 0;
+        virtual aGL::Color getFillColor() const {return aGL::Colors::Black;}
     };
 }
 

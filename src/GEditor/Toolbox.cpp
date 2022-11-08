@@ -46,13 +46,13 @@ namespace mge {
 
     aGL::EventHandlerState Toolbox::ToolboxButton::onPaintEvent(const aGL::Event*)
     {
+        surface->clear(tool_->getFillColor());
         if(skinned())
         {
             surface->drawSprite({}, sm_->getTexture(texId_));
             if(isSelected_) surface->drawRect({0, 0, rect_.w, rect_.h}, 0x00000080);
             if(hovered_) surface->drawRect({0, 0, rect_.w, rect_.h}, 0x00000040);
         } else {
-            surface->clear(aGL::Colors::White);
             if(isSelected_)
                 surface->clear(aGL::Colors::Gray);
             else if (hovered_)

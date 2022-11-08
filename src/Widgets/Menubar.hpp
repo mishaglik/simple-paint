@@ -12,6 +12,7 @@ namespace aGL {
         class Menu;
 
         Menubar(uint32_t x, uint32_t y, uint32_t w, uint32_t h, Widget* parent = nullptr);
+        Menubar(const Rect& rect, Widget* parent = nullptr);
         ~Menubar() override;
 
         size_t addMenuEntry(const char* name);

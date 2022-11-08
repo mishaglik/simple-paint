@@ -55,4 +55,7 @@
     <Pippet>
         <image src="Pippet.png"/>
     </Pippet>
+    <Grayer>
+        <image src="Grayer.png"/>
+    </Grayer>
 </skin>

@@ -40,6 +40,23 @@ namespace aGL {
         void b(uint8_t b) {asRGBA_.b_ = b;}
         void a(uint8_t a) {asRGBA_.a_ = a;}
 
+        void setHSV(uint32_t h, uint8_t s, uint8_t v, uint8_t alpha = 255);
+        
+        static constexpr aGL::Color fromHSV(uint32_t h, uint8_t s, uint8_t v, uint8_t alpha = 255)
+        {
+            aGL::Color ret = {};
+            ret.setHSV(h, s, v, alpha);
+            return ret;
+        }
+
+        uint32_t h() const;
+        uint8_t s() const;
+        uint8_t v() const;
+
+        void h(uint32_t h);
+        void s(uint8_t s);
+        void v(uint8_t v);
+
         Color& operator+= (const Color &rhs);
         Color& operator*= (uint8_t k);
         Color& operator&= (const Color& rhs);

@@ -1,11 +1,13 @@
 #include "GEditorWindow.hpp"
 #include "BasicTools.hpp"
+#include "ColorDialog/ColorDialog.hpp"
+#include "GrandDesign.hpp"
 
 namespace mge {
     MainWindow::MainWindow() :
-        aGL::WWindow(1000, 600, "GEditor")
+        aGL::WWindow(Design::Window::W, Design::Window::H, Design::Window::TITLE)
     {
-        canvas_ = new Canvas({180, 30, 620, 460}, this);
+        canvas_ = new Canvas(Design::MainWidget::RECT, this);
         canvas_->mouseMoved   .connect(this, &MainWindow::applyToolMouseMove);
         canvas_->mousePressed .connect(this, &MainWindow::applyToolMousePress);
         canvas_->mouseReleased.connect(this, &MainWindow::applyToolMouseRelease);
@@ -18,10 +20,10 @@ namespace mge {
         imageScrollY_->setMaxValue(-100);
         imageScrollY_->valueChanged.connect(canvas_, &Canvas::setImageStartY);
 
-        tb_ = new Toolbox({0, 30, 180, 460}, 45, this);
+        tb_ = new Toolbox(Design::LeftPanel::Toolbox::RECT, 45, this);
         createTools();
 
-        menubar_ = new aGL::Menubar(0, 0, rect_.w, 30, this);
+        menubar_ = new aGL::Menubar(Design::Menu::RECT, this);
         setupMenu();
     }
 
@@ -38,6 +40,8 @@ namespace mge {
         menubar_->entries()[0]->buttons()[1]->clicked.connect<MainWindow>(this, &MainWindow::quit);
         menubar_->addMenuEntry("Edit");
         menubar_->addMenuEntry("Cringe");
+        menubar_->entries()[2]->addMenuEntry("Select color");
+        menubar_->entries()[2]->buttons()[0]->clicked.connect<MainWindow>(this, &MainWindow::colorSelect);
     }
 
 
@@ -63,11 +67,23 @@ namespace mge {
     void MainWindow::createTools()
     {
         tb_->addTool(new tools::Pen{&context_});
-        tb_->addTool(new tools::Pen{&context_, aGL::Colors::Green});
         tb_->addTool(new tools::RectFiller{&context_});
         tb_->addTool(new tools::EllipseFiller{&context_});
         tb_->addTool(new tools::Filler(&context_));
         tb_->addTool(new tools::Pippet(&context_));
+        tb_->addTool(new tools::Grayer(&context_));
+    }
+
+    void MainWindow::colorSelect()
+    {
+        aGL::ColorDialog* dialog = new aGL::ColorDialog("Fore color", context_.foregroundColor);
+        dialog->Window::show();
+        dialog->finished.connect(this, &MainWindow::setForegroundColor);
+    }
+
+    void MainWindow::setForegroundColor(aGL::Color color)
+    {
+        context_.foregroundColor = color;
     }
 
 }

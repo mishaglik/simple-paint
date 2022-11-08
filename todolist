@@ -79,3 +79,13 @@
 // Non rectangle advertisment. 
 // Реклама спускается и дергается. И еще fullscreen рекалма с счетчиком секунд.
 // ded32.net.ru/wooo.mp3
+
+
+//Plugins
+//Instrument & filter
+//Selected shape via bitmask
+//Curve filter:
+// Limit n Points
+// Можно с самого начала нарисовать все точки
+// Dynlib substracting one number from another
+// extern C to mangle

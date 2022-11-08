@@ -66,4 +66,91 @@ namespace aGL {
         col.b( static_cast<uint8_t>(255. * std::pow(col.b() / 255., 1 / gamma)));
         return col;
     }
+
+    void Color::setHSV(uint32_t h, uint8_t s, uint8_t v, uint8_t alpha)
+    {
+        uint32_t H = h, S = s, V = v;
+        uint32_t hIndex = (H / 60) % 6; 
+        uint32_t vMin   = (100 - S) * V / 100;
+        uint32_t delta  = (V - vMin) * (H % 60) / 60;
+        uint32_t vInc   = vMin + delta;
+        uint32_t vDec   = V - delta;
+
+        V =    255 * V    / 100;
+        vInc = 255 * vInc / 100;
+        vDec = 255 * vDec / 100;
+        vMin = 255 * vMin / 100;
+
+        switch (hIndex) {
+            case 0:
+                asRGBA_.r_ = V;    asRGBA_.g_ = vInc; asRGBA_.b_ = vMin;
+                break;
+            case 1:
+                asRGBA_.r_ = vDec; asRGBA_.g_ = V;    asRGBA_.b_ = vMin;
+                break;
+            case 2:
+                asRGBA_.r_ = vMin; asRGBA_.g_ = V;    asRGBA_.b_ = vInc;
+                break;
+            case 3:
+                asRGBA_.r_ = vMin; asRGBA_.g_ = vDec; asRGBA_.b_ = V;
+                break;
+            case 4:
+                asRGBA_.r_ = vInc; asRGBA_.g_ = vMin; asRGBA_.b_ = V;
+                break;
+            case 5:
+                asRGBA_.r_ = V;    asRGBA_.g_ = vMin; asRGBA_.b_ = vDec;
+                break;
+            default:
+                abort();
+        }
+        asRGBA_.a_ = alpha;
+
+    }
+
+        
+    uint32_t Color::h() const
+    {
+        int32_t R = r();
+        int32_t G = g();
+        int32_t B = b();
+
+        int32_t max = std::max(std::max(R, G), B);
+        int32_t min = std::min(std::min(R, G), B);
+        if(max == min) return 0;
+
+
+        if(max == R)
+        {
+            return (60 * (G - B) / (max - min) + ((G < B) ? 360 : 0));
+        }
+        return (60 * (max == G ? B - R : R - G) / (max - min) + (max == G ? 120 : 240));
+    }
+
+    uint8_t Color::s() const
+    {
+        uint32_t max = std::max(std::max(asRGBA_.r_, asRGBA_.g_), asRGBA_.b_);
+        uint32_t min = std::min(std::min(asRGBA_.r_, asRGBA_.g_), asRGBA_.b_);
+        return max ? static_cast<uint8_t>(100u * (max - min) / max) : 0;
+    }
+
+    uint8_t Color::v() const
+    {
+        return std::max(std::max(asRGBA_.r_, asRGBA_.g_), asRGBA_.b_) * 100u / 255;
+    }
+
+    void Color::h(uint32_t h)
+    {
+        setHSV(h, s(), v(), a());
+    }
+
+    void Color::s(uint8_t s)
+    {
+        setHSV(h(), s, v(), a());
+    }
+
+    void Color::v(uint8_t v)
+    {
+        setHSV(h(), s(), v, a());
+    }
+
 }

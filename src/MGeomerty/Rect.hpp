@@ -8,8 +8,8 @@ namespace mgm {
     {
         num_t x, y, w, h;
 
-        Rect2(num_t x_, num_t y_, num_t w_, num_t h_) : x(x_), y(y_), w(w_), h(h_) {}
-        Rect2() : Rect2(0, 0, 0, 0) {}
+        constexpr Rect2(num_t x_, num_t y_, num_t w_, num_t h_) : x(x_), y(y_), w(w_), h(h_) {}
+        constexpr Rect2() : Rect2(0, 0, 0, 0) {}
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wsign-conversion"    //TODO: think about it

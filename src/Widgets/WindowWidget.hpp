@@ -2,7 +2,6 @@
 #define WIDGETS_WINDOWWIDGET_HPP
 #include <Widgets/ContainerWidget.hpp>
 #include <AbstractGL/AWindow.hpp>
-
 namespace aGL {
     class WWindow: public Window, public ContainerWidget
     {
@@ -13,13 +12,14 @@ namespace aGL {
         ~WWindow() override {}
 
         Signal<> quited;
-        void quit() { quited.emit(); }
+        Signal<WWindow* > quitedP;
+        void quit() { quited.emit(); quitedP.emit(this); }
         virtual EventHandlerState handleEvent(const Event* event) override 
         {
             if(event->type == EventType::Quited)
             {
                 mDebug << "Window quited" << mlg::endl;
-                quited.emit();
+                quit();
                 return EventHandlerState::Accepted;
             }
             return ContainerWidget::handleEvent(event);

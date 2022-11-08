@@ -210,5 +210,20 @@ namespace mge {
             }
         }
 
+
+        void Grayer::onMousePress  (const ToolAction& action)
+        {
+            for(uint32_t y = 0; y < action.image->getH(); ++y)
+            {
+                for(uint32_t x = 0; x < action.image->getW(); ++x)
+                {
+                    aGL::Color color = action.image->getPixel(x, y);
+                    color.s(0);
+                    action.image->setPixel(x, y, color);
+                }
+
+            }
+        }
+
     }
 }

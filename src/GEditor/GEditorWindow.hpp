@@ -29,6 +29,8 @@ namespace mge {
         void applyToolMousePress(const ToolAction& ta);
         void applyToolMouseRelease(const ToolAction& ta);
         void createTools();
+        void colorSelect();
+        void setForegroundColor(aGL::Color color);
     };
 }
 
