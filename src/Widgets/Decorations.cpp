@@ -10,10 +10,7 @@ namespace aGL {
                 decRect.surface->drawRect(decRect.rect, color);
                 return decRect;
             }
-            decRect.surface->drawLine(decRect.rect.getCornerLL(), decRect.rect.getCornerLG(), color);
-            decRect.surface->drawLine(decRect.rect.getCornerLG(), decRect.rect.getCornerGG(), color);
-            decRect.surface->drawLine(decRect.rect.getCornerGG(), decRect.rect.getCornerGL(), color);
-            decRect.surface->drawLine(decRect.rect.getCornerGL(), decRect.rect.getCornerLL(), color);
+            decRect.surface->drawHolRect(decRect.rect, color);
             decRect.rect.h -= 2;
             decRect.rect.w -= 2;
             decRect.rect.x++;

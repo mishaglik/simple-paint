@@ -10,6 +10,8 @@ namespace mge {
         using namespace Design::LeftPanel::Toolbox;
         toolbox_ = new Toolbox(RECT, ToolboxButton::W, tools, this);
         new ToolPanel(Design::LeftPanel::ToolPanel::RECT, "Pen", this);
+
+        colSel_ = new ColorSelector(Design::LeftPanel::ColorSelector::RECT, this);
     }
 
 

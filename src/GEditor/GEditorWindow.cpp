@@ -40,23 +40,25 @@ namespace mge {
     
     void MainWindow::createTools()
     {
-        tools_.push_back(new tools::Pen{&context_});
-        tools_.push_back(new tools::RectFiller{&context_});
-        tools_.push_back(new tools::EllipseFiller{&context_});
-        tools_.push_back(new tools::Filler(&context_));
-        tools_.push_back(new tools::Pippet(&context_));
-        tools_.push_back(new tools::Grayer(&context_));
+        DrawingContext* context = &GEditor::app->context;
+
+        tools_.push_back(new tools::Pen{context});
+        tools_.push_back(new tools::RectFiller{context});
+        tools_.push_back(new tools::EllipseFiller{context});
+        tools_.push_back(new tools::Filler(context));
+        tools_.push_back(new tools::Pippet(context));
+        tools_.push_back(new tools::Grayer(context));
     }
 
     void MainWindow::colorSelect()
     {
-        aGL::ColorDialog* dialog = new aGL::ColorDialog("Fore color", context_.foregroundColor);
+        aGL::ColorDialog* dialog = new aGL::ColorDialog("Fore color", GEditor::app->context.foregroundColor);
         dialog->Window::show();
         dialog->finished.connect(this, &MainWindow::setForegroundColor);
     }
 
     void MainWindow::setForegroundColor(aGL::Color color)
     {
-        context_.foregroundColor = color;
+        GEditor::app->context.foregroundColor = color;
     }
 }

@@ -13,8 +13,8 @@ namespace aGL {
         Surface* surface;
         aGL::Rect rect;
 
-        DecRect(Surface* _surface, const aGL::Rect& _rect) : surface(_surface), rect(_rect) {}
-        /* implict */ DecRect(Surface* _surface) : surface(_surface) { rect = surface->getSurfRect(); rect.x++; rect.w--; rect.h--; } //I dunno why the fuck i mush do x++;
+        DecRect(Surface* _surface, const aGL::Rect& _rect) : surface(_surface), rect(_rect) { }
+        /* implict */ DecRect(Surface* _surface) : surface(_surface) { rect = surface->getSurfRect();} //I dunno why the fuck i mush do x++; UPD: Fuck you SFML rasterization.
         
         template<class... Args>
         DecRect& decorate(DecoratorF<Args...> decorator, Args&&... args) { return decorator(*this, args...); }

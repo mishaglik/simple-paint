@@ -4,15 +4,8 @@
 #include "AbstractGL/AImage.hpp"
 #include "AbstractGL/Event.hpp"
 #include "Widgets/SkinManager.hpp"
-
 namespace mge {
-
-    struct DrawingContext
-    {
-        aGL::Color foregroundColor = aGL::Colors::Black;
-        aGL::Color backgroundColor = aGL::Colors::White;
-    };
-
+    struct DrawingContext;
     struct ToolAction
     {
         aGL::Image* image;

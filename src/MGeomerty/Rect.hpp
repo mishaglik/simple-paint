@@ -23,10 +23,10 @@ namespace mgm {
 #pragma clang diagnostic pop
 
 
-        Point2<num_t> getCornerLL() const {return {x    , y    };} //FIXME: Cringe naming...
-        Point2<num_t> getCornerGL() const {return {x + w, y    };}
-        Point2<num_t> getCornerLG() const {return {x    , y + h};}
-        Point2<num_t> getCornerGG() const {return {x + w, y + h};}
+        Point2<num_t> getCornerLL() const {return {x        , y        };} //FIXME: Cringe naming...
+        Point2<num_t> getCornerGL() const {return {x + w - 1, y        };}
+        Point2<num_t> getCornerLG() const {return {x        , y + h - 1};}
+        Point2<num_t> getCornerGG() const {return {x + w - 1, y + h - 1};}
 
     };
 

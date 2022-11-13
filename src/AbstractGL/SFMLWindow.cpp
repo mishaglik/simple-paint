@@ -255,4 +255,61 @@ namespace aGL {
         return {0, 0, v.x, v.y};
     }
 
+    void Window::drawHolRect (Point p1, Point p2, Color color) const
+    {
+        sf::Vertex quad[5];
+        quad[0].position = sf::Vector2f(static_cast<float>(p1.x) + 0.5f, static_cast<float>(p1.y));
+        quad[1].position = sf::Vector2f(static_cast<float>(p1.x) + 0.5f, static_cast<float>(p2.y));
+        quad[2].position = sf::Vector2f(static_cast<float>(p2.x) + 0.5f, static_cast<float>(p2.y));
+        quad[3].position = sf::Vector2f(static_cast<float>(p2.x) + 0.5f, static_cast<float>(p1.y));
+        quad[4].position = sf::Vector2f(static_cast<float>(p1.x) + 0.5f, static_cast<float>(p1.y));
+
+        quad[0].color = quad[1].color = quad[2].color = quad[3].color = quad[4].color = sf::Color(color);
+
+        wp_->draw(quad, 5, sf::LinesStrip);
+    }
+
+    static sf::PrimitiveType sfPrimitive(PrimitiveType type)
+    {
+        switch (type) {
+
+        case PrimitiveType::Points:
+            return sf::Points;
+        case PrimitiveType::Lines:
+            return sf::Lines;
+        case PrimitiveType::StripLines:
+            return sf::LineStrip;
+        case PrimitiveType::Triangles:
+            return sf::Triangles;
+        case PrimitiveType::StripTriangles:
+            return sf::TriangleStrip;
+        case PrimitiveType::Quads:
+            return sf::Quads;
+        }
+        mAssert(0 && "Bad primitive type");
+    }
+
+    void Window::drawVert(const Vertex* vert, size_t size, PrimitiveType type) const
+    {
+        sf::Vertex* sfVert = new sf::Vertex[size]; //FIXME: No malloc per frame
+        for(size_t i = 0; i < size; ++i)
+        {
+            sfVert[i].position = sf::Vector2f(static_cast<float>(vert[i].point.x) + 0.5f, static_cast<float>(vert[i].point.y));
+            sfVert[i].color = sf::Color(vert[i].color);
+        }
+        wp_->draw(sfVert, size, sfPrimitive(type));
+        delete [] sfVert;
+    }
+
+    void Window::drawTriang(Vertex vert[3]) const
+    {
+        sf::Vertex triag[3];
+        for(size_t i = 0; i < 3; ++i)
+        {
+            triag[i].position = sf::Vector2f(static_cast<float>(vert[i].point.x) + 0.5f, static_cast<float>(vert[i].point.y));
+            triag[i].color = sf::Color(vert[i].color);
+        }
+        wp_->draw(triag, 3, sf::Triangles);
+    }
+
 }

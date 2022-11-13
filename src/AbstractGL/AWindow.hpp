@@ -33,8 +33,13 @@ namespace aGL {
         void drawLine    (Point p1, Point p2, Color color = Colors::Black) const override;
         void drawPoint   (Point p, Color color = Colors::Black) const override; 
         void drawRect    (const Rect& rect, Color color = Colors::Black) const override;
+        void drawHolRect (Point p1, Point p2, Color color = Colors::Black) const override;
         void drawSurf    (Point pt, const RenderSurface& surf) const override;
         void drawSurf    (Point pt, const RenderSurface& surf, const Rect& rect) const override;
+        void drawVert    (const Vertex* vert, size_t size, PrimitiveType type) const override;
+        void drawTriang  (Vertex pt[3]) const override;
+
+
         void drawSprite  (Point pt, const Sprite& sprite) const override;
         
         void clear(Color color = Colors::Gray) const override;

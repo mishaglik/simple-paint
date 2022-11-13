@@ -18,7 +18,6 @@ namespace mge {
         LeftPanel* leftPanel_ = nullptr;
         mvc::Vector<Tool* > tools_;
         // Tool* selectedTool_ = nullptr;
-        DrawingContext context_ = {};
         void setupMenu();
 
     public:

@@ -46,4 +46,7 @@
     <CanvasSrollbar>
         <image src="Scroll.png"/>
     </CanvasSrollbar>
+    <mge__ColorSelector>
+        <image src="Arrow.png"/>
+    </mge__ColorSelector>
 </skin>

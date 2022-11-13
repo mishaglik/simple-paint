@@ -16,6 +16,7 @@ namespace mge {
                 const Color borderDarkColor  = 0x3b3b3bff;
                 const Color ScrollHoleColor  = 0x202020ff;
                 const Color TextColor        = 0xddddddff;
+
             };
 
             const uint32_t MinSpacing = 1;
@@ -67,6 +68,17 @@ namespace mge {
                         X, Y, 
                         N_IN_ROW   * ToolboxButton::W, 
                         MAX_IN_COL * ToolboxButton::H
+                    };
+                }
+
+                namespace ColorSelector {
+                    const uint32_t size = 40;
+                    const Rect RECT 
+                    {
+                        W / 2 - size / 2,
+                        H / 3,
+                        size,
+                        size
                     };
                 }
 

@@ -1,6 +1,7 @@
 #ifndef GEDITOR_BASICTOOLS_HPP
 #define GEDITOR_BASICTOOLS_HPP
 #include "Tool.hpp"
+#include "GEditor.hpp"
 
 namespace mge {
     namespace tools {
