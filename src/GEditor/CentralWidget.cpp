@@ -1,5 +1,6 @@
 #include "CentralWidget.hpp"
 #include "GrandDesign.hpp"
+#include <Widgets/Decorations.hpp>
 
 namespace mge {
     CentralWidget::CentralWidget(const aGL::Rect& rect, aGL::Widget* parent)
@@ -18,4 +19,10 @@ namespace mge {
         yScroll_->setTexId(YScrollbar::TEXNAME);
         yScroll_->valueChanged.connect(canvas_, &Canvas::setImageStartY);
     }
+
+    void CentralWidget::afterPaint() const
+    {
+        aGL::DecRect(surface).decorate(aGL::Decorations::dBorder, Design::ColorPalete::borderDarkColor, Design::ColorPalete::borderLightColor);
+    }
+
 }

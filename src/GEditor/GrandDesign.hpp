@@ -9,17 +9,15 @@ namespace mge {
             using aGL::Rect;
             using aGL::Color;
 
-            struct ColorPalete
+            namespace ColorPalete
             {
-                Color backgroundColor  = 0x454545ff;
-                Color borderLightColor = 0x5b5b5bff;
-                Color borderDarkColor  = 0x3b3b3bff;
-                Color ScrollHoleColor  = 0x202020ff;
-                Color TextColor        = 0xddddddff;
-
+                const Color backgroundColor  = 0x454545ff;
+                const Color borderLightColor = 0x5b5b5bff;
+                const Color borderDarkColor  = 0x3b3b3bff;
+                const Color ScrollHoleColor  = 0x202020ff;
+                const Color TextColor        = 0xddddddff;
             };
 
-            const ColorPalete Palete;
             const uint32_t MinSpacing = 1;
 
             namespace Window {
@@ -69,6 +67,28 @@ namespace mge {
                         X, Y, 
                         N_IN_ROW   * ToolboxButton::W, 
                         MAX_IN_COL * ToolboxButton::H
+                    };
+                }
+
+                namespace ToolPanel {
+                    const Rect RECT
+                    {
+                        0,
+                        LeftPanel::RECT.h - 430,
+                        LeftPanel::RECT.w,
+                        430
+                    };
+
+                    const Rect HEAD
+                    {
+                        0,0, RECT.w, 16
+                    };
+                    const Rect FOOT
+                    {
+                        0,
+                        RECT.h - 21,
+                        RECT.w,
+                        21
                     };
                 }
 

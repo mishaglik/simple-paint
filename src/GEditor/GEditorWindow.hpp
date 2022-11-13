@@ -15,11 +15,6 @@ namespace mge {
 
         CentralWidget* centralWidget_ = nullptr;        
 
-        aGL::Scrollbar* imageScrollX_ = nullptr;
-        aGL::Scrollbar* imageScrollY_ = nullptr;
-
-        mge::Canvas* canvas_ = nullptr;
-        
         LeftPanel* leftPanel_ = nullptr;
         mvc::Vector<Tool* > tools_;
         // Tool* selectedTool_ = nullptr;
@@ -34,9 +29,6 @@ namespace mge {
         // aGL::Signal<Tool* > selectedToolChanged;
     
     private:
-        void applyToolMouseMove(const ToolAction& ta);
-        void applyToolMousePress(const ToolAction& ta);
-        void applyToolMouseRelease(const ToolAction& ta);
         void createTools();
         void colorSelect();
         void setForegroundColor(aGL::Color color);

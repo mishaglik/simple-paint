@@ -23,6 +23,8 @@ namespace aGL {
         virtual void resize(uint32_t width, uint32_t height) = 0;
         virtual void update() const = 0;
         virtual void setActive(bool active = true) const = 0;
+        virtual aGL::Rect getSurfRect() const = 0;
+
         virtual ~Surface() {}
     };
 }

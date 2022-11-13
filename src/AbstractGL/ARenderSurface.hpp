@@ -33,6 +33,7 @@ namespace aGL {
         void setActive(bool active) const override;
 
         void resize(uint32_t w, uint32_t h) override;
+        aGL::Rect getSurfRect() const override;
      
         const Texture& getTexture() const;
 

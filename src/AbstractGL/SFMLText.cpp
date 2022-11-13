@@ -9,7 +9,7 @@ namespace aGL {
         {
             mAssert(0 && "Font not loaded");
         }
-        setFont(font_);
+        sf::Text::setFont(font_);
         setString(text);
         setPosition( static_cast<float>(x), 
                      static_cast<float>(y));
@@ -21,7 +21,7 @@ namespace aGL {
         {
             mAssert(0 && "Font not loaded");
         }
-        setFont(font_);
+        sf::Text::setFont(font_);
         setString(text);
         setPosition( static_cast<float>(x), 
                      static_cast<float>(y));
@@ -76,6 +76,12 @@ namespace aGL {
     {
         tp_->setCharacterSize(size);
     }
+
+    void Text::setFont(const char* font)
+    {
+        tp_->setFont(font);
+    }
+
 
     Rect Text::getRect() const
     {

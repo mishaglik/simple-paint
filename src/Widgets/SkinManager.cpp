@@ -85,7 +85,7 @@ namespace aGL {
         return NoTexture;
     }
     
-    const char* SkinManager::getFont()
+    const char* SkinManager::getFont() const
     {
         return fontname_.c_str();
     }

@@ -11,6 +11,7 @@ set (AGL_WIDGETS_SOURCES
     Label.cpp
     NumInput.cpp
     Application.cpp
+    Decorations.cpp
 )
 
 set (AGL_WIDGETS_HEADERS
@@ -26,6 +27,7 @@ set (AGL_WIDGETS_HEADERS
     CollapsibleContainer.hpp
     NumInput.hpp
     Application.hpp
+    Decorations.hpp
 )
 
 find_library(tinyXML2 tinyxml2 PATHS "${PROJECT_SOURCE_DIR}/../libXML")

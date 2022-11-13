@@ -25,7 +25,7 @@ namespace aGL {
         virtual EventHandlerState onMouseButtonReleaseEvent (const Event* event) override { return emanager_.handleEvent(const_cast<Event*>(event));}
         virtual EventHandlerState onMouseScrollEvent        (const Event* event) override { return emanager_.handleEvent(const_cast<Event*>(event));}
         virtual EventHandlerState onTimerEvent              (const Event* event) override { update(); return emanager_.handleEvent(const_cast<Event*>(event));}
-
+        
         bool subscribe(Widget* object) { return emanager_.subscribe(object); }
 
         virtual ContainerWidget& setEventManager(EventManager* em) override 

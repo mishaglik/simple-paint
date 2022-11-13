@@ -111,4 +111,11 @@ namespace aGL {
     {
         rsp_->setActive(active);
     }
+
+    aGL::Rect RenderSurface::getSurfRect() const
+    {
+        sf::Vector2u v = rsp_->getSize();
+        return {0, 0, v.x, v.y};
+    }
+
 }

@@ -249,4 +249,10 @@ namespace aGL {
         wp_->setActive(active);
     }
 
+    aGL::Rect Window::getSurfRect() const 
+    {
+        sf::Vector2u v = wp_->getSize();
+        return {0, 0, v.x, v.y};
+    }
+
 }

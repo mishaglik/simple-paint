@@ -40,6 +40,8 @@ namespace aGL {
         void clear(Color color = Colors::Gray) const override;
 
         void setActive(bool active = true) const override;
+        aGL::Rect getSurfRect() const override;
+
         
         void show();
         void hide();

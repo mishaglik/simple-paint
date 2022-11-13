@@ -48,6 +48,8 @@ namespace aGL {
         void setStyle(uint32_t style);
         void setCharacterSize(unsigned size);
 
+        void setFont(const char* font);
+
         void setString(const char* string);
         void setString(const uint32_t* string);
 

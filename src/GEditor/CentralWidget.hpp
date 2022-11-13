@@ -4,7 +4,7 @@
 #include "GEditor/Canvas.hpp"
 #include "Widgets/ContainerWidget.hpp"
 #include "Widgets/Scrollbar.hpp"
-    
+
 namespace mge {
 
     class CentralWidget : public aGL::ContainerWidget
@@ -12,8 +12,11 @@ namespace mge {
         Canvas* canvas_ = nullptr;
         aGL::Scrollbar* xScroll_ = nullptr; 
         aGL::Scrollbar* yScroll_ = nullptr; 
-        public:
-            CentralWidget(const aGL::Rect& rect, aGL::Widget* parent = nullptr);
+    public:
+        CentralWidget(const aGL::Rect& rect, aGL::Widget* parent = nullptr);
+
+        void afterPaint() const override;
+    private:
     };
 }
 

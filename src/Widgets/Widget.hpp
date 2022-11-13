@@ -25,6 +25,7 @@ namespace aGL {
         const SkinManager* sm_ = nullptr;
         TexId texId_ = 0;
         const char* texName_ = nullptr;
+
     public:
         explicit Widget(Widget* parent = nullptr) : Widget(Rect{100,100,0,0}, parent) {}
         explicit Widget(const Rect& rect, Widget* parent = nullptr) : parent_(parent), rect_(rect), maxW_(rect.w), maxH_(rect.h)
@@ -59,6 +60,7 @@ namespace aGL {
             } 
             delete surface;
         }
+        virtual void afterPaint() const {}
     public:
         Widget& setSkinManager(const SkinManager* sm_);
         virtual void onSkinChange();

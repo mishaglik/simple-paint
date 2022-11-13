@@ -33,7 +33,7 @@ namespace aGL {
         if(hidden_) return;
         const Surface* rSurface = surface ? surface : surf;
         for(Widget* child : childen_) child->render(rSurface);
-
+        afterPaint();
         if(RenderSurface* rs = dynamic_cast<RenderSurface*>(surface))
         {
             rs->update();
