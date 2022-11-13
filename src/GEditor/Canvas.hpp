@@ -21,6 +21,7 @@ namespace mge {
 
     private:
         ToolAction curAction_ = {};
+        bool isPointOnImage(aGL::Point);
     public:
         aGL::Signal<const ToolAction&> mousePressed;
         aGL::Signal<const ToolAction&> mouseReleased;

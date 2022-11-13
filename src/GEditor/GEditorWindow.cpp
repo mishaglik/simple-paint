@@ -10,11 +10,7 @@ namespace mge {
     {
         centralWidget_ = new CentralWidget(Design::MainWidget::RECT, this);
 
-        leftPanel_ = new LeftPanel(Design::LeftPanel::RECT, tools_, this);
-
-        createTools();
-        // selectTool(tools_[0]);
-        GEditor::app->setCurrentTool(tools_[0]);
+        leftPanel_ = new LeftPanel(Design::LeftPanel::RECT, GEditor::app->getToolList(), this);
 
         menubar_ = new aGL::Menubar(Design::Menu::RECT, this);
         setupMenu();
@@ -38,17 +34,7 @@ namespace mge {
         menubar_->setTextColor(Design::ColorPalete::TextColor);
     }
     
-    void MainWindow::createTools()
-    {
-        DrawingContext* context = &GEditor::app->context;
-
-        tools_.push_back(new tools::Pen{context});
-        tools_.push_back(new tools::RectFiller{context});
-        tools_.push_back(new tools::EllipseFiller{context});
-        tools_.push_back(new tools::Filler(context));
-        tools_.push_back(new tools::Pippet(context));
-        tools_.push_back(new tools::Grayer(context));
-    }
+    
 
     void MainWindow::colorSelect()
     {

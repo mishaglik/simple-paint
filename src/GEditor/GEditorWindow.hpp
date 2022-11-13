@@ -16,7 +16,6 @@ namespace mge {
         CentralWidget* centralWidget_ = nullptr;        
 
         LeftPanel* leftPanel_ = nullptr;
-        mvc::Vector<Tool* > tools_;
         // Tool* selectedTool_ = nullptr;
         void setupMenu();
 
@@ -28,7 +27,6 @@ namespace mge {
         // aGL::Signal<Tool* > selectedToolChanged;
     
     private:
-        void createTools();
         void colorSelect();
         void setForegroundColor(aGL::Color color);
     };

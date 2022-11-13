@@ -3,7 +3,7 @@
 
 #include "AbstractGL/AImage.hpp"
 #include "AbstractGL/Event.hpp"
-#include "Widgets/SkinManager.hpp"
+#include "GEditor/ToolPanel.hpp"
 namespace mge {
     struct DrawingContext;
     struct ToolAction
@@ -12,22 +12,24 @@ namespace mge {
         aGL::Point point;
         bool shift;
         bool ctrl;
+        bool alt;
     };
 
     class Tool
     {
     protected:
-        DrawingContext* context_;
+        ToolPanel* panel_ = nullptr; 
     public:
-        Tool(DrawingContext* context) : context_(context) {}
+        Tool() {}
         virtual ~Tool() {}
         virtual void onMousePress  (const ToolAction& action) = 0;
         virtual void onMouseRelease(const ToolAction& action) = 0;
         virtual void onMouseMove   (const ToolAction& action) = 0;
         virtual void onImageChange() = 0;
-        virtual const char* getSkinName() const = 0;
-        // virtual aGL::TexId getSkin(const aGL::SkinManager* sm) const = 0;
-        virtual aGL::Color getFillColor() const {return aGL::Colors::Black;}
+        virtual const char* getTexture() const = 0;
+        virtual void createPanel(aGL::Widget* parent, const aGL::Rect& rect) { if(!panel_) panel_ = new ToolPanel(rect, "Tool", parent);}
+        ToolPanel* getPanel() { return panel_; } 
+        
     };
 }
 

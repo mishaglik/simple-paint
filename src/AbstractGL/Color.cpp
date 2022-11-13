@@ -67,45 +67,8 @@ namespace aGL {
         return col;
     }
 
-    void Color::setHSV(uint32_t h, uint8_t s, uint8_t v, uint8_t alpha)
-    {
-        uint32_t H = h, S = s, V = v;
-        uint32_t hIndex = (H / 60) % 6; 
-        uint32_t vMin   = (100 - S) * V / 100;
-        uint32_t delta  = (V - vMin) * (H % 60) / 60;
-        uint32_t vInc   = vMin + delta;
-        uint32_t vDec   = V - delta;
-
-        V =    255 * V    / 100;
-        vInc = 255 * vInc / 100;
-        vDec = 255 * vDec / 100;
-        vMin = 255 * vMin / 100;
-
-        switch (hIndex) {
-            case 0:
-                asRGBA_.r_ = V;    asRGBA_.g_ = vInc; asRGBA_.b_ = vMin;
-                break;
-            case 1:
-                asRGBA_.r_ = vDec; asRGBA_.g_ = V;    asRGBA_.b_ = vMin;
-                break;
-            case 2:
-                asRGBA_.r_ = vMin; asRGBA_.g_ = V;    asRGBA_.b_ = vInc;
-                break;
-            case 3:
-                asRGBA_.r_ = vMin; asRGBA_.g_ = vDec; asRGBA_.b_ = V;
-                break;
-            case 4:
-                asRGBA_.r_ = vInc; asRGBA_.g_ = vMin; asRGBA_.b_ = V;
-                break;
-            case 5:
-                asRGBA_.r_ = V;    asRGBA_.g_ = vMin; asRGBA_.b_ = vDec;
-                break;
-            default:
-                abort();
-        }
-        asRGBA_.a_ = alpha;
-
-    }
+    // void Color::setHSV(uint32_t h, uint8_t s, uint8_t v, uint8_t alpha)
+    
 
         
     uint32_t Color::h() const

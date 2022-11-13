@@ -1,6 +1,7 @@
 #include "Canvas.hpp"
 #include "AbstractGL/AImage.hpp"
 #include "GEditor.hpp"
+#include "GEditor/GrandDesign.hpp"
 #include "Tool.hpp"
 
 namespace mge {
@@ -26,10 +27,10 @@ namespace mge {
     aGL::EventHandlerState Canvas::onPaintEvent(const aGL::Event*)
     {
         if(!needsRepaint_) return aGL::Accepted;
-        surface->clear(aGL::Colors::White);
+        surface->clear(Design::ColorPalete::backgroundColor);
         if(alphaFiller_ != aGL::NoTexture && alphaFiller_ != aGL::IgnoreTexture)
         {
-            surface->drawSprite({}, { sm_->getTexture(alphaFiller_), {0, 0, rect_.w, rect_.h}});
+            surface->drawSprite(mgm::asPoint(imageStart_), { sm_->getTexture(alphaFiller_), {0, 0, image_->getW(), image_->getH()}});
         }
 
         if(image_ && image_->isCreated())
@@ -41,12 +42,22 @@ namespace mge {
         return aGL::Accepted;
     }
 
+    bool Canvas::isPointOnImage(aGL::Point pt)
+    {
+        pt -= imageStart_;
+        // mInfo << "Contains: "  << mgm::contains({0,0, image_->getW() - 1, image_->getH() - 1}, pt) << mlg::endl;
+        return mgm::contains({0,0, image_->getW() - 1, image_->getH() - 1}, pt);
+    }
+
+
     aGL::EventHandlerState Canvas::onMouseButtonPressEvent(const aGL::Event* e)
     {
+        if(!isPointOnImage(e->mbed.point)) return aGL::Dropped;
         if(e->mbed.button == aGL::MouseButton::Left)
         {
             curAction_.point = e->mbed.point;
             curAction_.point -= imageStart_;
+            if(!GEditor::app->getCurrentTool()) return aGL::Accepted;
             GEditor::app->getCurrentTool()->onMousePress(curAction_);
             mousePressed.emit(curAction_);
             needsRepaint_ = true;
@@ -56,10 +67,12 @@ namespace mge {
 
     aGL::EventHandlerState Canvas::onMouseButtonReleaseEvent(const aGL::Event* e)
     {
+        if(!isPointOnImage(e->mbed.point)) return aGL::Dropped;
         if(e->mbed.button == aGL::MouseButton::Left)
         {
             curAction_.point = e->mbed.point;
             curAction_.point -= imageStart_;
+            if(!GEditor::app->getCurrentTool()) return aGL::Accepted;
             GEditor::app->getCurrentTool()->onMouseRelease(curAction_);
             mouseReleased.emit(curAction_);
             needsRepaint_ = true;
@@ -69,8 +82,10 @@ namespace mge {
 
     aGL::EventHandlerState Canvas::onMouseMoveEvent(const aGL::Event* e)
     {
+        if(!isPointOnImage(e->mmed.point)) return aGL::Dropped;
         curAction_.point = e->mmed.point;
         curAction_.point -= imageStart_;
+        if(!GEditor::app->getCurrentTool()) return aGL::Accepted;
         GEditor::app->getCurrentTool()->onMouseMove(curAction_);
         mouseMoved.emit(curAction_);
         needsRepaint_ = true;
@@ -118,6 +133,12 @@ namespace mge {
             return aGL::Accepted;
         }
 
+        if(e->ked.key == aGL::KeyboardKey::LAlt)
+        {
+            curAction_.alt = true;
+            return aGL::Accepted;
+        }
+
         return aGL::Widget::onKeyPressedEvent(e);
     }
 
@@ -135,6 +156,12 @@ namespace mge {
             return aGL::Accepted;
         }
 
+         if(e->ked.key == aGL::KeyboardKey::LAlt)
+        {
+            curAction_.alt = false;
+            return aGL::Accepted;
+        }
+
         return aGL::Widget::onKeyReleasedEvent(e);
     }
 
@@ -142,6 +169,7 @@ namespace mge {
     {
         curAction_.ctrl = false;
         curAction_.shift = false;
+        curAction_.alt = false;
         return aGL::Accepted;
     }
 

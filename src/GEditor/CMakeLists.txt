@@ -9,7 +9,8 @@ set (GEDITOR_SOURCES
     LeftPanel.cpp
     CentralWidget.cpp
     ColorSelector.cpp
-    ToolPanel.hpp
+    ToolPanel.cpp
+    Plugins.cpp
 )
     
 set (GEDITOR_HEADERS
@@ -21,7 +22,8 @@ set (GEDITOR_HEADERS
     LeftPanel.hpp
     CentralWidget.hpp
     ColorSelector.hpp
-    ToolPanel.cpp
+    ToolPanel.hpp
+    Plugins.hpp
 )
 
 add_library(GEditor ${GEDITOR_SOURCES} ${GEDITOR_HEADERS})

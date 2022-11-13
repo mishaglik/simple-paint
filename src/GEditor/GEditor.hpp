@@ -22,6 +22,9 @@ class GEditor : public aGL::BaseApplication
     aGL::SkinManager* sm_ = nullptr;
 
     mge::Tool* currentTool_ = nullptr;
+    mvc::Vector<mge::Tool* > tools_;
+
+    void createTools();
 
 public:
     GEditor(int argc, const char* argv[]);
@@ -31,11 +34,15 @@ public:
     mge::DrawingContext context = {};
 
     void setCurrentTool(mge::Tool* newTool);
-    mge::Tool* getCurrentTool() const { mAssert(currentTool_); return currentTool_; }
+    mge::Tool* getCurrentTool() const { return currentTool_; }
     aGL::Signal<mge::Tool* > toolChanged;
 
     void setFgColor(aGL::Color color) { context.foregroundColor = color; }
     void setBgColor(aGL::Color color) { context.backgroundColor = color; }
+
+    void addTool(mge::Tool* tool);
+    
+    const mvc::Vector<mge::Tool* >& getToolList() const {return tools_;}
 };
 
 #endif /* GEDITOR_GEDITOR_HPP */

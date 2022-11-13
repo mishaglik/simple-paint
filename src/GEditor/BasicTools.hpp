@@ -43,16 +43,15 @@ namespace mge {
             aGL::Point prevDrawn_ = {};
             KatmulRom interp_;
         public:
-            Pen(DrawingContext* context) : Tool(context) {}
-            Pen(DrawingContext* context, const aGL::Color& color) : Tool(context){}
+            Pen() : Tool() {}
             ~Pen() override {}
 
             void onMousePress(const ToolAction& action) override
             {
-                action.image->setPixel(action.point.x, action.point.y, context_->foregroundColor);
+                action.image->setPixel(action.point.x, action.point.y, GEditor::app->context.foregroundColor);
                 if (action.shift)
                 {
-                    drawLine(action.image, prevDrawn_, action.point, context_->foregroundColor);
+                    drawLine(action.image, prevDrawn_, action.point, GEditor::app->context.foregroundColor);
                 }
                 prevDrawn_ = action.point;
                 isPressed_ = true;
@@ -68,20 +67,21 @@ namespace mge {
             {
                 if(isPressed_)
                 {
-                    // action.image->setPixel(action.point.x, action.point.y, context_->foregroundColor);
+                    // action.image->setPixel(action.point.x, action.point.y, GEditor::app->context.foregroundColor);
                     interp_.addPoint(action.point);
                     for(int i = 1; i <= 100; ++i)
                     {
                         aGL::Point pt = interp_.getPoint(i / 100.);
-                        action.image->setPixel(pt.x, pt.y, context_->foregroundColor);
+                        action.image->setPixel(pt.x, pt.y, GEditor::app->context.foregroundColor);
                     }
                     prevDrawn_ = action.point;
                 }
             }
 
             void onImageChange() override {}
-            const char* getSkinName() const override { return "Pen"; }
-            aGL::Color getFillColor() const override { return context_->foregroundColor; }
+            const char* getTexture() const override { return "Pen"; }
+            // virtual void createPanel(aGL::Widget* parent, const aGL::Rect& rect) override { panel_ = new ToolPanel(rect, "Pen", parent); }
+
         };
 
 
@@ -90,13 +90,14 @@ namespace mge {
             aGL::Point first_;
             bool hasFirst_ = false;
         public:
-            RectFiller(DrawingContext* context) : Tool(context) {}
+            RectFiller() : Tool() {}
             virtual void onMousePress  (const ToolAction& action) override;
             virtual void onMouseRelease(const ToolAction&) override {}
             virtual void onMouseMove   (const ToolAction&) override {}
             virtual void onImageChange() override { hasFirst_ = false; }
-            virtual const char* getSkinName() const override {return "RectFiller";}
-            aGL::Color getFillColor() const override { return context_->foregroundColor; }
+            virtual const char* getTexture() const override {return "RectFiller";}
+            // virtual void createPanel(aGL::Widget* parent, const aGL::Rect& rect) override { panel_ = new ToolPanel(rect, "RectFiller", parent); }
+            
 
         };
 
@@ -105,13 +106,13 @@ namespace mge {
             aGL::Point first_;
             bool hasFirst_ = false;
         public:
-            EllipseFiller(DrawingContext* context) : Tool(context) {}
+            EllipseFiller() : Tool() {}
             virtual void onMousePress  (const ToolAction& action) override;
             virtual void onMouseRelease(const ToolAction&) override {}
             virtual void onMouseMove   (const ToolAction&) override {}
             virtual void onImageChange() override { hasFirst_ = false; }
-            virtual const char* getSkinName() const override {return "EllipseFiller";}
-            aGL::Color getFillColor() const override { return context_->foregroundColor; }
+            virtual const char* getTexture() const override {return "EllipseFiller";}
+            // virtual void createPanel(aGL::Widget* parent, const aGL::Rect& rect) override { panel_ = new ToolPanel(rect, "EllipseFiller", parent); }
         };
 
         int cmpColors(const aGL::Color& c1, const aGL::Color c2);
@@ -119,34 +120,34 @@ namespace mge {
         class Filler : public Tool
         {
         public:
-            Filler(DrawingContext* context) : Tool(context) {}
+            Filler() : Tool() {}
             virtual void onMousePress  (const ToolAction& action) override;
             virtual void onMouseRelease(const ToolAction&) override {}
             virtual void onMouseMove   (const ToolAction&) override {}
             virtual void onImageChange() override {}
-            virtual const char* getSkinName() const override {return "Filler";}
+            virtual const char* getTexture() const override {return "Filler";}
         };
 
         class Pippet : public Tool
         {
         public:
-            Pippet(DrawingContext* context) : Tool(context) {}
-            virtual void onMousePress  (const ToolAction& action) override { (action.ctrl ? context_->backgroundColor : context_->foregroundColor) = action.image->getPixel(action.point.x, action.point.y);}
+            Pippet() : Tool() {}
+            virtual void onMousePress  (const ToolAction& action) override { (action.ctrl ? GEditor::app->context.backgroundColor : GEditor::app->context.foregroundColor) = action.image->getPixel(action.point.x, action.point.y);}
             virtual void onMouseRelease(const ToolAction&) override {}
             virtual void onMouseMove   (const ToolAction&) override {}
             virtual void onImageChange() override {}
-            virtual const char* getSkinName() const override {return "Pippet";}
+            virtual const char* getTexture() const override {return "Pippet";}
         };
 
         class Grayer : public Tool
         {
         public:
-            Grayer(DrawingContext* context) : Tool(context) {}
+            Grayer() : Tool() {}
             virtual void onMousePress  (const ToolAction& action) override;
             virtual void onMouseRelease(const ToolAction&) override {}
             virtual void onMouseMove   (const ToolAction&) override {}
             virtual void onImageChange() override {}
-            virtual const char* getSkinName() const override {return "Grayer";}
+            virtual const char* getTexture() const override {return "Grayer";}
         };
     }
 }

@@ -111,7 +111,7 @@ namespace mge {
 
                 for(int x = first_.x; x <= second.x; ++x)
                     for(int y = first_.y; y <= second.y; ++y)
-                        action.image->setPixel(x, y, context_->foregroundColor);
+                        action.image->setPixel(x, y, GEditor::app->context.foregroundColor);
                 hasFirst_ = false;
             }
             else
@@ -141,7 +141,7 @@ namespace mge {
                         int dx2 = (x - first_.x - w) * (x - first_.x - w);
                         int dy2 = (y - first_.y - h) * (y - first_.y - h);
                         if(dx2 * h2 + dy2 * w2 <= w2 * h2)
-                            action.image->setPixel(x, y, context_->foregroundColor);
+                            action.image->setPixel(x, y, GEditor::app->context.foregroundColor);
                     }
                 }
                 hasFirst_ = false;
@@ -177,7 +177,7 @@ namespace mge {
             while (!q.empty()) {
                 aGL::Point pt = q.front();
                 q.pop();
-                action.image->setPixel(pt.x, pt.y, action.ctrl ?  context_->backgroundColor : context_->foregroundColor);
+                action.image->setPixel(pt.x, pt.y, action.ctrl ?  GEditor::app->context.backgroundColor : GEditor::app->context.foregroundColor);
 
                 pt.x++;
                 if(pt.x < static_cast<int>(action.image->getW()) && !st.contains(pt) && cmpColors(startColor, action.image->getPixel(pt.x, pt.y)) < colorEdge)

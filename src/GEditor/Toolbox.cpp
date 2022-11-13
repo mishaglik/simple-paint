@@ -1,5 +1,6 @@
 #include "Toolbox.hpp"
 #include "GEditor.hpp"
+#include "GrandDesign.hpp"
 
 namespace mge {
     Toolbox::Toolbox(const aGL::Rect& rect, const uint32_t bSize, const mvc::Vector<Tool* >& tools, aGL::Widget* parent) :
@@ -13,6 +14,8 @@ namespace mge {
     {
         ToolboxButton* button = new ToolboxButton({(buttonCnt_ % 4) * buttonSize_, (buttonCnt_ / 4) * buttonSize_ , buttonSize_, buttonSize_}, 
                                                         tools_, buttonCnt_, this);
+        tools_[buttonCnt_]->createPanel(parent_, Design::LeftPanel::ToolPanel::RECT);
+        tools_[buttonCnt_]->getPanel()->hide();
         button->chosen.connect(this, &Toolbox::selectTool);
         if(selected_ == nullptr) button->select();
         buttonCnt_++;
@@ -76,8 +79,7 @@ namespace mge {
 
     aGL::EventHandlerState Toolbox::ToolboxButton::onPaintEvent(const aGL::Event*)
     {
-        Tool* tool = tools_[index_];
-        surface->clear(tool->getFillColor());
+        surface->clear(GEditor::app->context.foregroundColor);
         if(skinned())
         {
             surface->drawSprite({}, {sm_->getTexture(texId_), {isSelected_ ? rect_.w : 0u, 0u, rect_.w, rect_.h}});
@@ -97,16 +99,18 @@ namespace mge {
     void Toolbox::ToolboxButton::onSkinChange()
     {
         Tool* tool = tools_[index_];
+        mAssert(tool);
         if(texId_ == aGL::NoTexture && sm_)
         {
-            texId_ = sm_->findTextureId(tool->getSkinName());
-            mInfo << texId_ << '\n';
+            texId_ = sm_->findTextureId(tool->getTexture());
+            mInfo << "Tex found: " << texId_ << '\n';
         }
         needsRepaint_ = true;
     }
 
     void Toolbox::ToolboxButton::select()
     {
+        tools_[index_]->getPanel()->show();
         isSelected_ = true;
         chosen.emit(this);
         needsRepaint_ = true;
@@ -114,6 +118,7 @@ namespace mge {
 
     void Toolbox::ToolboxButton::disselect()
     {
+        tools_[index_]->getPanel()->hide();
         isSelected_ = false;
         needsRepaint_ = true;
     }

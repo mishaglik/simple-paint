@@ -1,5 +1,6 @@
 #include "SkinManager.hpp"
 #include "LogUtils/LogUtils.hpp"
+#include "Widgets/Widget.hpp"
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Weverything"
 #include <libXML/tinyxml2.h>
@@ -82,6 +83,11 @@ namespace aGL {
         }
         if(!silent)
             mInfo << "Asked for texture :\"" << entity <<"\" -- " << mlg::ConsoleLogger::CoStyle::Red << "not found" << mlg::endl;
+        
+        if(!strcmp(entity, "aGL__Widget"))
+        {
+            mWarning << "W asked" << mlg::endl;
+        }
         return NoTexture;
     }
     

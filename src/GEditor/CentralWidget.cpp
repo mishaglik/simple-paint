@@ -11,11 +11,13 @@ namespace mge {
 
         xScroll_ = new aGL::Scrollbar(XScrollbar::RECT, aGL::Scrollbar::Horizontal, XScrollbar::ScrollSize, this);
         xScroll_->setMaxValue(-100);
+        xScroll_->setMinValue(100);
         xScroll_->setTexId(XScrollbar::TEXNAME);
         xScroll_->valueChanged.connect(canvas_, &Canvas::setImageStartX);
 
         yScroll_ = new aGL::Scrollbar(YScrollbar::RECT, aGL::Scrollbar::Vertical,   YScrollbar::ScrollSize, this);
         yScroll_->setMaxValue(-100);
+        yScroll_->setMinValue(100);
         yScroll_->setTexId(YScrollbar::TEXNAME);
         yScroll_->valueChanged.connect(canvas_, &Canvas::setImageStartY);
     }
