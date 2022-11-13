@@ -1,5 +1,7 @@
 #include "Canvas.hpp"
 #include "AbstractGL/AImage.hpp"
+#include "GEditor.hpp"
+#include "Tool.hpp"
 
 namespace mge {
     Canvas::Canvas(const aGL::Rect& rect, aGL::Widget* parent)
@@ -45,6 +47,7 @@ namespace mge {
         {
             curAction_.point = e->mbed.point;
             curAction_.point -= imageStart_;
+            GEditor::app->getCurrentTool()->onMousePress(curAction_);
             mousePressed.emit(curAction_);
             needsRepaint_ = true;
         }
@@ -57,6 +60,7 @@ namespace mge {
         {
             curAction_.point = e->mbed.point;
             curAction_.point -= imageStart_;
+            GEditor::app->getCurrentTool()->onMouseRelease(curAction_);
             mouseReleased.emit(curAction_);
             needsRepaint_ = true;
         }
@@ -67,6 +71,7 @@ namespace mge {
     {
         curAction_.point = e->mmed.point;
         curAction_.point -= imageStart_;
+        GEditor::app->getCurrentTool()->onMouseMove(curAction_);
         mouseMoved.emit(curAction_);
         needsRepaint_ = true;
         return aGL::Accepted;

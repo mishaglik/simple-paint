@@ -2,9 +2,10 @@
 #define GEDITOR_GEDITORWINDOW_HPP
 
 #include "GEditor/Canvas.hpp"
-#include "GEditor/Toolbox.hpp"
-#include "Widgets/Gui.hpp"
+#include "GEditor/LeftPanel.hpp"
 #include "Widgets/WindowWidget.hpp"
+#include "GEditor/CentralWidget.hpp"
+
 
 namespace mge {
 
@@ -12,18 +13,26 @@ namespace mge {
     {
         aGL::Menubar* menubar_ = nullptr;
 
+        CentralWidget* centralWidget_ = nullptr;        
+
         aGL::Scrollbar* imageScrollX_ = nullptr;
         aGL::Scrollbar* imageScrollY_ = nullptr;
 
         mge::Canvas* canvas_ = nullptr;
         
-        Toolbox* tb_ = nullptr;
+        LeftPanel* leftPanel_ = nullptr;
+        mvc::Vector<Tool* > tools_;
+        // Tool* selectedTool_ = nullptr;
         DrawingContext context_ = {};
         void setupMenu();
 
     public:
         MainWindow();
         ~MainWindow() override;
+
+        // void selectTool(Tool* tool);
+        // aGL::Signal<Tool* > selectedToolChanged;
+    
     private:
         void applyToolMouseMove(const ToolAction& ta);
         void applyToolMousePress(const ToolAction& ta);

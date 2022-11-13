@@ -2,26 +2,31 @@
 #include "BasicTools.hpp"
 #include "ColorDialog/ColorDialog.hpp"
 #include "GrandDesign.hpp"
+#include "GEditor.hpp"
 
 namespace mge {
     MainWindow::MainWindow() :
         aGL::WWindow(Design::Window::W, Design::Window::H, Design::Window::TITLE)
     {
-        canvas_ = new Canvas(Design::MainWidget::RECT, this);
-        canvas_->mouseMoved   .connect(this, &MainWindow::applyToolMouseMove);
-        canvas_->mousePressed .connect(this, &MainWindow::applyToolMousePress);
-        canvas_->mouseReleased.connect(this, &MainWindow::applyToolMouseRelease);
+        centralWidget_ = new CentralWidget(Design::MainWidget::RECT, this);
+        // canvas_ = new Canvas(Design::MainWidget::RECT, this);
+        // canvas_->mouseMoved   .connect(this, &MainWindow::applyToolMouseMove);
+        // canvas_->mousePressed .connect(this, &MainWindow::applyToolMousePress);
+        // canvas_->mouseReleased.connect(this, &MainWindow::applyToolMouseRelease);
 
-        imageScrollX_ = new aGL::Scrollbar(180, 490, 620, 20, aGL::Scrollbar::Horizontal, this);
-        imageScrollX_->setMaxValue(-100);
-        imageScrollX_->valueChanged.connect(canvas_, &Canvas::setImageStartX);
+        // imageScrollX_ = new aGL::Scrollbar(180, 490, 620, 20, aGL::Scrollbar::Horizontal, this);
+        // imageScrollX_->setMaxValue(-100);
+        // imageScrollX_->valueChanged.connect(canvas_, &Canvas::setImageStartX);
 
-        imageScrollY_ = new aGL::Scrollbar(800, 30, 20, 460, aGL::Scrollbar::Vertical, this);
-        imageScrollY_->setMaxValue(-100);
-        imageScrollY_->valueChanged.connect(canvas_, &Canvas::setImageStartY);
+        // imageScrollY_ = new aGL::Scrollbar(800, 30, 20, 460, aGL::Scrollbar::Vertical, this);
+        // imageScrollY_->setMaxValue(-100);
+        // imageScrollY_->valueChanged.connect(canvas_, &Canvas::setImageStartY);
 
-        tb_ = new Toolbox(Design::LeftPanel::Toolbox::RECT, 45, this);
+        leftPanel_ = new LeftPanel(Design::LeftPanel::RECT, tools_, this);
+
         createTools();
+        // selectTool(tools_[0]);
+        GEditor::app->setCurrentTool(tools_[0]);
 
         menubar_ = new aGL::Menubar(Design::Menu::RECT, this);
         setupMenu();
@@ -42,36 +47,34 @@ namespace mge {
         menubar_->addMenuEntry("Cringe");
         menubar_->entries()[2]->addMenuEntry("Select color");
         menubar_->entries()[2]->buttons()[0]->clicked.connect<MainWindow>(this, &MainWindow::colorSelect);
+        menubar_->setTextColor(Design::Palete.TextColor);
     }
 
 
 
     void MainWindow::applyToolMouseMove(const ToolAction& ta)
     {
-        mAssert(tb_->getSelectedTool());
-        tb_->getSelectedTool()->onMouseMove(ta);
+        GEditor::app->getCurrentTool()->onMouseMove(ta);
     }
 
     void MainWindow::applyToolMousePress(const ToolAction& ta)
     {
-        mAssert(tb_->getSelectedTool());
-        tb_->getSelectedTool()->onMousePress(ta);
+        GEditor::app->getCurrentTool()->onMousePress(ta);
     }
 
     void MainWindow::applyToolMouseRelease(const ToolAction& ta)
     {
-        mAssert(tb_->getSelectedTool());
-        tb_->getSelectedTool()->onMouseRelease(ta);
+        GEditor::app->getCurrentTool()->onMouseRelease(ta);
     }
 
     void MainWindow::createTools()
     {
-        tb_->addTool(new tools::Pen{&context_});
-        tb_->addTool(new tools::RectFiller{&context_});
-        tb_->addTool(new tools::EllipseFiller{&context_});
-        tb_->addTool(new tools::Filler(&context_));
-        tb_->addTool(new tools::Pippet(&context_));
-        tb_->addTool(new tools::Grayer(&context_));
+        tools_.push_back(new tools::Pen{&context_});
+        tools_.push_back(new tools::RectFiller{&context_});
+        tools_.push_back(new tools::EllipseFiller{&context_});
+        tools_.push_back(new tools::Filler(&context_));
+        tools_.push_back(new tools::Pippet(&context_));
+        tools_.push_back(new tools::Grayer(&context_));
     }
 
     void MainWindow::colorSelect()
@@ -85,5 +88,4 @@ namespace mge {
     {
         context_.foregroundColor = color;
     }
-
 }

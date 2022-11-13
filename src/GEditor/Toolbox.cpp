@@ -1,19 +1,38 @@
 #include "Toolbox.hpp"
+#include "GEditor.hpp"
 
 namespace mge {
-    Toolbox::Toolbox(const aGL::Rect& rect, const uint32_t bSize, aGL::Widget* parent) :
-        aGL::ContainerWidget(rect, parent), buttonSize_(bSize)
+    Toolbox::Toolbox(const aGL::Rect& rect, const uint32_t bSize, const mvc::Vector<Tool* >& tools, aGL::Widget* parent) :
+        aGL::ContainerWidget(rect, parent), tools_(tools), buttonSize_(bSize)
     {
-
+        aGL::connect(GEditor::app, &GEditor::toolChanged, this, &Toolbox::select);
+        aGL::connect(this, &Toolbox::selectedChanged, GEditor::app, &GEditor::setCurrentTool);
     }
 
-    void Toolbox::addTool(Tool* tool)
+    void Toolbox::addButton()
     {
-        ToolboxButton* button = new ToolboxButton({(buttonCnt_ % 4) * buttonSize_, (buttonCnt_ / 4) * buttonSize_ , buttonSize_, buttonSize_}, tool, this);
+        ToolboxButton* button = new ToolboxButton({(buttonCnt_ % 4) * buttonSize_, (buttonCnt_ / 4) * buttonSize_ , buttonSize_, buttonSize_}, 
+                                                        tools_, buttonCnt_, this);
         button->chosen.connect(this, &Toolbox::selectTool);
         if(selected_ == nullptr) button->select();
         buttonCnt_++;
     }
+
+    void Toolbox::select(Tool* tool)
+    {
+        if(selected_ && selected_->getTool() == tool) return;
+        for(ToolboxButton* button : buttons_)
+        {
+            if(button->getTool() == tool)
+            {
+                if(selected_ == button) return;
+                if(selected_) selected_->disselect();
+                selected_ = button;
+                selected_->select();
+            }
+        }
+    }
+
 
     Tool* Toolbox::getSelectedTool() const
     {
@@ -26,31 +45,43 @@ namespace mge {
         if(selected_ == button) return;
         if(selected_) selected_->disselect();
         selected_ = button;
+        selectedChanged.emit(selected_->getTool());
     }
 
-    Toolbox::ToolboxButton::ToolboxButton(const aGL::Rect& rect, Tool* tool, aGL::Widget* parent) : 
-        aGL::AbstractButton(rect, false, parent), tool_(tool)
+    Toolbox::ToolboxButton::ToolboxButton(const aGL::Rect& rect, const mvc::Vector<Tool* >& tools, size_t index, aGL::Widget* parent) : 
+        aGL::AbstractButton(rect, false, parent), tools_(tools), index_(index)
     {
         clicked.connect(this, &ToolboxButton::select);
-    }
-
-    Toolbox::ToolboxButton::~ToolboxButton()
-    {
-        delete tool_;
+        onSkinChange();
     }
 
     Tool* Toolbox::ToolboxButton::getTool() const
     {
-        return tool_;
+        return tools_[index_];
     }
+
+    void Toolbox::update()
+    {
+        if(tools_.size() < buttonCnt_) 
+        {
+            MLG_UIMPLEMENTED
+            return;
+        }
+        
+        while (tools_.size() > buttonCnt_) {
+            addButton();
+        }
+    }
+    
 
     aGL::EventHandlerState Toolbox::ToolboxButton::onPaintEvent(const aGL::Event*)
     {
-        surface->clear(tool_->getFillColor());
+        Tool* tool = tools_[index_];
+        surface->clear(tool->getFillColor());
         if(skinned())
         {
-            surface->drawSprite({}, sm_->getTexture(texId_));
-            if(isSelected_) surface->drawRect({0, 0, rect_.w, rect_.h}, 0x00000080);
+            surface->drawSprite({}, {sm_->getTexture(texId_), {isSelected_ ? rect_.w : 0u, 0u, rect_.w, rect_.h}});
+            // if(isSelected_) surface->drawRect({0, 0, rect_.w, rect_.h}, 0x00000080);
             if(hovered_) surface->drawRect({0, 0, rect_.w, rect_.h}, 0x00000040);
         } else {
             if(isSelected_)
@@ -65,9 +96,11 @@ namespace mge {
 
     void Toolbox::ToolboxButton::onSkinChange()
     {
+        Tool* tool = tools_[index_];
         if(texId_ == aGL::NoTexture && sm_)
         {
-            texId_ = sm_->findTextureId(tool_->getSkinName());
+            texId_ = sm_->findTextureId(tool->getSkinName());
+            mInfo << texId_ << '\n';
         }
         needsRepaint_ = true;
     }

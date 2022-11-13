@@ -4,7 +4,7 @@
 SceneEditor::SceneEditor(Scene* scene, uint32_t x, uint32_t y, uint32_t w, uint32_t h, aGL::Widget* parent) :
     aGL::ContainerWidget({x, y, w, h}, parent), scene_(scene)
 {
-    scrollbar_ = new aGL::Scrollbar(w - 20, 0, 20, h, aGL::Scrollbar::Vertical, this);
+    scrollbar_ = new aGL::Scrollbar(w - 20, 0, 20, h, aGL::Scrollbar::Vertical, 33, this);
     scrollbar_->valueChanged.connect(this, &SceneEditor::setStart);
 
     for(RTObjs::RenderObject* obj : scene->objects())

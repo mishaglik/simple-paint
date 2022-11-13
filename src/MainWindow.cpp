@@ -6,11 +6,11 @@ MainWindow::MainWindow(Scene* scene) :
 
     raytracer_ = new Raytracer(scene, 180, 30, 620, 460, 800, 600, this); //TODO: Main widget
     
-    scrollbarX_ = new aGL::Scrollbar(180, 490, 620, 20, aGL::Scrollbar::Horizontal, this);
+    scrollbarX_ = new aGL::Scrollbar(180, 490, 620, 20, aGL::Scrollbar::Horizontal, 34, this);
     scrollbarX_->setMaxValue(100);
     scrollbarX_->valueChanged.connect(raytracer_, &Raytracer::setStartX);
 
-    scrollbarY_ = new aGL::Scrollbar(800, 30, 20, 460, aGL::Scrollbar::Vertical, this);
+    scrollbarY_ = new aGL::Scrollbar(800, 30, 20, 460, aGL::Scrollbar::Vertical,34, this);
     scrollbarY_->setMaxValue(100);
     scrollbarY_->valueChanged.connect(raytracer_, &Raytracer::setStartY);
 

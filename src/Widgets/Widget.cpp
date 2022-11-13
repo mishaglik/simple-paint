@@ -57,26 +57,35 @@ namespace aGL {
     {
         if(sm_ != nullptr && texId_ == 0)
         {
-            char* name = nullptr;
-            size_t len = 0;
-            int res = 0;
-            const char* thename = typeid(*this).name();
-            name = abi::__cxa_demangle(thename, name, &len, &res);
-            if(res || !name)
+            if(texName_ != nullptr)
             {
-                mError << "Error: demangling returned " << res << mlg::endl;
-                return;
+                texId_ = sm_->findTextureId(texName_);
             }
-            for(char* c = name; *c; c++) if(*c == ':') *c = '_';
+            else
+            {
+                char* name = nullptr;
+                size_t len = 0;
+                int res = 0;
+                const char* thename = typeid(*this).name();
+                name = abi::__cxa_demangle(thename, name, &len, &res);
+                if(res || !name)
+                {
+                    mError << "Error: demangling returned " << res << mlg::endl;
+                    return;
+                }
+                for(char* c = name; *c; c++) if(*c == ':') *c = '_';
 
-            texId_ = sm_->findTextureId(name);
-            free(name);
+                texId_ = sm_->findTextureId(name);
+                free(name);
+            }
         }
     }
 
 
     void Widget::setTexId(const char* name) 
     {
+        texId_ = 0;
+        texName_ = name;
         if(!sm_) return;
         texId_ = sm_->findTextureId(name);
     }
@@ -93,11 +102,22 @@ namespace aGL {
         return *this;
     }
 
-    void Widget::addChild(Widget* child) {
+    void Widget::addChild(Widget* child)
+    {
         assert(child != this);
         childen_.push_back(child);
         child->setEventManager(evMgr_);
+        if(sm_) child->setSkinManager(sm_);
     }
+
+    void Widget::delChild(Widget* child)
+    {
+        for(size_t i = 0; i < childen_.size(); ++i)
+        {
+            if(childen_[i] == child) childen_[i] = nullptr;
+        }
+    }
+
 
     void Widget::setPoisition(uint32_t x, uint32_t y)
     {

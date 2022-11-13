@@ -18,6 +18,21 @@ namespace aGL {
     {
     }
 
+    void Menubar::setTextColor(const aGL::Color color)
+    {
+        textColor_ = color;
+        for(Menu* menu : menus_)
+            menu->setTextColor(textColor_);
+    }
+
+    void Menubar::Menu::setTextColor(const aGL::Color color)
+    {
+        for(MenuButton* mb : buttons_)
+        {
+            mb->setTextColor(color);
+        }
+    }
+
     size_t Menubar::addMenuEntry(const char* name)
     {
         uint32_t x = menus_.empty() ? 0 : menus_.back()->getRect().getCornerGL().x - 1;
@@ -25,6 +40,7 @@ namespace aGL {
         menus_.push_back(newMenu);
         newMenu->activated.connect(this, &Menubar::setActiveMenu);
         newMenu->deactivated.connect(this, &Menubar::setNoActiveMenu);
+        newMenu->setTextColor(textColor_);
         return menus_.size() - 1;
     }
     
@@ -125,7 +141,6 @@ namespace aGL {
         }
         else
         {
-            text_.setColor(aGL::Colors::Black);
             uint32_t texStart = (hovered_ || isActive_) ? 2 * rect_.w : 0;
             if(!isMain_) texStart += rect_.w;
             // mInfo << rect_.w << " " << texStart << mlg::endl;

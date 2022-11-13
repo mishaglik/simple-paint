@@ -10,9 +10,10 @@ namespace mge {
     {
         Toolbox* toolbox_ = nullptr;
     public:
-        LeftPanel(const aGL::Rect& rect, aGL::Widget* widget = nullptr);
+        LeftPanel(const aGL::Rect& rect, const mvc::Vector<Tool* >& tools, aGL::Widget* widget = nullptr);
 
         Toolbox* getToolbox() { return toolbox_; }
+
     };
 }
 

@@ -6,7 +6,8 @@ set (GEDITOR_SOURCES
     Canvas.cpp
     Toolbox.cpp
     BasicTools.cpp
-    LeftPanel.hpp
+    LeftPanel.cpp
+    CentralWidget.cpp
     )
     
 set (GEDITOR_HEADERS
@@ -15,7 +16,8 @@ set (GEDITOR_HEADERS
     Canvas.hpp
     Toolbox.hpp
     BasicTools.hpp
-    LeftPanel.cpp
+    LeftPanel.hpp
+    CentralWidget.hpp
 )
 
 add_library(GEditor ${GEDITOR_SOURCES} ${GEDITOR_HEADERS})

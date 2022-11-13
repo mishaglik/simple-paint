@@ -24,14 +24,18 @@ namespace aGL {
         bool hasEventPoint(const Point& pt) override;
 
         void render(const Surface* surf) const override;
+        void setTextColor(const aGL::Color color);
+
 
 
     private:
+        aGL::Color textColor_ = aGL::Colors::Red;
         mvc::Vector<Menu*> menus_;
         Menu* activeMenu = nullptr;
 
         void setActiveMenu(Menu* menu);
         void setNoActiveMenu() {activeMenu = nullptr;}
+
     };
 
     class Menubar::Menu : public Widget
@@ -56,6 +60,7 @@ namespace aGL {
         Signal<Menu*> activated;
         Signal<> deactivated;
 
+        void setTextColor(const aGL::Color color);
     private:
         bool isActive_ = false;
 
@@ -74,6 +79,11 @@ namespace aGL {
         void setMain() { isMain_ = true; }
         void setActive(bool active) { isActive_ = active; needsRepaint_ = true; }
         virtual EventHandlerState onPaintEvent(const Event*) override;
+        void setTextColor(const aGL::Color color)
+        {
+            text_.setColor(color);
+            needsRepaint_ = true;
+        }
     private:
     };
 

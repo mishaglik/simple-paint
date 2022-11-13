@@ -5,7 +5,21 @@
 #include "AbstractGL/AWindow.hpp"
 namespace mge {
     namespace Design {
+
             using aGL::Rect;
+            using aGL::Color;
+
+            struct ColorPalete
+            {
+                Color backgroundColor  = 0x454545ff;
+                Color borderLightColor = 0x5b5b5bff;
+                Color borderDarkColor  = 0x3b3b3bff;
+                Color ScrollHoleColor  = 0x202020ff;
+                Color TextColor        = 0xddddddff;
+
+            };
+
+            const ColorPalete Palete;
             const uint32_t MinSpacing = 1;
 
             namespace Window {
@@ -31,10 +45,10 @@ namespace mge {
 
             namespace LeftPanel {
                 const uint32_t X = 0;
-                const uint32_t Y = Menu::RECT.x + Menu::RECT.w;
+                const uint32_t Y = Menu::RECT.x + Menu::RECT.h;
                 const uint32_t W = 210;
                 const uint32_t H = Window::H - Y;
-
+                const Rect RECT = {X, Y, W, H};
                 namespace LOGO {
                     const Rect RECT
                     {
@@ -68,6 +82,73 @@ namespace mge {
                     880 - 2 * MinSpacing,
                     Window::H - Menu::RECT.h - Menu::RECT.y
                 };
+
+                const uint32_t Spacing = 2;
+                const uint32_t BarSize = 15;
+
+                namespace StatusBar {
+                    const Rect RECT
+                    {
+                        0,
+                        MainWidget::RECT.h - 30,
+                        MainWidget::RECT.w,
+                        30
+                    };
+                }
+
+                namespace LeftRuler {
+                    const Rect RECT
+                    {
+                        Spacing,
+                        Spacing + BarSize,
+                        BarSize,
+                        MainWidget::RECT.h - 2 * (Spacing + BarSize) - StatusBar::RECT.h,
+                    };
+                }
+
+                namespace TopRuler {
+                    const Rect RECT
+                    {
+                        Spacing + BarSize,
+                        Spacing,
+                        MainWidget::RECT.w - 2 * (Spacing + BarSize),
+                        BarSize,
+                    };
+                }
+
+                namespace YScrollbar {
+                    const Rect RECT
+                    {
+                        MainWidget::RECT.w - Spacing - BarSize,
+                        Spacing + BarSize,
+                        BarSize,
+                        MainWidget::RECT.h - 2 * (Spacing + BarSize) - StatusBar::RECT.h,
+                    };
+                    static const char* TEXNAME = "CanvasSrollbar";
+                    const uint32_t ScrollSize = 200;
+                }
+
+                namespace XScrollbar {
+                    const Rect RECT
+                    {
+                        Spacing + BarSize,
+                        MainWidget::RECT.h - Spacing - BarSize - StatusBar::RECT.h,
+                        MainWidget::RECT.w - 2 * (Spacing + BarSize),
+                        BarSize,
+                    };
+                    static const char* TEXNAME = "CanvasSrollbar";
+                    const uint32_t ScrollSize = 200;
+                }
+
+                namespace CanvasD {
+                    const Rect RECT
+                    {
+                        Spacing + BarSize,
+                        Spacing + BarSize,
+                        MainWidget::RECT.w - 2 * (Spacing + BarSize),
+                        MainWidget::RECT.h - 2 * (Spacing + BarSize) - StatusBar::RECT.h,
+                    };
+                }
             }
 
             namespace RightPanel {
