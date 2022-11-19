@@ -2,7 +2,6 @@
 #define GEDITOR_BASICTOOLS_HPP
 #include "Tool.hpp"
 #include "GEditor.hpp"
-
 namespace mge {
     namespace tools {
 
@@ -79,7 +78,7 @@ namespace mge {
             }
 
             void onImageChange() override {}
-            const char* getTexture() const override { return "Pen"; }
+            const char* getTexture() const override { return "modules/Pen.png"; }
             // virtual void createPanel(aGL::Widget* parent, const aGL::Rect& rect) override { panel_ = new ToolPanel(rect, "Pen", parent); }
 
         };
@@ -95,7 +94,7 @@ namespace mge {
             virtual void onMouseRelease(const ToolAction&) override {}
             virtual void onMouseMove   (const ToolAction&) override {}
             virtual void onImageChange() override { hasFirst_ = false; }
-            virtual const char* getTexture() const override {return "RectFiller";}
+            virtual const char* getTexture() const override {return "modules/Rect.png";}
             // virtual void createPanel(aGL::Widget* parent, const aGL::Rect& rect) override { panel_ = new ToolPanel(rect, "RectFiller", parent); }
             
 
@@ -111,7 +110,7 @@ namespace mge {
             virtual void onMouseRelease(const ToolAction&) override {}
             virtual void onMouseMove   (const ToolAction&) override {}
             virtual void onImageChange() override { hasFirst_ = false; }
-            virtual const char* getTexture() const override {return "EllipseFiller";}
+            virtual const char* getTexture() const override {return "modules/Ellipse.png";}
             // virtual void createPanel(aGL::Widget* parent, const aGL::Rect& rect) override { panel_ = new ToolPanel(rect, "EllipseFiller", parent); }
         };
 
@@ -125,7 +124,7 @@ namespace mge {
             virtual void onMouseRelease(const ToolAction&) override {}
             virtual void onMouseMove   (const ToolAction&) override {}
             virtual void onImageChange() override {}
-            virtual const char* getTexture() const override {return "Filler";}
+            virtual const char* getTexture() const override {return "modules/Filler.png";}
         };
 
         class Pippet : public Tool
@@ -136,7 +135,7 @@ namespace mge {
             virtual void onMouseRelease(const ToolAction&) override {}
             virtual void onMouseMove   (const ToolAction&) override {}
             virtual void onImageChange() override {}
-            virtual const char* getTexture() const override {return "Pippet";}
+            virtual const char* getTexture() const override {return "modules/Pippet.png";}
         };
 
         class Grayer : public Tool
@@ -147,7 +146,7 @@ namespace mge {
             virtual void onMouseRelease(const ToolAction&) override {}
             virtual void onMouseMove   (const ToolAction&) override {}
             virtual void onImageChange() override {}
-            virtual const char* getTexture() const override {return "Grayer";}
+            virtual const char* getTexture() const override {return "modules/Grayer.png";}
         };
     }
 }

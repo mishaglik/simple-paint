@@ -23,9 +23,9 @@ namespace mge {
         MainWindow();
         ~MainWindow() override;
 
+        void onSkinChange() override;
         // void selectTool(Tool* tool);
         // aGL::Signal<Tool* > selectedToolChanged;
-    
     private:
         void colorSelect();
         void setForegroundColor(aGL::Color color);

@@ -8,6 +8,7 @@ namespace aGL {
     {
     public:
         Label(const char* text, uint32_t x, uint32_t y, uint32_t fontSize = 14, Widget* parent = nullptr);
+        Label(const char* text, int32_t x, int32_t y, int32_t w, int32_t h, Widget* parent = nullptr, uint32_t fontSize = 14);
         ~Label() override {}
         void setText(const char* text);
         void setFont(const char* font);

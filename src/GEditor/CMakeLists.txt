@@ -5,7 +5,7 @@ set (GEDITOR_SOURCES
     GEditorWindow.cpp
     Canvas.cpp
     Toolbox.cpp
-    BasicTools.cpp
+    # BasicTools.cpp
     LeftPanel.cpp
     CentralWidget.cpp
     ColorSelector.cpp
@@ -18,7 +18,7 @@ set (GEDITOR_HEADERS
     GEditorWindow.hpp
     Canvas.hpp
     Toolbox.hpp
-    BasicTools.hpp
+    # BasicTools.hpp
     LeftPanel.hpp
     CentralWidget.hpp
     ColorSelector.hpp

@@ -1,6 +1,6 @@
 #include "GEditor.hpp"
 #include <thread>
-#include "BasicTools.hpp"
+// #include "BasicTools.hpp"
 #include "GEditor/Plugins.hpp"
 
 GEditor* GEditor::app = nullptr;
@@ -19,9 +19,15 @@ GEditor::GEditor(int argc, const char* argv[]) :
     mainWindow_->setSkinManager(sm_);
     appState_ = Ready;
 
-    createTools();
-
     mge::importPlugins();
+
+    if(tools_.empty())
+    {
+        mFatal << "No tools found";
+        throw "No tools";
+    }
+
+    // createTools();
 
     // dialog_ = new aGL::ColorDialog("Test");
 }
@@ -49,10 +55,10 @@ void GEditor::addTool(mge::Tool* tool)
 
 void GEditor::createTools()
 {
-    addTool(new mge::tools::Pen);
-    addTool(new mge::tools::RectFiller);
-    addTool(new mge::tools::EllipseFiller);
-    addTool(new mge::tools::Filler);
-    addTool(new mge::tools::Pippet);
-    addTool(new mge::tools::Grayer);
+    // addTool(new mge::tools::Pen);
+    // addTool(new mge::tools::RectFiller);
+    // addTool(new mge::tools::EllipseFiller);
+    // addTool(new mge::tools::Filler);
+    // addTool(new mge::tools::Pippet);
+    // addTool(new mge::tools::Grayer);
 }

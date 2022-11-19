@@ -25,6 +25,8 @@ namespace aGL {
 
         void render(const Surface* surf) const override;
         void setTextColor(const aGL::Color color);
+        void setFont(const char* font);
+        void setCharSize(uint32_t size);
 
 
 
@@ -61,6 +63,10 @@ namespace aGL {
         Signal<> deactivated;
 
         void setTextColor(const aGL::Color color);
+        void setFont(const char* font);
+        void setCharSize(uint32_t size);
+
+
     private:
         bool isActive_ = false;
 
@@ -84,6 +90,17 @@ namespace aGL {
             text_.setColor(color);
             needsRepaint_ = true;
         }
+        void setFont(const char* font)
+        {
+            text_.setFont(font);
+        }
+
+        void setCharSize(uint32_t size)
+        {
+            text_.setCharacterSize(size);
+        }
+
+
     private:
     };
 

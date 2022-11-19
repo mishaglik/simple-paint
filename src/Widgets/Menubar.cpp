@@ -25,6 +25,12 @@ namespace aGL {
             menu->setTextColor(textColor_);
     }
 
+    void Menubar::setFont(const char* font)
+    {
+        for(Menu* menu : menus_)
+            menu->setFont(font);
+    }
+
     void Menubar::Menu::setTextColor(const aGL::Color color)
     {
         for(MenuButton* mb : buttons_)
@@ -177,5 +183,27 @@ namespace aGL {
         ContainerWidget::render(surf);
     }
 
+    void Menubar::Menu::setFont(const char* font)
+    {
+        mainButton_->setFont(font);
+        for(MenuButton* mb : buttons_)
+        {
+            mb->setFont(font);
+        }
+    }
 
+    void Menubar::Menu::setCharSize(uint32_t size)
+    {
+        mainButton_->setCharSize(size);
+        for(MenuButton* mb : buttons_)
+        {
+            mb->setCharSize(size);
+        }
+    }
+
+    void Menubar::setCharSize(uint32_t size)
+    {
+        for(Menu* menu : menus_)
+            menu->setCharSize(size);
+    }
 }

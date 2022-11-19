@@ -84,15 +84,26 @@ namespace aGL {
         if(!silent)
             mInfo << "Asked for texture :\"" << entity <<"\" -- " << mlg::ConsoleLogger::CoStyle::Red << "not found" << mlg::endl;
         
-        if(!strcmp(entity, "aGL__Widget"))
-        {
-            mWarning << "W asked" << mlg::endl;
-        }
         return NoTexture;
     }
     
     const char* SkinManager::getFont() const
     {
+        if(fontname_.empty()) return nullptr;
         return fontname_.c_str();
     }
+
+    TexId SkinManager::loadTexture(const char* filename)
+    {
+        if(TexId id = findTextureId(filename, true))
+        {
+            return id;
+        }
+        else {
+            mInfo << "New texture: " << filename << mlg::endl;
+            skins_.push_back({Texture(filename), filename});
+            return skins_.size() - 1;
+        }
+    }
+
 }

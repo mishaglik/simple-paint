@@ -2,6 +2,7 @@
 #define GEDITOR_LEFTPANEL_HPP
 
 #include "GEditor/ColorSelector.hpp"
+#include "GEditor/GrandDesign.hpp"
 #include "GEditor/Toolbox.hpp"
 #include "Widgets/ContainerWidget.hpp"
 
@@ -16,6 +17,11 @@ namespace mge {
 
         Toolbox* getToolbox() { return toolbox_; }
 
+        aGL::EventHandlerState onPaintEvent(const aGL::Event* e) override
+        {
+            surface->clear(Design::ColorPalete::backgroundColor);
+            return aGL::ContainerWidget::onPaintEvent(e);
+        }
     };
 }
 

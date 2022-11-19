@@ -30,6 +30,8 @@ namespace aGL {
         TexId findTextureId(const char* entity, bool silent = false) const;
         const char* getFont() const;
 
+        TexId loadTexture(const char* filename);
+
     private:
         struct Skin{
             Texture texture;

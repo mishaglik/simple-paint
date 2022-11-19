@@ -11,6 +11,6 @@ namespace basa {
         ~Pen() override {}
         void apply(Image* image, const Event* event) override;
         const char* getTexture() override { return "Pen";} 
-        void buildSetupWidget() override {}
+        void buildSetupWidget() override;
     };
 }

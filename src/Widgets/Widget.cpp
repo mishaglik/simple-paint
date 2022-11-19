@@ -42,7 +42,7 @@ namespace aGL {
         }
     }
 
-    Widget& Widget::setSkinManager(const SkinManager* sm)
+    Widget& Widget::setSkinManager(SkinManager* sm)
     {
         sm_ = sm;
         onSkinChange();
@@ -129,6 +129,15 @@ namespace aGL {
     {
         rect_.x += x;
         rect_.y += y;
+    }
+
+    EventHandlerState Widget::onPaintEvent(const Event*  )
+    {
+        if(Surface* s = dynamic_cast<Surface*>(surface))
+        {
+            s->clear(0);
+        }
+        return Accepted;
     }
 
 }

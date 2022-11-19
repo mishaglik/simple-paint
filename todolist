@@ -89,3 +89,6 @@
 // Можно с самого начала нарисовать все точки
 // Dynlib substracting one number from another
 // extern C to mangle
+//
+
+// Blur, Gayss blur (matrix), unsharp mask. (light - light_avg) * 5 + light_avg.

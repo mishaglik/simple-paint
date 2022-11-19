@@ -102,7 +102,7 @@ namespace mge {
         mAssert(tool);
         if(texId_ == aGL::NoTexture && sm_)
         {
-            texId_ = sm_->findTextureId(tool->getTexture());
+            texId_ = sm_->loadTexture(tool->getTexture());
             mInfo << "Tex found: " << texId_ << '\n';
         }
         needsRepaint_ = true;

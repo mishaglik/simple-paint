@@ -22,7 +22,7 @@ namespace aGL {
         Surface* surface;
         Sprite sprite_;
         Timepoint time_;
-        const SkinManager* sm_ = nullptr;
+        SkinManager* sm_ = nullptr;
         TexId texId_ = 0;
         const char* texName_ = nullptr;
 
@@ -62,7 +62,7 @@ namespace aGL {
         }
         virtual void afterPaint() const {}
     public:
-        Widget& setSkinManager(const SkinManager* sm_);
+        Widget& setSkinManager(SkinManager* sm_);
         virtual void onSkinChange();
         
         void setTexId(TexId id) { texId_ = id; texName_ = nullptr; }
@@ -75,7 +75,7 @@ namespace aGL {
         virtual void render(const Surface *surface) const;
 
         virtual EventHandlerState handleEvent               (const Event*  ) { return EventHandlerState::Dropped;}
-        virtual EventHandlerState onPaintEvent              (const Event*  ) { return EventHandlerState::Accepted;}
+        virtual EventHandlerState onPaintEvent              (const Event*  );
         virtual EventHandlerState onKeyPressedEvent         (const Event*  ) { return EventHandlerState::Dropped;}
         virtual EventHandlerState onKeyReleasedEvent        (const Event*  ) { return EventHandlerState::Dropped;}
         virtual EventHandlerState onTextEnteredEvent        (const Event*  ) { return EventHandlerState::Dropped;}

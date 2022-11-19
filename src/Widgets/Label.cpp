@@ -7,14 +7,20 @@ namespace aGL {
         text_.setCharacterSize(fontSize);
     }
 
+    Label::Label(const char* text, int32_t x, int32_t y, int32_t w, int32_t h, Widget* parent, uint32_t fontSize) :
+        Widget(Rect(x, y, w, h), nullptr, parent), text_(text, x, y)
+    {
+        text_.setCharacterSize(fontSize);
+    }
+
     void Label::setText(const char* text)
     {
         text_.setString(text);
     }
 
-    void Label::setFont(const char*)
+    void Label::setFont(const char* font)
     {
-        MLG_UIMPLEMENTED
+        text_.setFont(font);
     }
 
     void Label::setTextColor(const Color& color)

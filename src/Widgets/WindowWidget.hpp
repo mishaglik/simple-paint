@@ -13,6 +13,7 @@ namespace aGL {
 
         Signal<> quited;
         Signal<WWindow* > quitedP;
+        Color backgroundColor_ = Colors::White;
         void quit() { quited.emit(); quitedP.emit(this); }
         virtual EventHandlerState handleEvent(const Event* event) override 
         {
@@ -33,7 +34,7 @@ namespace aGL {
                 drawSprite({}, sm_->getTexture(texId_));
             }
             else {
-                clear(0x999999ff);
+                clear(backgroundColor_);
             }
             
             ContainerWidget::render(this);
