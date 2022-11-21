@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 
 # add_library(Base MODULE Base.cpp)
-add_library(Pen MODULE Pen.cpp Interpolate.cpp Vector.cpp)
+add_library(Pen MODULE Pen.cpp Interpolate.cpp Vector.cpp BBrushes.cpp Color.cpp)
 add_library(ShapeFillers MODULE ShapeFillers.cpp)
 add_library(Pippet MODULE Pippet.cpp)
 add_library(Grayer MODULE Grayer.cpp)

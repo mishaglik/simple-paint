@@ -41,6 +41,17 @@ Color operator*(const Color& lhs, double rhs)
     };
 }
 
+Color& Color::ablend(const Color& oth)
+{
+    r(static_cast<uint8_t>(( static_cast<uint32_t>(r()) * (255 - oth.a()) + static_cast<uint32_t>(oth.r()) * oth.a()) / 255));
+    g(static_cast<uint8_t>(( static_cast<uint32_t>(g()) * (255 - oth.a()) + static_cast<uint32_t>(oth.g()) * oth.a()) / 255));
+    b(static_cast<uint8_t>(( static_cast<uint32_t>(b()) * (255 - oth.a()) + static_cast<uint32_t>(oth.b()) * oth.a()) / 255));
+    a(static_cast<uint8_t>(( static_cast<uint32_t>(a()) *            a()  + static_cast<uint32_t>(oth.a()) * (255 - a())) / 255));
+
+    return *this;
+}
+
+
 Color operator*(double lhs, const Color& rhs)
 {
     return rhs * lhs;

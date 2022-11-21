@@ -11,7 +11,7 @@ constexpr uint32_t getGray(uint32_t color)
     uint32_t r = getR(color);
     uint32_t g = getG(color);
     uint32_t b = getB(color);
-    uint8_t a = getA(color);
+    uint8_t  a = getA(color);
     uint8_t avg = static_cast<uint8_t>((299 * r + 587 * g + 114 * b) / 1000);
     return getColor(avg, avg, avg, a);
 }
@@ -30,3 +30,6 @@ extern "C" void init_module()
 {
     addFilter(new Grayer);
 }
+
+booba::Tool::~Tool() {}
+booba::Image::~Image() {}

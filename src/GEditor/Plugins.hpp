@@ -98,11 +98,37 @@ namespace mge {
         PluginImage(aGL::Image* image) : image_(image) {}
         virtual uint32_t getH() override { return image_->getH(); }
         virtual uint32_t getW() override { return image_->getW(); }
-        uint32_t getPixel(int32_t x, int32_t y) const { return image_->getPixel(x, y); }
-        virtual uint32_t getPixel(int32_t x, int32_t y) override { return image_->getPixel(x, y); }
-        virtual void putPixel(uint32_t x, uint32_t y, uint32_t color) override { image_->setPixel(x, y, color); }        
+        uint32_t getPixel(int32_t x, int32_t y) const 
+        {
+            if(!isOnImage(x, y))
+            {
+                mError << "Plugin read out of range: " << x << " " << y << mlg::endl;
+                return aGL::Colors::Black;
+            }
+
+            return image_->getPixel(x, y); 
+        }
+        virtual uint32_t getPixel(int32_t x, int32_t y) override 
+        {
+            if(!isOnImage(x, y))
+            {
+                mError << "Plugin read out of range: " << x << " " << y << mlg::endl;
+                return aGL::Colors::Black;
+            }
+            return image_->getPixel(x, y); 
+        }   
+        virtual void putPixel(uint32_t x, uint32_t y, uint32_t color) override 
+        {
+            if(!isOnImage(x, y))
+            {
+                mError << "Plugin write out of range: " << x << " " << y << mlg::endl;
+                return;
+            }
+            image_->setPixel(x, y, color); 
+        }        
         virtual uint32_t& operator()(uint32_t x, uint32_t y) override { MLG_UIMPLEMENTED  return pixel_;}
         virtual const uint32_t& operator()(uint32_t x, uint32_t y) const override { return pixel_ = getPixel(x, y);}
+        bool isOnImage(int x, int y)  const { return x >= 0 && y >=0 && x < image_->getW() && y < image_->getH(); }
     public:
         virtual ~PluginImage() override {}
     };

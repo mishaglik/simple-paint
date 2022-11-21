@@ -10,6 +10,7 @@ namespace mge {
         text_.setColor(Design::ColorPalete::TextColor);
         text_.setCharacterSize(11);
         text_.setStyle(aGL::Text::Bold);
+        containter = new aGL::ContainerWidget({0, Design::LeftPanel::ToolPanel::HEAD.h, 1000, 1000}, this);
     }
 
     aGL::EventHandlerState ToolPanel::onPaintEvent(const aGL::Event* e)
@@ -32,5 +33,4 @@ namespace mge {
             text_.setFont(sm_->getFont());
         }
     }
-
 }

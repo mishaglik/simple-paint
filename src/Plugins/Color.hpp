@@ -95,6 +95,8 @@ class Color{
         Color& operator*= (uint8_t k);
         Color& operator&= (const Color& rhs);
         Color& operator|= (const Color& rhs);
+
+        Color& ablend(const Color& oth);
     };
 
 

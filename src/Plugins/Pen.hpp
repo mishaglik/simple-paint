@@ -2,14 +2,16 @@
 #define PLUGINS_PEN_HPP
 #include "tools.hpp"
 #include "Interpolate.hpp"
-
+#include "Brushes.hpp"
 using namespace booba;
 
-class Grayer : public Tool
+class Pen : public Tool
 {
+    Brush::BrushSettings settts_ = {10, 0, 50};
+    Brush* brush;
 public:
-    Grayer() {}
-    ~Grayer() override {}
+    Pen();
+    ~Pen() override { delete  brush; }
     bool isPressed_ = false;
     Point prevDrawn_ = {};
     KatmulRom interp_;
@@ -22,6 +24,7 @@ public:
     void onMousePress  (const MouseButtonEventData* event);
     void onMouseRelease(const MouseButtonEventData* event);
     void onMouseMove   (const MotionEventData* event);
+    void brushDraw(const Point& pt);
 };
 
 

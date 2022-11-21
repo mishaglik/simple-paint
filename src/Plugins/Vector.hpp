@@ -38,7 +38,7 @@ namespace mgm {
         Vector2(const Vector2<T>& oth) : x(oth.x), y(oth.y) {}
 
         double len () const {return sqrt(x*x + y*y);}
-        double len2() const {return      x*x + y*y ;}
+        num_t len2() const {return      x*x + y*y ;}
 
         Vector2<num_t>& operator+= (const Vector2<num_t> &rhs)
         {

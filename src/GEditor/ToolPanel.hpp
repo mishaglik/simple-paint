@@ -8,6 +8,8 @@ namespace mge {
     {
         aGL::Text text_;        
     public:
+        aGL::ContainerWidget* containter = nullptr;
+
         ToolPanel(const aGL::Rect& rect, const char* title, aGL::Widget* parent);
 
         aGL::EventHandlerState onPaintEvent(const aGL::Event* ) override;

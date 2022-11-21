@@ -7,8 +7,8 @@
 int main(int argc, const char* argv[]){
    
    Application app(argc, argv);
-   app.exec();
+   int retval = app.exec();
 
    mInfo << "Finished" << mlg::endl;
-   return 0;
+   return retval;
 }
