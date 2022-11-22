@@ -1,19 +1,20 @@
-#ifndef PLUGINS_PEN_HPP
-#define PLUGINS_PEN_HPP
+#ifndef PLUGINS_AERO_HPP
+#define PLUGINS_AERO_HPP
 #include "tools.hpp"
 #include "Interpolate.hpp"
 #include "Brushes.hpp"
 using namespace booba;
 
-class Pen : public Tool
+class Aero : public Tool
 {
-    Brush::BrushSettings settts_ = {10, 0, 50};
+    Brush::BrushSettings settts_ = {10, 0, 10};
     Brush* brush;
 public:
-    Pen();
-    ~Pen() override { delete  brush; }
+    Aero();
+    ~Aero() override { delete  brush; }
     bool isPressed_ = false;
     Point prevDrawn_ = {};
+    uint32_t prevLen_ = 10;
     KatmulRom interp_;
     Image* image_ = nullptr;
 
@@ -30,4 +31,4 @@ public:
 
 
 
-#endif /* PLUGINS_PEN_HPP */
+#endif /* PLUGINS_AERO_HPP */

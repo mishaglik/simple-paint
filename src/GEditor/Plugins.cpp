@@ -212,7 +212,7 @@ namespace booba {
     {
         if(mge::PluginTool::currentPlugin == nullptr) return 0;
         const uint32_t offs = mge::Design::LeftPanel::ToolPanel::HEAD.h;
-        auto button =  new mge::PluginButton(aGL::Rect(x, y + offs, w, h), name, mge::PluginTool::currentPlugin->getPanel());
+        auto button =  new mge::PluginButton(aGL::Rect(x, y + offs, w, h), name, mge::PluginTool::currentPlugin->getPanel()->containter_);
         aGL::connect(button, &mge::PluginButton::clicked, mge::PluginTool::currentPlugin, &mge::PluginTool::onButtonClick);
         return reinterpret_cast<uint64_t>(button);
     }
@@ -221,7 +221,7 @@ namespace booba {
     {
         if(mge::PluginTool::currentPlugin == nullptr) return 0;
         const uint32_t offs = mge::Design::LeftPanel::ToolPanel::HEAD.h;
-        auto label =  new aGL::Label(name, x, y + offs, w, h, mge::PluginTool::currentPlugin->getPanel());
+        auto label =  new aGL::Label(name, x, y + offs, w, h, mge::PluginTool::currentPlugin->getPanel()->containter_);
         return reinterpret_cast<uint64_t>(label);
     }
 
@@ -229,7 +229,7 @@ namespace booba {
     {
         if(mge::PluginTool::currentPlugin == nullptr) return 0;
         const uint32_t offs = mge::Design::LeftPanel::ToolPanel::HEAD.h;
-        auto scrollbar =  new mge::PluginScroll(aGL::Rect(x, y + offs, w, h), mge::PluginTool::currentPlugin->getPanel());
+        auto scrollbar =  new mge::PluginScroll(aGL::Rect(x, y + offs, w, h), mge::PluginTool::currentPlugin->getPanel()->containter_);
         scrollbar->setMaxValue(maxValue);
         scrollbar->setValue(startValue);
         aGL::connect(scrollbar, &mge::PluginScroll::valueChangedPtr, mge::PluginTool::currentPlugin, &mge::PluginTool::onScrollMove);
@@ -240,7 +240,7 @@ namespace booba {
     {
         if(mge::PluginTool::currentPlugin == nullptr) return 0;
         const uint32_t offs = mge::Design::LeftPanel::ToolPanel::HEAD.h;
-        auto canvas =  new mge::PluginCanvas(aGL::Rect(x, y + offs, w, h), mge::PluginTool::currentPlugin->getPanel());
+        auto canvas =  new mge::PluginCanvas(aGL::Rect(x, y + offs, w, h), mge::PluginTool::currentPlugin->getPanel()->containter_);
         aGL::connect(canvas, &mge::PluginCanvas::mouseMoved, mge::PluginTool::currentPlugin, &mge::PluginTool::onCanvasEvent);
         aGL::connect(canvas, &mge::PluginCanvas::mousePressed, mge::PluginTool::currentPlugin, &mge::PluginTool::onCanvasEvent);
         aGL::connect(canvas, &mge::PluginCanvas::mouseReleased, mge::PluginTool::currentPlugin, &mge::PluginTool::onCanvasEvent);

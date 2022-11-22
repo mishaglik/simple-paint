@@ -21,7 +21,7 @@ namespace aGL {
         EventHandlerState onLoseFocusEvent(const Event*) override;
         EventHandlerState onMouseButtonPressEvent(const Event* e) override 
         {
-            mInfo << "Pressed\n";
+            // mInfo << "Pressed\n";
             return Widget::onMouseButtonPressEvent(e);
         }
     protected:

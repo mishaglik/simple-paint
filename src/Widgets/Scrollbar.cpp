@@ -52,7 +52,7 @@ namespace aGL {
 
     EventHandlerState Scrollbar::onMouseButtonPressEvent (const Event* event)
     {
-        mInfo << "Pressed \n";
+        // mInfo << "Pressed \n";
         if(event->mbed.button == MouseButton::Left && mgm::contains(scroll_, event->mbed.point))
         {
             captured_ = true;

@@ -14,6 +14,7 @@ GEditor::GEditor(int argc, const char* argv[]) :
     addWindow(mainWindow_);
     mainWindow_->quited.connect<GEditor>(this, &GEditor::quit);
 
+
     sm_ = new aGL::SkinManager;
     sm_->loadSkinset("/home/gms/progs++/vecplot/skins/designed"); //TODO: Better default path.
     mainWindow_->setSkinManager(sm_);

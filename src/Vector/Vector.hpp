@@ -1,9 +1,11 @@
 #ifndef VECTOR_ARRAY_HPP
 #define VECTOR_ARRAY_HPP
 #include <cstdlib>
-#include <LogUtils/Logger.hpp>
 #include <exception>
 #include <new>  
+#ifdef LOG_INCLUDE
+#include <LogUtils/Logger.hpp>
+#endif
 
 void* operator new (size_t, void* mem) noexcept;
 
@@ -16,13 +18,33 @@ namespace mvc {
         InvalidStack,
     };
 
+
+    template<class T>
+    class Iterator
+    {
+        T* ptr_;
+    public:
+        Iterator(T* ptr) : ptr_(ptr) {}
+
+        T& operator*() const {return *ptr_;}
+        Iterator& operator++()    {ptr_++; return *this;}
+        Iterator  operator++(int) {Iterator retval = *this; ptr_++; return retval;}
+        T* operator->() {return ptr_;}
+        
+        template<class U>
+        friend bool operator==(const Iterator<U>&, const Iterator<U>&);
+        
+        template<class U>
+        friend class ConstIterator;
+    };
+
     template<class T>
     class ConstIterator
     {
         const T* ptr_;
     public:
         ConstIterator(const T* ptr) : ptr_(ptr) {}
-
+        ConstIterator(const Iterator<T>& oth) : ptr_(oth.ptr_) {}
         const T& operator*() const {return *ptr_;}
         ConstIterator& operator++()    {ptr_++; return *this;}
         ConstIterator  operator++(int) {ConstIterator retval = *this; ptr_++; return retval;}
@@ -31,7 +53,6 @@ namespace mvc {
         template<class U>
         friend bool operator==(const ConstIterator<U>&, const ConstIterator<U>&);
     };
-
     template<class T, size_t size>
     class Array
     {
@@ -106,6 +127,7 @@ namespace mvc {
             return *this;
         } 
 
+#ifdef LOG_INCLUDE
         void dump(mlg::Logger& log) const
         {
             log << "Vector[" << this << "]" << mlg::endl << 
@@ -122,6 +144,7 @@ namespace mvc {
             log << '}' << mlg::endl << "}" << mlg::endl;
 
         }
+#endif
 
         void validate() const
         {
@@ -154,7 +177,7 @@ namespace mvc {
             data_ = newArr;
         }
 
-        void resize(size_t newSize, const T& t = T())
+        void resize(size_t newSize, const T& t)
         {
             validate();
             if(newSize > capacity_)
@@ -168,6 +191,34 @@ namespace mvc {
                 {
                     try{
                         new (data_ + i) T(t);
+                    }
+                    catch(...)
+                    {
+                        lowDestroy(data_ + i, i - size_);
+                        throw;
+                    }
+                }
+            } else {
+                lowDestroy(data_ + newSize, size_ - newSize);
+            }
+
+            size_ = newSize;
+        }
+
+        void resize(size_t newSize)
+        {
+            validate();
+            if(newSize > capacity_)
+            {
+                reserve(newSize);
+            }
+
+            if(newSize > size_)
+            {
+                for(size_t i = size_; i < newSize; ++i)
+                {
+                    try{
+                        new (data_ + i) T();
                     }
                     catch(...)
                     {
@@ -215,6 +266,9 @@ namespace mvc {
         }
 
         bool empty() const { return size_ == 0;}
+
+        Iterator<T> begin()  {return Iterator<T>(data_);}
+        Iterator<T> end  ()  {return Iterator<T>(data_ + size_);}
 
         ConstIterator<T> begin() const {return ConstIterator<T>(data_);}
         ConstIterator<T> end  () const {return ConstIterator<T>(data_ + size_);}
@@ -273,5 +327,11 @@ namespace mvc {
 
     template<class T>
     bool operator!=(const ConstIterator<T>& lhs, const ConstIterator<T>& rhs) { return !(lhs == rhs);}
+
+    template<class T>
+    bool operator==(const Iterator<T>& lhs, const Iterator<T>& rhs) { return lhs.ptr_ == rhs.ptr_;}
+
+    template<class T>
+    bool operator!=(const Iterator<T>& lhs, const Iterator<T>& rhs) { return !(lhs == rhs);}
 }
 #endif /* VECTOR_ARRAY_HPP */

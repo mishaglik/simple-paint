@@ -15,7 +15,7 @@ namespace aGL {
 
 
         virtual EventHandlerState handleEvent               (const Event* event) override { return emanager_.handleEvent(const_cast<Event*>(event));}
-        virtual EventHandlerState onPaintEvent              (const Event* event) override { return emanager_.handleEvent(const_cast<Event*>(event));}
+        virtual EventHandlerState onPaintEvent              (const Event* event) override { Widget::onPaintEvent(event); return emanager_.handleEvent(const_cast<Event*>(event));}
         virtual EventHandlerState onKeyPressedEvent         (const Event* event) override { return emanager_.handleEvent(const_cast<Event*>(event));}
         virtual EventHandlerState onKeyReleasedEvent        (const Event* event) override { return emanager_.handleEvent(const_cast<Event*>(event));}
         virtual EventHandlerState onShortcutEvent           (const Event* event) override { return emanager_.handleEvent(const_cast<Event*>(event));}

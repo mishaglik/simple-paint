@@ -104,7 +104,7 @@ namespace aGL {
 
     void Widget::addChild(Widget* child)
     {
-        assert(child != this);
+        mAssert(child != this);
         childen_.push_back(child);
         child->setEventManager(evMgr_);
         if(sm_) child->setSkinManager(sm_);
