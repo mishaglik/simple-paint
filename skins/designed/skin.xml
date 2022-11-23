@@ -25,28 +25,13 @@
     <AplhaFiller>
         <image src="Alpha.png"/>
     </AplhaFiller>
-    <Pen>
-        <image src="Pen.png"/>
-    </Pen>
-    <RectFiller>
-        <image src="Rect.png"/>
-    </RectFiller>
-    <EllipseFiller>
-        <image src="Ellipse.png"/>
-    </EllipseFiller>
-    <Filler>
-        <image src="Filler.png"/>
-    </Filler>
-    <Pippet>
-        <image src="Pippet.png"/>
-    </Pippet>
-    <Grayer>
-        <image src="Grayer.png"/>
-    </Grayer>
     <CanvasSrollbar>
         <image src="Scroll.png"/>
     </CanvasSrollbar>
     <mge__ColorSelector>
         <image src="Arrow.png"/>
     </mge__ColorSelector>
+    <mge__Toolbox__ToolboxButton>
+        <image src="ToolItem.png"/>
+    </mge__Toolbox__ToolboxButton>
 </skin>

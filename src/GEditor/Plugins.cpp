@@ -190,6 +190,7 @@ namespace mge {
     void PluginCanvas::putPixel (int32_t x, int32_t y, aGL::Color color)
     {
         surface->drawPoint({x, y}, color);
+        // mWarning << "Pixel put" << mlg::endl;
     }
 
     void PluginCanvas::putSprite(int32_t x, int32_t y, uint32_t w, uint32_t h, const char* texture)
@@ -204,6 +205,13 @@ namespace mge {
         tex.setRepeated(true);
         surface->drawSprite({x, y}, aGL::Sprite(tex, {0, 0, w, h}));
     }
+
+    void PluginTool::onCanvasEvent(const booba::Event ev)
+    {
+        ToolGuard tg(this);
+        tool_->apply(nullptr, &ev);
+    }
+
 
 }
  
@@ -222,6 +230,12 @@ namespace booba {
         if(mge::PluginTool::currentPlugin == nullptr) return 0;
         const uint32_t offs = mge::Design::LeftPanel::ToolPanel::HEAD.h;
         auto label =  new aGL::Label(name, x, y + offs, w, h, mge::PluginTool::currentPlugin->getPanel()->containter_);
+        if(GEditor::app->sm_)
+        {
+            label->setFont(GEditor::app->sm_->getFont());
+        }
+        label->setTextColor(mge::Design::ColorPalete::TextColor);
+        label->setTextSize(3 * h / 4);
         return reinterpret_cast<uint64_t>(label);
     }
 
@@ -233,6 +247,7 @@ namespace booba {
         scrollbar->setMaxValue(maxValue);
         scrollbar->setValue(startValue);
         aGL::connect(scrollbar, &mge::PluginScroll::valueChangedPtr, mge::PluginTool::currentPlugin, &mge::PluginTool::onScrollMove);
+
         return reinterpret_cast<uint64_t>(scrollbar);
     }
     
@@ -244,11 +259,13 @@ namespace booba {
         aGL::connect(canvas, &mge::PluginCanvas::mouseMoved, mge::PluginTool::currentPlugin, &mge::PluginTool::onCanvasEvent);
         aGL::connect(canvas, &mge::PluginCanvas::mousePressed, mge::PluginTool::currentPlugin, &mge::PluginTool::onCanvasEvent);
         aGL::connect(canvas, &mge::PluginCanvas::mouseReleased, mge::PluginTool::currentPlugin, &mge::PluginTool::onCanvasEvent);
+        mInfo << "Canvas requested\n";
         return reinterpret_cast<uint64_t>(canvas);
     }
 
     extern "C" void putPixel (uint64_t canvasId, int32_t x, int32_t y, uint32_t color)
     {
+        // mWarning << "Pix putting" << '\n';
         if(canvasId == 0) return;
 
         mge::PluginCanvas* canvas = reinterpret_cast<mge::PluginCanvas* >(canvasId); //FIXME: very unsafe.

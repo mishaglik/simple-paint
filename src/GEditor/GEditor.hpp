@@ -19,7 +19,6 @@ class GEditor : public aGL::BaseApplication
 {
     mge::MainWindow* mainWindow_ = nullptr;
     aGL::ColorDialog* dialog_ = nullptr;
-    aGL::SkinManager* sm_ = nullptr;
 
     mge::Tool* currentTool_ = nullptr;
     mvc::Vector<mge::Tool* > tools_;
@@ -32,6 +31,7 @@ public:
 
     static GEditor* app;
     mge::DrawingContext context = {};
+    aGL::SkinManager* sm_ = nullptr;
 
     void setCurrentTool(mge::Tool* newTool);
     mge::Tool* getCurrentTool() const { return currentTool_; }

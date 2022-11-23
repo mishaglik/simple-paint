@@ -19,8 +19,8 @@ class KatmulRom final : public Interpolator
     mgm::Vector2f  y_[4] = {};
     mgm::Vector2f dy_[2] = {};
     mgm::Vector2f  a_[4] = {};
-    uint8_t points_ = 0;
 public:
+    uint8_t points_ = 0;
     KatmulRom();
 
     ~KatmulRom() override final;

@@ -33,6 +33,7 @@ namespace mge {
         const mvc::Vector<Tool* >& tools_;      // May be better tool**. UPD: No. Vector realloc will break it;
         const size_t index_;
         bool isSelected_ = false;
+        aGL::TexId toolTexId_ = aGL::NoTexture;
     public:
         ToolboxButton(const aGL::Rect& rect, const mvc::Vector<Tool* >& tools, size_t index, aGL::Widget* parent);
 

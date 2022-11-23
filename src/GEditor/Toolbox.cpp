@@ -83,6 +83,7 @@ namespace mge {
         if(skinned())
         {
             surface->drawSprite({}, {sm_->getTexture(texId_), {isSelected_ ? rect_.w : 0u, 0u, rect_.w, rect_.h}});
+            surface->drawSprite({5, 5}, {sm_->getTexture(toolTexId_), {0u, 0u, 25, 25}});
             // if(isSelected_) surface->drawRect({0, 0, rect_.w, rect_.h}, 0x00000080);
             if(hovered_) surface->drawRect({0, 0, rect_.w, rect_.h}, 0x00000040);
         } else {
@@ -91,19 +92,19 @@ namespace mge {
             else if (hovered_)
                 surface->clear(aGL::Colors::LGray);
         }
-
         needsRepaint_ = false;
         return aGL::Accepted;
     }
 
     void Toolbox::ToolboxButton::onSkinChange()
     {
+        aGL::Widget::onSkinChange();
         Tool* tool = tools_[index_];
         mAssert(tool);
-        if(texId_ == aGL::NoTexture && sm_)
+        if(toolTexId_ == aGL::NoTexture && sm_)
         {
-            texId_ = sm_->loadTexture(tool->getTexture());
-            mInfo << "Tex found: " << texId_ << '\n';
+            toolTexId_ = sm_->loadTexture(tool->getTexture());
+            mInfo << "Tex found: " << toolTexId_ << '\n';
         }
         needsRepaint_ = true;
     }

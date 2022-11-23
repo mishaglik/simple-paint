@@ -30,7 +30,7 @@ namespace mge {
 
         void onButtonClick(const PluginButton* button);
         void onScrollMove(int32_t value, const PluginScroll* scroll);
-        void onCanvasEvent(const booba::Event ev) {}
+        void onCanvasEvent(const booba::Event ev);
 
         static PluginTool* currentPlugin;
     private:

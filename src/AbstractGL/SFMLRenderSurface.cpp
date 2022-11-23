@@ -91,8 +91,8 @@ namespace aGL {
     void RenderSurface::drawPoint(Point p, Color color) const
     {
         sf::Vertex vertex({
-            static_cast<float>(p.x),
-            static_cast<float>(p.y)
+            static_cast<float>(p.x) + 0.5f,
+            static_cast<float>(p.y) + 0.5f
             }, sf::Color(color));
         rsp_->draw(&vertex, 1, sf::Points);
     } 

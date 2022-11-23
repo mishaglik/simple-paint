@@ -1,4 +1,6 @@
 #include "BetPlug.hpp"
+#include <cassert>
+#include <iostream>
 
 namespace bp
 {
@@ -49,7 +51,9 @@ namespace bp
 
     uint64_t BTool::createCanvas(int32_t x, int32_t y, int32_t w, int32_t h)
     {
-        return booba::createCanvas(x, y, w, h);
+        uint64_t id = booba::createCanvas(x, y, w, h);
+        assert(id);
+        return id;
     }
 
     void BTool::apply(Image* image, const booba::Event* event)
@@ -91,11 +95,14 @@ namespace bp
 
         case booba::EventType::CanvasMPressed:
             for(Canvas* canvas : canvases_)
+            {
+                // std::cerr << "Have " << canvas->id_ << '\n';
                 if(canvas->id_ == event->Oleg.cedata.id)
                 {
                     canvas->onMousePress(&event->Oleg.cedata);
                     break;
                 }
+            }
         break;
 
         case booba::EventType::CanvasMReleased:

@@ -1,31 +1,32 @@
 #ifndef PLUGINS_AERO_HPP
 #define PLUGINS_AERO_HPP
-#include "tools.hpp"
 #include "Interpolate.hpp"
 #include "Brushes.hpp"
-using namespace booba;
+#include "BetPlug.hpp"
+using namespace bp;
 
-class Aero : public Tool
+class Aero : public BTool
 {
     Brush::BrushSettings settts_ = {10, 0, 10};
     Brush* brush;
 public:
     Aero();
     ~Aero() override { delete  brush; }
-    bool isPressed_ = false;
     Point prevDrawn_ = {};
     uint32_t prevLen_ = 10;
+    int32_t density_ = 5;
     KatmulRom interp_;
-    Image* image_ = nullptr;
 
-    void apply(Image* image, const Event* event) override;
-    const char* getTexture() override { return "Pen.png";} 
+    const char* getTexture() override { return "Aero.png";} 
     void buildSetupWidget() override;
 
-    void onMousePress  (const MouseButtonEventData* event);
-    void onMouseRelease(const MouseButtonEventData* event);
-    void onMouseMove   (const MotionEventData* event);
+    void onMousePress  (const MouseButtonEventData* event) override;
+    void onMouseRelease(const MouseButtonEventData* event) override;
+    void onMouseMove   (const MotionEventData* event) override;
     void brushDraw(const Point& pt);
+    void setBrushSize(int x) {settts_.size = x;}
+    void setOpacity  (int x) {settts_.opacity = x;}
+    void setDensity  (int x) {density_ = x;}
 };
 
 

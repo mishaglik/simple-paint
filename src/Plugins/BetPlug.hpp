@@ -15,10 +15,11 @@ namespace bp {
     using booba::init_module;
     using booba::Image;
     using booba::MotionEventData;
+    using booba::APPCONTEXT;
 
     struct Button
     {
-        const uint64_t id_;
+        const uint64_t id_; // Buffer 
         Signal<> clicked;
     };
 
@@ -59,12 +60,13 @@ namespace bp {
     {
         mvc::Vector<Button*> buttons_;
         mvc::Vector<Scrollbar*> scrollbars_;
-        mvc::Vector<Canvas* > canvases_;
-    
+
     protected:
+        mvc::Vector<Canvas* > canvases_;
         Image* image_ = nullptr;
         bool pressed_ = false;
     public:
+        BTool() {} 
         ~BTool() override;
 
         BTool(const BTool&) = delete;

@@ -4,7 +4,9 @@ add_library(PluginBase OBJECT Vector.cpp Color.cpp BetPlug.cpp)
 add_library(Interpol OBJECT BBrushes.cpp Interpolate.cpp BrezLine.cpp)
 # add_library(Base MODULE Base.cpp)
 add_library(Aero MODULE Aero.cpp)
+add_library(Curve MODULE Curves.cpp)
 target_link_libraries(Aero PRIVATE PluginBase Interpol)
+target_link_libraries(Curve PRIVATE PluginBase Interpol)
 add_library(ShapeFillers MODULE ShapeFillers.cpp)
 add_library(Pippet MODULE Pippet.cpp)
 add_library(Grayer MODULE Grayer.cpp)
@@ -16,6 +18,7 @@ set (Plugins
     ShapeFillers
     Pippet
     Grayer
+    Curve
     Filler
 )
 
