@@ -31,6 +31,8 @@ namespace mvc {
         Iterator  operator++(int) {Iterator retval = *this; ptr_++; return retval;}
         T* operator->() {return ptr_;}
         
+        T* _getPtr() const { return ptr_; }
+
         template<class U>
         friend bool operator==(const Iterator<U>&, const Iterator<U>&);
         
@@ -296,6 +298,20 @@ namespace mvc {
         const T* data() const { return data_; } 
 
         void clear() { resize(0); }
+
+        void erase(Iterator<T> it)
+        {
+            size_t i = it._getPtr() - data_;
+            if(i >= size()) return;
+            
+            while(i + 1 < size())
+            {
+                std::swap(data_[i], data_[i+1]);
+                i++;
+            }
+            resize(size() - 1);
+        }
+        
         private:
 
             void lowInitCopy(T* dst, const T* src, size_t n)

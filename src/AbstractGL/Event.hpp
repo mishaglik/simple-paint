@@ -20,6 +20,7 @@ namespace aGL {
         TimerTicked,
         Paint,
         Quited,
+        Reskin,
         UserMin = 1000,
         UserMax = 2000,
         Other,
@@ -165,6 +166,7 @@ namespace aGL {
         bool system;  
     };
 
+    class SkinManager;
 
     class Event //TODO: Make abstract.
     {
@@ -178,6 +180,7 @@ namespace aGL {
             KeyEventData          ked;
             uint32_t             text;
             Timepoint            time;
+            SkinManager*           sm;
         };
 
         Event() : type(EventType::ERROR) {}

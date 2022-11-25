@@ -5,16 +5,17 @@
 namespace aGL {
     class WWindow: public Window, public ContainerWidget
     {
+        const char* title_;
     public:
         WWindow(uint32_t w, uint32_t h, const char* title):
-            Window(w, h, title), ContainerWidget({0, 0, w, h}, nullptr, nullptr) {}
+            Window(w, h, title), ContainerWidget({0, 0, w, h}, nullptr, nullptr), title_(title) {}
 
         ~WWindow() override {}
 
         Signal<> quited;
         Signal<WWindow* > quitedP;
         Color backgroundColor_ = Colors::White;
-        void quit() { quited.emit(); quitedP.emit(this); }
+        void quit() { quited.emit(); quitedP.emit(this); mWarning << "Quitted " << title_ << mlg::endl; }
         virtual EventHandlerState handleEvent(const Event* event) override 
         {
             if(event->type == EventType::Quited)

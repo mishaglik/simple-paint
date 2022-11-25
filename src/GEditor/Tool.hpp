@@ -3,7 +3,7 @@
 
 #include "AbstractGL/AImage.hpp"
 #include "AbstractGL/Event.hpp"
-#include "GEditor/ToolPanel.hpp"
+#include "Widgets/Widget.hpp"
 namespace mge {
     struct DrawingContext;
     struct ToolAction
@@ -18,7 +18,7 @@ namespace mge {
     class Tool
     {
     protected:
-        ToolPanel* panel_ = nullptr; 
+        aGL::Widget* panel_ = nullptr; 
     public:
         Tool() {}
         virtual ~Tool() {}
@@ -27,8 +27,8 @@ namespace mge {
         virtual void onMouseMove   (const ToolAction& action) = 0;
         virtual void onImageChange() = 0;
         virtual const char* getTexture() const = 0;
-        virtual void createPanel(aGL::Widget* parent, const aGL::Rect& rect) { if(!panel_) panel_ = new ToolPanel(rect, "Tool", parent);}
-        ToolPanel* getPanel() { return panel_; } 
+        virtual void createPanel() { if(!panel_) panel_ = nullptr; }
+        aGL::Widget* getPanel() { return panel_; } 
         
     };
 }

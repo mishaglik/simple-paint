@@ -52,6 +52,7 @@ void GEditor::setCurrentTool(mge::Tool* newTool)
 void GEditor::addTool(mge::Tool* tool)
 {
     tools_.push_back(tool);
+    tool->createPanel();
 }
 
 void GEditor::createTools()

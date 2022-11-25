@@ -8,6 +8,7 @@ namespace aGL {
         Dialog(uint32_t w, uint32_t h, const char* title): WWindow(w, h, title)
         {
             BaseApplication::APP->addWindow(this);
+            setTopmost();
         }
 
     };

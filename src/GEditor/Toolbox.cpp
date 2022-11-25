@@ -14,7 +14,6 @@ namespace mge {
     {
         ToolboxButton* button = new ToolboxButton({(buttonCnt_ % 4) * buttonSize_, (buttonCnt_ / 4) * buttonSize_ , buttonSize_, buttonSize_}, 
                                                         tools_, buttonCnt_, this);
-        tools_[buttonCnt_]->createPanel(parent_, Design::LeftPanel::ToolPanel::RECT);
         tools_[buttonCnt_]->getPanel()->hide();
         button->chosen.connect(this, &Toolbox::selectTool);
         if(selected_ == nullptr) button->select();

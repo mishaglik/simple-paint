@@ -5,6 +5,7 @@
 #include "GEditor/GrandDesign.hpp"
 #include "GEditor/Toolbox.hpp"
 #include "Widgets/ContainerWidget.hpp"
+#include "ToolPanel.hpp"
 
 namespace mge {
 
@@ -12,10 +13,12 @@ namespace mge {
     {
         Toolbox* toolbox_ = nullptr;
         ColorSelector* colSel_ = nullptr;
+        ToolPanel* toolPanel_ = nullptr;
     public:
         LeftPanel(const aGL::Rect& rect, const mvc::Vector<Tool* >& tools, aGL::Widget* widget = nullptr);
 
         Toolbox* getToolbox() { return toolbox_; }
+
 
         aGL::EventHandlerState onPaintEvent(const aGL::Event* e) override
         {

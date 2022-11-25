@@ -41,6 +41,7 @@ namespace aGL {
 
 
         void drawSprite  (Point pt, const Sprite& sprite) const override;
+        void setTopmost(bool topmost = true);
         
         void clear(Color color = Colors::Gray) const override;
 

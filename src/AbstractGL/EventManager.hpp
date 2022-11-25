@@ -25,6 +25,7 @@ namespace aGL {
 
         int registerUserEvent();
         bool subscribe(Widget* object) { mAssert(object != nullptr); subscibers_.push_back(object); return true;}
+        void unsubscribe(Widget* widget);
         EventHandlerState handleEvent(Event* event);
 
         void setFocused(Widget* w);

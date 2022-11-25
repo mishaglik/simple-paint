@@ -32,7 +32,7 @@ namespace aGL {
     {
         if(hidden_) return;
         const Surface* rSurface = surface ? surface : surf;
-        for(Widget* child : childen_) child->render(rSurface);
+        for(Widget* child : children_) child->render(rSurface);
         afterPaint();
         if(RenderSurface* rs = dynamic_cast<RenderSurface*>(surface))
         {
@@ -46,7 +46,7 @@ namespace aGL {
     {
         sm_ = sm;
         onSkinChange();
-        for(Widget* child : childen_)
+        for(Widget* child : children_)
         {
             child->setSkinManager(sm);
         }
@@ -92,9 +92,9 @@ namespace aGL {
 
     Widget& Widget::setEventManager(EventManager* em) 
     {
-        if(evMgr_ != nullptr || em == nullptr) 
+        if(evMgr_ != nullptr) 
         {
-            MLG_UIMPLEMENTED //TODO: Swap logic.
+            evMgr_->unsubscribe(this);
             return *this;
         }
         evMgr_ = em;
@@ -105,17 +105,27 @@ namespace aGL {
     void Widget::addChild(Widget* child)
     {
         mAssert(child != this);
-        childen_.push_back(child);
+        children_.push_back(child);
         child->setEventManager(evMgr_);
         if(sm_) child->setSkinManager(sm_);
     }
 
     void Widget::delChild(Widget* child)
     {
-        for(size_t i = 0; i < childen_.size(); ++i)
+        for(size_t i = 0; i < children_.size(); ++i)
         {
-            if(childen_[i] == child) childen_[i] = nullptr;
+            if(children_[i] == child)
+            {
+                children_[i] = nullptr;
+                while(i < children_.size() - 1)
+                {
+                    std::swap(children_[i], children_[i+1]);
+                    i++;
+                }
+                children_.pop_back();
+            } 
         }
+        child->setEventManager(nullptr);
     }
 
 
@@ -138,6 +148,37 @@ namespace aGL {
             s->clear(0);
         }
         return Accepted;
+    }
+
+    Widget::~Widget()
+    { 
+        for(Widget* w : children_) 
+        { 
+            if(w == this) 
+            {
+                mFatal << "Widget: " << w << " == this" << mlg::endl;
+                continue;
+            }
+
+            delete w;
+        } 
+        delete surface;
+    }
+
+    void Widget::setParent(Widget* parent)
+    {
+        if(parent_ == parent) return;
+        if(parent_)
+        {
+            parent_->delChild(this);
+        }
+        
+        parent_ = parent;
+
+        if(parent_)
+        {
+            parent_->addChild(this);
+        }
     }
 
 }

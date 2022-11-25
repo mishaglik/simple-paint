@@ -26,7 +26,7 @@ namespace mge {
         void onMouseMove   (const ToolAction& action) override;
         void onImageChange() override {}
         const char* getTexture() const override {return texName_.c_str();}
-        void createPanel(aGL::Widget *parent, const aGL::Rect &rect) override;
+        void createPanel() override;
 
         void onButtonClick(const PluginButton* button);
         void onScrollMove(int32_t value, const PluginScroll* scroll);

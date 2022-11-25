@@ -13,7 +13,7 @@ namespace aGL {
     private:
         bool hidden_ = false;
     protected:
-        mvc::Vector<Widget*> childen_;
+        mvc::Vector<Widget*> children_;
         EventManager* evMgr_ = nullptr;
         Widget* parent_ = nullptr;
         using Timepoint = Event::Timepoint;
@@ -38,38 +38,33 @@ namespace aGL {
             surface = surf;
             sprite_ = Sprite(surf->getTexture());
         }
+
         Widget(const Rect& rect, RenderSurface* surf, Widget* parent = nullptr) : 
             parent_(parent), rect_(rect), surface(surf), maxW_(rect.w), maxH_(rect.h)
-        { if(parent_)
+        {
+            if(parent_)
             {
                 parent_->addChild(this);
-            } }
-
-    protected:
-        virtual ~Widget() 
-        { 
-            for(Widget* w : childen_) 
-            { 
-                if(w == this) 
-                {
-                    mFatal << "Widget: " << w << " == this" << mlg::endl;
-                    continue;
-                }
-
-                delete w;
             } 
-            delete surface;
         }
+
+    aGL::Widget* getParent() { return parent_; }
+    protected:
+        virtual ~Widget();
         virtual void afterPaint() const {}
     public:
         Widget& setSkinManager(SkinManager* sm_);
         virtual void onSkinChange();
         
+
+
         void setTexId(TexId id) { texId_ = id; texName_ = nullptr; }
         void setTexId(const char* name);
         virtual Widget& setEventManager(EventManager* em);
         void addChild(Widget* child); //TODO: Make only container could have children.
         void delChild(Widget* child);
+
+        void setParent(Widget* parent);
 
         virtual void render(const Window &window) const;
         virtual void render(const Surface *surface) const;
@@ -89,6 +84,8 @@ namespace aGL {
         virtual EventHandlerState onGainFocusEvent          (const Event*  ) { focused_ = true;  return EventHandlerState::Accepted;}
         virtual EventHandlerState onLoseFocusEvent          (const Event*  ) { focused_ = false; return EventHandlerState::Accepted;}
         virtual EventHandlerState onTimerEvent              (const Event* e) { time_ = e->time; update(); return EventHandlerState::Dropped;}
+        virtual EventHandlerState onReskinEvent             (const Event*  ) { setSkinManager(sm_); return EventHandlerState::Accepted;}
+
         
         virtual void update() {}
         virtual void resize(uint32_t w, uint32_t h);

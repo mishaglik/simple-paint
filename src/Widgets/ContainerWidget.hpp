@@ -32,8 +32,9 @@ namespace aGL {
         {
             if(parEvManager_)
             {
-                MLG_UIMPLEMENTED //TODO: Implement
-                return *this;
+                // MLG_UIMPLEMENTED //TODO: Implement
+                parEvManager_->unsubscribe(this);
+                // return *this;
             }
             parEvManager_ = em;
             if(em)

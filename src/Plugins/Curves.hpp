@@ -45,7 +45,7 @@ class Curve : public BTool
 {
     CurveCanvas* canvas_ = nullptr;
     void transformImage();
-    const char* getTexture() override { return "Pen.png"; }
+    const char* getTexture() override { return "Curves.png"; }
 public:    
     Curve();
     void onMouseMove(const MotionEventData* )         override;

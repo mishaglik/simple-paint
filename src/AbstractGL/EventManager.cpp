@@ -224,4 +224,20 @@ namespace aGL {
         focused_ = w;
     }
 
+    void EventManager::unsubscribe(Widget* widget)
+    {
+        if(widget == focused_) setFocused(nullptr);
+        if(widget == top_) top_ = nullptr;
+
+        for(auto it = subscibers_.begin(); it != subscibers_.end(); it++)
+        {
+            if(*it == widget)
+            {
+                subscibers_.erase(it);
+                return;
+            }
+        }
+    }
+
+
 } // namespace aGL

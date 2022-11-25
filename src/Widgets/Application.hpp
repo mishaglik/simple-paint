@@ -1,5 +1,5 @@
-#ifndef ABSTRACTGL_APPLICATION_HPP
-#define ABSTRACTGL_APPLICATION_HPP
+#ifndef WIDGETS_APPLICATION_HPP
+#define WIDGETS_APPLICATION_HPP
 #include "Widgets/WindowWidget.hpp"
 
 namespace aGL {
@@ -51,4 +51,4 @@ namespace aGL {
 
 }
 
-#endif /* ABSTRACTGL_APPLICATION_HPP */
+#endif /* WIDGETS_APPLICATION_HPP */

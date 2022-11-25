@@ -10,6 +10,9 @@ set(VP_SOURCE_DIR
     src
 )
 
+# link_directories(${PROJECT_SOURCE_DIR}/lib)
+# include_directories(${PROJECT_SOURCE_DIR}/include)
+
 set(VP_SOURCES
     ${VP_SOURCE_DIR}/main.cpp
     ${VP_SOURCE_DIR}/CoordinateSystem.cpp
