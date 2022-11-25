@@ -295,6 +295,7 @@ namespace mvc {
 
         const T* data() const { return data_; } 
 
+        void clear() { resize(0); }
         private:
 
             void lowInitCopy(T* dst, const T* src, size_t n)

@@ -1,4 +1,5 @@
 #include "Interpolate.hpp"
+#include <cassert>
 
 KatmulRom::KatmulRom() {}   
 KatmulRom::~KatmulRom() {}
@@ -92,3 +93,50 @@ void drawLine(booba::Image* image, Point p0, Point p1, uint32_t color)
     }
     image->putPixel(x, y, color);
 }
+
+
+void KatmulRom2::reset()
+{
+    points_.clear();
+    currentStart_ = -1;
+}
+
+void KatmulRom2::calcCoef(uint32_t start)
+{
+    if(start == currentStart_) return;
+    assert(start + 3 < size());
+    
+    coefs_[0] = points_[start + 1]; // p_{i-1}
+    
+    coefs_[1] = tension_ * (points_[start + 2] - points_[start]); // \tay ( p_{i} - p_{i-2} )
+
+    coefs_[2] = (2 * tension_    ) * points_[start    ] + 
+                (tension_ - 3    ) * points_[start + 1] + 
+                (3 - 2 * tension_) * points_[start + 2] +
+                (-tension_       ) * points_[start + 3];
+
+    coefs_[3] = (-tension_       ) * points_[start    ] + 
+                (2 - tension_    ) * points_[start + 1] + 
+                (tension_  - 2   ) * points_[start + 2] +
+                (tension_        ) * points_[start + 3];
+}
+
+Point KatmulRom2::getPoint(double t)
+{
+    if(size() < 4)
+    {
+        if(size() == 0) return {};
+        // if(size() == 1)
+        return {};
+    }
+
+    int start = static_cast<int>(t) - 1;
+    if(start < 0) start = 0;
+    if(start > size() - 4) start = size() - 4;
+    calcCoef(start);
+
+    t -= start + 1;
+
+    return coefs_[0] + t * coefs_[1] + t*t * coefs_[2] + t*t*t * coefs_[3];
+}
+

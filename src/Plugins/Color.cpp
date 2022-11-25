@@ -115,8 +115,9 @@ void Color::s(uint8_t s)
     setHSV(h(), s, v(), a());
 }
 
-void Color::v(uint8_t v)
+void Color::v(uint8_t newV)
 {
-    setHSV(h(), s(), v, a());
+    if(newV == v()) return;
+    setHSV(h(), s(), newV, a());
 }
 

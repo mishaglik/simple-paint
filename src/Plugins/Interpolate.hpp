@@ -1,6 +1,7 @@
 #ifndef PLUGINS_INTERPOLATE_HPP
 #define PLUGINS_INTERPOLATE_HPP
 #include "Vector.hpp"
+#include "../Vector/Vector.hpp"
 #include "tools.hpp"
 
 using Point = mgm::Vector2i;
@@ -30,6 +31,29 @@ public:
     void reset() final;
 
     Point getPoint(double t) final;
+};
+
+class KatmulRom2 final : public Interpolator
+{
+    mvc::Vector<mgm::Vector2f>  points_ = {};
+    mgm::Vector2f coefs_[4] = {};
+    double  tension_ = 0.5;
+
+    void calcCoef(uint32_t start);
+    uint32_t currentStart_ = -1;
+public:
+    size_t size() const { return points_.size(); }
+    KatmulRom2(){}
+
+    ~KatmulRom2() override final{}
+
+    void addPoint(Point pt) override final { points_.push_back(pt); }
+
+    void reset() final;
+
+    Point getPoint(double t) final;
+
+    void setTension(double tension) { tension_ = tension; currentStart_ = -1; }
 };
 
 void drawLine(booba::Image* image, Point p0, Point p1, uint32_t color);

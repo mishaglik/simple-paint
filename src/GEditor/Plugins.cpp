@@ -189,8 +189,11 @@ namespace mge {
 
     void PluginCanvas::putPixel (int32_t x, int32_t y, aGL::Color color)
     {
+        assert(x < surface->getSurfRect().w);
+        assert(y < surface->getSurfRect().h);
+        assert(x >= 0);
+        assert(y >= 0);
         surface->drawPoint({x, y}, color);
-        // mWarning << "Pixel put" << mlg::endl;
     }
 
     void PluginCanvas::putSprite(int32_t x, int32_t y, uint32_t w, uint32_t h, const char* texture)

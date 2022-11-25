@@ -4,13 +4,32 @@
 
 namespace bp
 {
+    Canvas::Canvas(int32_t x, int32_t y, int32_t w, int32_t h, BTool* parent) :
+        id_(booba::createCanvas(x, y, w, h)), w_(w), h_(h)
+    {
+        parent->addCanvas(this);
+    }
+
     void Canvas::putPixel (Point pt, Color color)
     {
+        if(pt.x < 0 || pt.x >= w_) return;
+        if(pt.y < 0 || pt.y >= h_) return;
         booba::putPixel(id_, pt.x, pt.y, color);
     }
 
+    void Canvas::clear(Color color)
+    {
+        for(int x = 0; x < w_; ++x)
+            for(int y = 0; y < h_; ++y)
+                booba::putPixel(id_, x, y, color);
+
+    }
+
+
     void Canvas::putSprite(Point pt, mgm::Vector2u size, const char* sprite)
     {
+        if(pt.x < 0 || pt.x >= w_) return;
+        if(pt.y < 0 || pt.y >= h_) return;
         booba::putSprite(id_, pt.x, pt.y, size.x, size.y, sprite);
     }
 
@@ -27,9 +46,7 @@ namespace bp
     {
         uint64_t id = booba::createButton(x, y, w, h, name);
         if(!id) return nullptr;
-        buttons_.push_back(new Button{id, {}}); //WTF ?
-        // buttons_.resize(buttons_.size() + 1); //WTF ?
-        // buttons_.back().id_ = id;
+        buttons_.push_back(new Button{id, {}}); //FIXME: Other allocation system.
         return buttons_.back();
     }
 
@@ -96,7 +113,6 @@ namespace bp
         case booba::EventType::CanvasMPressed:
             for(Canvas* canvas : canvases_)
             {
-                // std::cerr << "Have " << canvas->id_ << '\n';
                 if(canvas->id_ == event->Oleg.cedata.id)
                 {
                     canvas->onMousePress(&event->Oleg.cedata);

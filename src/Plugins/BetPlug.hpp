@@ -17,6 +17,8 @@ namespace bp {
     using booba::MotionEventData;
     using booba::APPCONTEXT;
 
+    class BTool;
+
     struct Button
     {
         const uint64_t id_; // Buffer 
@@ -35,6 +37,7 @@ namespace bp {
         const uint64_t id_;
         const uint32_t w_, h_;
 
+        Canvas(int32_t x, int32_t y, int32_t w, int32_t h, BTool* parent);
         Canvas(uint64_t id, uint32_t w, uint32_t h) : id_(id), w_(w), h_(h) {}
         
         virtual ~Canvas() {}
@@ -44,6 +47,8 @@ namespace bp {
         
         void putPixel (Point pt, Color color);
         void putSprite(Point pt, mgm::Vector2u size, const char* sprite);
+
+        void clear(Color color);
     };
 
     template<class T>
@@ -76,6 +81,8 @@ namespace bp {
         virtual void onMousePress(const MouseButtonEventData* )   {}
         virtual void onMouseRelease(const MouseButtonEventData* ) {}
         virtual void buildSetupWidget() override {}
+
+        void addCanvas(Canvas* canvas) { canvases_.push_back(canvas); }
 
     protected:
         Button* createButton(int32_t x, int32_t y, uint32_t w, uint32_t h, const char* name);

@@ -264,5 +264,59 @@ namespace mgm {
 
     inline bool operator!=(const Vector2f& rhs, const Vector2f& lhs) {return !(lhs == rhs);}
     inline bool operator!=(const Vector3f& lhs, const Vector3f& rhs) {return !(lhs == rhs);}
+
+    template<typename num_t>
+    Vector2<num_t> operator+(const Vector2<num_t>& lhs, const Vector2<num_t>& rhs)
+    {
+        Vector2<num_t> vec = lhs;
+        return vec += rhs;
+    }
+
+    template<typename num_t>
+    Vector3<num_t> operator+(const Vector3<num_t>& lhs, const Vector3<num_t>& rhs)
+    {
+        Vector3<num_t> vec = lhs;
+        return vec += rhs;
+    }
+
+    template<typename num_t>
+    Vector2<num_t> operator-(const Vector2<num_t>& lhs, const Vector2<num_t>& rhs)
+    {
+        Vector2<num_t> vec = lhs;
+        return vec -= rhs;
+    }
+
+    template<typename num_t>
+    Vector3<num_t> operator-(const Vector3<num_t>& lhs, const Vector3<num_t>& rhs)
+    {
+        Vector3<num_t> vec = lhs;
+        return vec -= rhs;
+    }
+
+    template<typename num_t>
+    Vector2<num_t> operator*(const Vector2<num_t>& lhs, const num_t& rhs)
+    {
+        Vector2<num_t> vec = lhs;
+        return vec *= rhs;
+    }
+
+    template<typename num_t>
+    Vector3<num_t> operator*(const Vector3<num_t>& lhs, const num_t& rhs)
+    {
+        Vector3<num_t> vec = lhs;
+        return vec *= rhs;
+    }
+
+    template<typename num_t>
+    Vector2<num_t> operator*(const num_t& lhs, const Vector2<num_t>& rhs)
+    {
+        return rhs * lhs;
+    }
+
+    template<typename num_t>
+    Vector3<num_t> operator*(const num_t& lhs, const Vector3<num_t>& rhs)
+    {
+        return rhs * lhs;
+    }
 }
 #endif
