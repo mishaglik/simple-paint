@@ -106,12 +106,20 @@ namespace aGL {
         break;
 
         case EventType::MouseWheeled:
+            if(focused_)
+            {
+                eventPointTransform (event, focused_->getEventCorner());
+                EventHandlerState resp = focused_->onMouseScrollEvent(event);
+                eventPointTransformR(event, focused_->getEventCorner());
+                if(resp == EventHandlerState::Accepted) return resp;
+            }
+
             for(size_t i = subscibers_.size(); i > 0; --i)
             {
                 Widget* w = subscibers_[i-1];
-                if(w->isHidden()) continue;
+                if(w->isHidden() || !w->hasEventPoint(event->mwed.point)) continue;
                 eventPointTransform(event, w->getEventCorner());
-                EventHandlerState resp = (w->onMouseMoveEvent(event));
+                EventHandlerState resp = (w->onMouseScrollEvent(event));
                 eventPointTransformR(event, w->getEventCorner());
                 if(resp == EventHandlerState::Accepted) return resp;
             }
@@ -134,6 +142,9 @@ namespace aGL {
 
         case EventType::Paint:
             return spreadEvent(event, &Widget::onPaintEvent, true);
+            
+        case EventType::Reskin:
+            return spreadEvent(event, &Widget::onReskinEvent, true);
 
         case EventType::Quited:
         case EventType::UserMin:

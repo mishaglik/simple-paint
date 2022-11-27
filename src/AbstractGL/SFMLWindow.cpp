@@ -312,4 +312,9 @@ namespace aGL {
         wp_->draw(triag, 3, sf::Triangles);
     }
 
+    void Window::setTopmost(bool topmost)
+    {
+        wp_->setTopmost(topmost);
+    }
+
 }

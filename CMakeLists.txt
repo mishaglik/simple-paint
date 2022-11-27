@@ -1,3 +1,5 @@
+#ifndef CMAKELISTS_TXT
+#define CMAKELISTS_TXT
 cmake_minimum_required(VERSION 3.10)
 
 project(Vecplot VERSION 3.0)
@@ -10,8 +12,9 @@ set(VP_SOURCE_DIR
     src
 )
 
-# link_directories(${PROJECT_SOURCE_DIR}/lib)
-# include_directories(${PROJECT_SOURCE_DIR}/include)
+
+link_directories(${PROJECT_SOURCE_DIR}/lib)
+include_directories(${PROJECT_SOURCE_DIR}/include)
 
 set(VP_SOURCES
     ${VP_SOURCE_DIR}/main.cpp
@@ -70,3 +73,6 @@ set_property(TARGET geditor PROPERTY ENABLE_EXPORTS ON)
 # target_include_directories(main PUBLIC 
     # ${VP_SOURCE_DIR}/MGeomerty
 # )
+
+
+#endif /* CMAKELISTS_TXT */

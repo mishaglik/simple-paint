@@ -14,6 +14,7 @@ namespace mge {
         leftPanel_ = new LeftPanel(Design::LeftPanel::RECT, GEditor::app->getToolList(), this);
 
         menubar_ = new aGL::Menubar(Design::Menu::RECT, this);
+
         setupMenu();
     }
 

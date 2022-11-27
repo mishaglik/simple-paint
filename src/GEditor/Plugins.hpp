@@ -6,6 +6,7 @@
 #include "Tool.hpp"
 #include <Widgets/Button.hpp>
 #include <Widgets/Scrollbar.hpp>
+#include "Widgets/Slider.hpp"
 
 namespace mge {
     void importPlugins();
@@ -59,12 +60,12 @@ namespace mge {
 
     };
 
-    class PluginScroll : public aGL::Scrollbar
+    class PluginScroll : public aGL::Slider
     {
     public:
-        PluginScroll(const aGL::Rect& rect, aGL::Widget* parent) : aGL::Scrollbar(rect, aGL::Scrollbar::Horizontal, rect.w / 10, parent) 
+        PluginScroll(const aGL::Rect& rect, aGL::Widget* parent) : aGL::Slider(rect, parent) 
         {
-            aGL::Scrollbar::valueChanged.connect(this, &PluginScroll::valChangedPtr);
+            aGL::Slider::valueChanged.connect(this, &PluginScroll::valChangedPtr);
         }
 
         aGL::Signal<int32_t, const PluginScroll* > valueChangedPtr;

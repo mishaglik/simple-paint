@@ -1,7 +1,7 @@
 #ifndef WIDGETS_DECORATIONS_HPP
 #define WIDGETS_DECORATIONS_HPP
 
-#include "AbstractGL/ARenderSurface.hpp"
+#include "AbstractGL/Surface.hpp"
 namespace aGL {
 
     struct DecRect;
@@ -16,8 +16,8 @@ namespace aGL {
         DecRect(Surface* _surface, const aGL::Rect& _rect) : surface(_surface), rect(_rect) { }
         /* implict */ DecRect(Surface* _surface) : surface(_surface) { rect = surface->getSurfRect();} //I dunno why the fuck i mush do x++; UPD: Fuck you SFML rasterization.
         
-        template<class... Args>
-        DecRect& decorate(DecoratorF<Args...> decorator, Args&&... args) { return decorator(*this, args...); }
+        template<class... Args, class... Args2>
+        DecRect& decorate(DecoratorF<Args...> decorator, Args2&&... args) { return decorator(*this, std::forward<Args2>(args)...); }        
     };
 
     namespace Decorations {

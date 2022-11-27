@@ -15,7 +15,7 @@ namespace aGL {
         Signal<> quited;
         Signal<WWindow* > quitedP;
         Color backgroundColor_ = Colors::White;
-        void quit() { quited.emit(); quitedP.emit(this); mWarning << "Quitted " << title_ << mlg::endl; }
+        void quit() { quited.emit(); quitedP.emit(this);}
         virtual EventHandlerState handleEvent(const Event* event) override 
         {
             if(event->type == EventType::Quited)
