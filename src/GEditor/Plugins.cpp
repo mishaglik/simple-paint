@@ -240,6 +240,7 @@ namespace booba {
         }
         label->setTextColor(mge::Design::ColorPalete::TextColor);
         label->setTextSize(3 * h / 4);
+        label->text_.setStyle(aGL::Text::Bold);
         return reinterpret_cast<uint64_t>(label);
     }
 

@@ -25,6 +25,8 @@ namespace aGL {
         Color getPixel(unsigned int x, unsigned int y) const;
         void setPixel(unsigned int x, unsigned int y, const Color& color);
 
+        void setScale(double scale);
+
         uint32_t getW() const;
         uint32_t getH() const;
 

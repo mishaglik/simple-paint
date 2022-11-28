@@ -35,7 +35,7 @@ namespace aGL {
 
     void Label::render(const Surface* surf) const
     {
-        Widget::render(surf);
+        // Widget::render(surf);
         surf->drawText(text_);
     }
 

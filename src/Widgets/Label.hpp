@@ -16,8 +16,8 @@ namespace aGL {
         void setTextSize(uint32_t size);
 
         void render(const Surface* surf) const override;
-    private:
         Text text_;
+    private:
     };
 }
 

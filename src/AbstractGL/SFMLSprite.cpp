@@ -67,4 +67,9 @@ namespace aGL {
         sp_->setOrigin(rect.width * 0.5f , rect.height * 0.5f);
         sp_->setRotation(static_cast<float>(180 * angle / std::numbers::pi));
     }
+
+    void Sprite::setScale(double scaleX, double scaleY)
+    {
+        sp_->setScale(scaleX, scaleY);
+    }
 }

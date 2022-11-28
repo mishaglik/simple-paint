@@ -13,7 +13,7 @@ namespace aGL {
 
     public:
         Sprite();
-        Sprite(const Texture& texture);             // I, the Author of this shit, being in good health and clear mind allow implict conversion. 
+        /* implict */ Sprite(const Texture& texture);             // I, the Author of this shit, being in good health and clear mind allow implict conversion. 
         Sprite(const Texture& texture, Rect rect);
         Sprite(const Sprite& oth);
         Sprite(const Sprite& oth, Rect rect);
@@ -27,6 +27,8 @@ namespace aGL {
         void rotate(double angle);
         void setRotation(double angle);
         Sprite crop(Rect& rect);
+
+        void setScale(double scaleX, double scaleY);
     };
 }
 

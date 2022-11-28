@@ -1,11 +1,13 @@
 cmake_minimum_required(VERSION 3.10)
 
-add_library(PluginBase OBJECT Vector.cpp Color.cpp BetPlug.cpp)
+add_library(PluginBase OBJECT Vector.cpp Color.cpp BetPlug.cpp PixArr.cpp)
 add_library(Interpol OBJECT BBrushes.cpp Interpolate.cpp BrezLine.cpp)
 # add_library(Base MODULE Base.cpp)
-add_library(Aero MODULE Aero.cpp)
+add_library(Aero MODULE Aero.cpp Pen.cpp)
+add_library(Blur MODULE Blur.cpp Pen.cpp)
 add_library(Curve MODULE Curves.cpp)
 target_link_libraries(Aero PRIVATE PluginBase Interpol)
+target_link_libraries(Blur PRIVATE PluginBase Interpol)
 target_link_libraries(Curve PRIVATE PluginBase Interpol)
 add_library(ShapeFillers MODULE ShapeFillers.cpp)
 add_library(Pippet MODULE Pippet.cpp)
@@ -19,6 +21,7 @@ set (Plugins
     Pippet
     Grayer
     Curve
+    Blur
     Filler
 )
 

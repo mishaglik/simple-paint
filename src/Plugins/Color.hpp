@@ -37,6 +37,16 @@ class Color{
         void b(uint8_t b) {asRGBA_.b_ = b;}
         void a(uint8_t a) {asRGBA_.a_ = a;}
 
+        double rf() const {return asRGBA_.r_ / 255.;}
+        double gf() const {return asRGBA_.g_ / 255.;}
+        double bf() const {return asRGBA_.b_ / 255.;}
+        double af() const {return asRGBA_.a_ / 255.;}
+
+        void rf(double r) {asRGBA_.r_ = static_cast<uint8_t>(r * 255.);}
+        void gf(double g) {asRGBA_.g_ = static_cast<uint8_t>(g * 255.);}
+        void bf(double b) {asRGBA_.b_ = static_cast<uint8_t>(b * 255.);}
+        void af(double a) {asRGBA_.a_ = static_cast<uint8_t>(a * 255.);}
+
         constexpr void setHSV(uint32_t h, uint8_t s, uint8_t v, uint8_t alpha = 255)
         {
             uint32_t H = h, S = s, V = v;

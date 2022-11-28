@@ -46,5 +46,4 @@ namespace aGL {
     {
         tp_->loadFromImage(*(img.ip_));
     }
-
 }

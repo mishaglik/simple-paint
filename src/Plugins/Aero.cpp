@@ -1,3 +1,4 @@
+#include "Pen.hpp"
 #include "Aero.hpp"
 #include "BBrushes.hpp"
 #include <iostream>
@@ -6,18 +7,12 @@
 extern "C" void init_module()
 {
     addTool(new Aero);
+    addTool(new Pen);
 }
 
 Aero::Aero()
 {
     brush = new Brushes::CircleBrush(settts_);
-}
-
-
-static bool isOnImage(Image* image, const Point& pt)
-{
-    return pt.x >= 0 && pt.x < static_cast<int>(image->getW()) && 
-           pt.y >= 0 && pt.y < static_cast<int>(image->getH());
 }
 
 // void Aero::apply(Image* image, const Event* event)
