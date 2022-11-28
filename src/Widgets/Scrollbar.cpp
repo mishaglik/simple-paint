@@ -42,8 +42,8 @@ namespace aGL {
             }
         }
         else {
-            surface->clear(0x333e60ff);
-            surface->drawRect(scroll_, 0x45a047ff);
+            surface->clear(0x202020ff);
+            surface->drawRect(scroll_, 0x5b5b5bff);
         }
 
         needsRepaint = false;

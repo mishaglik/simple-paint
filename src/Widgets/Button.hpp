@@ -44,9 +44,9 @@ namespace aGL {
 
     class PushButton : public AbstractButton
     {
-        static constexpr Color defaultColor_ = 0x232323ff;
+        static constexpr Color defaultColor_ = 0x5b5b5bff;
         static constexpr Color hoveredColor_ = 0x2a2a2aff;
-        static constexpr Color pressedColor_ = 0x353535ff;
+        static constexpr Color pressedColor_ = 0x484848ff;
 
         uint32_t verticalMargin   = 13;
         uint32_t horizontalMargin = 5;
@@ -58,6 +58,7 @@ namespace aGL {
         ~PushButton() override {}
         
         EventHandlerState onPaintEvent(const Event* event) override;
+        void onSkinChange() override;
     };
 
 }

@@ -21,9 +21,9 @@ namespace aGL {
     PushButton::PushButton(const char* text, uint32_t x, uint32_t y, uint32_t w, uint32_t h, Widget* parent) :
         AbstractButton({x, y, w, h}, text, parent)
     {
-        if(hasText_)
+        if(hasText_ && text[0] != '\0')
         {
-            text_.setColor(Colors::Red);
+            text_.setColor(0xddddddff);
             text_.setCharacterSize(3 * h / 4);
             Rect textRect = text_.getRect();
             if(textRect.w + 2 * horizontalMargin < w)
@@ -71,6 +71,12 @@ namespace aGL {
         return Dropped;
     }
 
+    void PushButton::onSkinChange()
+    {
+        if(sm_) text_.setFont(sm_->getFont());
+    }
+
+
     EventHandlerState PushButton::onPaintEvent(const Event* ) 
     {
         if(!needsRepaint_) return Accepted;
@@ -86,15 +92,17 @@ namespace aGL {
         else {
             Sprite sp(sm_->getTexture(texId_));
             surface->drawSprite({}, sp);
+
+            if(hovered_) surface->drawRect({0,0,rect_.w, rect_.h}, 0x40);
         }
         
-        int w = static_cast<int>(rect_.w);
-        int h = static_cast<int>(rect_.h);
+        // int w = static_cast<int>(rect_.w);
+        // int h = static_cast<int>(rect_.h);
 
-        surface->drawLine({0, 0}, {0, h}, focused_ ? Colors::Red : Colors::LGray);
-        surface->drawLine({0, h}, {w, h}, focused_ ? Colors::Red : Colors::LGray);
-        surface->drawLine({w, h}, {w, 0}, focused_ ? Colors::Red : Colors::LGray);
-        surface->drawLine({w, 0}, {0, 0}, focused_ ? Colors::Red : Colors::LGray);
+        // surface->drawLine({0, 0}, {0, h}, focused_ ? Colors::Red : Colors::LGray);
+        // surface->drawLine({0, h}, {w, h}, focused_ ? Colors::Red : Colors::LGray);
+        // surface->drawLine({w, h}, {w, 0}, focused_ ? Colors::Red : Colors::LGray);
+        // surface->drawLine({w, 0}, {0, 0}, focused_ ? Colors::Red : Colors::LGray);
         
         surface->drawText(text_);
         needsRepaint_ = false;

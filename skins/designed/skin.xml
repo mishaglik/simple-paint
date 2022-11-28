@@ -34,4 +34,7 @@
     <mge__Toolbox__ToolboxButton>
         <image src="ToolItem.png"/>
     </mge__Toolbox__ToolboxButton>
+    <OutButton>
+        <image src="OutButt.png"/>
+    </OutButton>
 </skin>

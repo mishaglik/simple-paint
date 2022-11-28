@@ -73,16 +73,16 @@ void Aero::onMouseMove(const MotionEventData* event)
 
 void Aero::buildSetupWidget()
 {
-    createLabel(110, -10, 100, 20, "Size");
-    createLabel(110, 15, 100, 20, "Opacity");
-    createLabel(110, 30, 100, 20, "Density");
-    Scrollbar* sb = createScrollbar(5, 0, 100, 10, 500, 5);
+    createLabel(110, 7 , 50, 21, "Size");
+    createLabel(110, 27, 50, 21, "Opacity");
+    createLabel(110, 47, 50, 21, "Density");
+    Scrollbar* sb = createScrollbar(5, 10, 100, 15, 500, 5);
     sb->valueChanged.connect(this, &Aero::setBrushSize);
 
-    sb = createScrollbar(5, 20, 100, 10, 200, 5);
+    sb = createScrollbar(5, 30, 100, 15, 200, 5);
     sb->valueChanged.connect(this, &Aero::setOpacity);
 
-    sb = createScrollbar(5, 40, 100, 10, 100, 5);
+    sb = createScrollbar(5, 50, 100, 15, 100, 5);
     sb->valueChanged.connect(this, &Aero::setDensity);
 }
 

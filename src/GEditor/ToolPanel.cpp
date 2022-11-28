@@ -28,7 +28,7 @@ namespace mge {
         xScroll_->setTexId(aGL::IgnoreTexture);
         yScroll_->setTexId(aGL::IgnoreTexture);
 
-        outButton_ = new aGL::PushButton("v", rect_.w - 15, 0, 15, 20, this);
+        outButton_ = new aGL::PushButton("", rect_.w - 17, 2, 15, 15, this);
         outButton_->clicked.connect(this, &ToolPanel::moveToWindow);
 
         GEditor::app->toolChanged.connect(this, &ToolPanel::onToolChange);
@@ -80,6 +80,8 @@ namespace mge {
         if(sm_)
         {
             text_.setFont(sm_->getFont());
+            aGL::TexId but = sm_->findTextureId("OutButton");
+            outButton_->setTexId(but);
         }
 
     }
