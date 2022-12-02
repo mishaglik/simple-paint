@@ -5,6 +5,7 @@
 #include "ColorDialog/ColorDialog.hpp"
 #include "GEditorWindow.hpp"
 #include "Widgets/Application.hpp"
+#include "Plugins.hpp"
 
 namespace mge {
     class Tool;
@@ -23,12 +24,15 @@ class GEditor : public aGL::BaseApplication
     mge::Tool* currentTool_ = nullptr;
     mvc::Vector<mge::Tool* > tools_;
 
+
     void createTools();
 
 public:
     GEditor(int argc, const char* argv[]);
     ~GEditor();
 
+    mvc::Vector<mge::Plugin> plugins_;
+    
     static GEditor* app;
     mge::DrawingContext context = {};
     aGL::SkinManager* sm_ = nullptr;

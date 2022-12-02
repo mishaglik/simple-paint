@@ -3,7 +3,7 @@
 #include "Vector.hpp"
 #include "Color.hpp"
 
-using Point = mgm::Vector2i;
+using Point = mgm::Vector2<int64_t>;
 
 class Brush
 {

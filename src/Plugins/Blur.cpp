@@ -27,6 +27,9 @@ void Blur::buildSetupWidget()
 
 }
 
+extern const GUID bp::GUID_ = {"209062ee-483d-4281-bf46-43feaffb8f44"};
+
+
 extern "C" void init_module()
 {
     booba::addTool(new Blur);
@@ -67,7 +70,7 @@ void Blur::applyTool(const Brush::BrushPoint& pt)
         colorAvg.rf(rAvg);
         colorAvg.gf(gAvg);
         colorAvg.bf(bAvg);
-        // image_->putPixel(pt.point.x, pt.point.y, 0);
+        // image_->setPixel(pt.point.x, pt.point.y, 0);
     }
     else {
         if(fabs(colorAvg.gf() - gAvg) > treshold_ / 1000.)
@@ -87,7 +90,7 @@ void Blur::brushDraw(const Point& pt)
 
     for(auto [point, col] : apply_)
     {
-        image_->putPixel(point.x, point.y, col);
+        image_->setPixel(point.x, point.y, col);
     }
 }
 

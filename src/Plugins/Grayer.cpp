@@ -22,14 +22,18 @@ void Grayer::apply(Image* image, const Event* event)
     {
         for(uint32_t x = 0; x < image->getW(); ++x)
             for(uint32_t y = 0; y < image->getH(); ++y)
-                image->putPixel(x, y, getGray(image->getPixel(x, y)));
+                image->setPixel(x, y, getGray(image->getPixel(x, y)));
     }
+}
+
+static const GUID GUID_ = {"c6fc5136-7d8f-4def-9684-a276e42ba8a4"};
+
+extern "C" GUID getGUID()
+{
+    return GUID_;
 }
 
 extern "C" void init_module()
 {
     addFilter(new Grayer);
 }
-
-booba::Tool::~Tool() {}
-booba::Image::~Image() {}

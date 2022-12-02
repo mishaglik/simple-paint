@@ -1,7 +1,7 @@
 #ifndef GEDITOR_PLUGINS_HPP
 #define GEDITOR_PLUGINS_HPP
 
-#include "../Plugins/tools.hpp"
+#include "Elpstd/tools.hpp"
 #include "GEditor/GrandDesign.hpp"
 #include "Tool.hpp"
 #include <Widgets/Button.hpp>
@@ -9,7 +9,16 @@
 #include "Widgets/Slider.hpp"
 
 namespace mge {
-    void importPlugins();
+
+    using booba::GUID;
+
+    struct Plugin
+    {
+        GUID guid;
+        void* handler;
+    };
+
+    void importPlugins(mvc::Vector<Plugin>& plugins);
     class PluginButton;
     class PluginScroll;
 
@@ -28,6 +37,9 @@ namespace mge {
         void onImageChange() override {}
         const char* getTexture() const override {return texName_.c_str();}
         void createPanel() override;
+        void createDefaultPanel();
+
+        bool setToolbarSize(size_t w, size_t h);
 
         void onButtonClick(const PluginButton* button);
         void onScrollMove(int32_t value, const PluginScroll* scroll);
@@ -86,19 +98,19 @@ namespace mge {
         aGL::EventHandlerState onMouseButtonReleaseEvent(const aGL::Event* event) override;
         aGL::EventHandlerState onMouseMoveEvent(const aGL::Event* event) override;
 
-        void putPixel (int32_t x, int32_t y, aGL::Color color);
-        void putSprite(int32_t x, int32_t y, uint32_t w, uint32_t h, const char* texture);
+        void setPixel (size_t x, size_t y, aGL::Color color);
+        void putSprite(size_t x, size_t y, size_t w, size_t h, const char* texture);
+        void clear(aGL::Color color);
         aGL::EventHandlerState onPaintEvent(const aGL::Event*) override { return aGL::Accepted; }
     };
 
     class PluginImage : public booba::Image
     {
         aGL::Image* image_ = nullptr;
-        mutable uint32_t pixel_;
     public:
         PluginImage(aGL::Image* image) : image_(image) {}
-        virtual uint32_t getH() override { return image_->getH(); }
-        virtual uint32_t getW() override { return image_->getW(); }
+        virtual size_t getH() override { return image_->getH(); }
+        virtual size_t getW() override { return image_->getW(); }
         uint32_t getPixel(int32_t x, int32_t y) const 
         {
             if(!isOnImage(x, y))
@@ -109,7 +121,7 @@ namespace mge {
 
             return image_->getPixel(x, y); 
         }
-        virtual uint32_t getPixel(int32_t x, int32_t y) override 
+        virtual uint32_t getPixel(size_t x, size_t y) override 
         {
             if(!isOnImage(x, y))
             {
@@ -118,7 +130,7 @@ namespace mge {
             }
             return image_->getPixel(x, y); 
         }   
-        virtual void putPixel(uint32_t x, uint32_t y, uint32_t color) override 
+        virtual void setPixel(size_t x, size_t y, uint32_t color) override 
         {
             if(!isOnImage(x, y))
             {
@@ -127,11 +139,9 @@ namespace mge {
             }
             image_->setPixel(x, y, color); 
         }        
-        virtual uint32_t& operator()(uint32_t x, uint32_t y) override { MLG_UIMPLEMENTED  return pixel_;}
-        virtual const uint32_t& operator()(uint32_t x, uint32_t y) const override { return pixel_ = getPixel(x, y);}
-        bool isOnImage(int x, int y)  const { return x >= 0 && y >=0 && x < image_->getW() && y < image_->getH(); }
+        bool isOnImage(int64_t x, int64_t y)  const { return x >= 0 && y >=0 && x < image_->getW() && y < image_->getH(); }
     public:
-        virtual ~PluginImage() override {}
+        virtual ~PluginImage() {}
     };
 }
 

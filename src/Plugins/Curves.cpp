@@ -3,6 +3,8 @@
 #include <cassert>
 #include <iostream>
 
+extern const GUID bp::GUID_ = {"06f7854c-fa3e-438f-93b8-a6013d5f1d69"};
+
 Curve::Curve()
 {
 }
@@ -46,15 +48,15 @@ void CurveCanvas::repaint()
 
     for(int32_t x = 0; x < w_; ++x)             // Border
     {
-        putPixel({0, x},   Colors::Black);
-        putPixel({x, 0},   Colors::Black);
-        putPixel({255, x}, Colors::Black);
-        putPixel({x, 255}, Colors::Black);
+        setPixel({0, x},   Colors::Black);
+        setPixel({x, 0},   Colors::Black);
+        setPixel({255, x}, Colors::Black);
+        setPixel({x, 255}, Colors::Black);
 
         for(uint32_t i = 1; i < 8; ++i)
         {
-            putPixel(Point(i * w_ / 8, x), 0x565656ff);
-            putPixel(Point(x, i * h_ / 8), 0x565656ff);
+            setPixel(Point(i * w_ / 8, x), 0x565656ff);
+            setPixel(Point(x, i * h_ / 8), 0x565656ff);
         }
     }
 
@@ -76,7 +78,7 @@ void CurveCanvas::repaint()
         {
             for(int32_t dy = -2 ; dy < 3; ++dy)
             {
-                putPixel(Point(points_[i].point.x + dx, w_ - (points_[i].point.y + dy)), 0x101010ff);
+                setPixel(Point(points_[i].point.x + dx, w_ - (points_[i].point.y + dy)), 0x101010ff);
             }
         }
     }
@@ -84,7 +86,7 @@ void CurveCanvas::repaint()
     if(kr_.size() != 0)
     {
         kr_.addPoint(Point(w_, h_));
-        kr_.addPoint(2 * Point(w_, h_) - points_[lastAdded].point);
+        kr_.addPoint(2l * Point(w_, h_) - points_[lastAdded].point);
     }
     else {
         kr_.addPoint({});
@@ -98,7 +100,7 @@ void CurveCanvas::repaint()
     for(int i = 501; i < (kr_.size() - 2) * 500; ++i)
     {
         Point pt = kr_.getPoint(i / 500.);
-        putPixel(Point(pt.x, w_ - pt.y), 0x151515ff);
+        setPixel(Point(pt.x, w_ - pt.y), 0x151515ff);
 
         int32_t valX = 100 * pt.x / w_; 
         int32_t valY = 100 * pt.y / h_; 
@@ -179,7 +181,7 @@ void Curve::transformImage()
         {
             Color col = image_->getPixel(x, y);
             col.v(canvas_->getValue(col.v()));
-            image_->putPixel(x, y, col);
+            image_->setPixel(x, y, col);
         }
     }
 }
@@ -216,7 +218,7 @@ void GrainbowCanvas::fillHorizontal()
     {
         Color color = Color::fromHSV(0, 1, 100 * x / w_);
         for(int32_t y = 0; y < h_; ++y)
-            putPixel({x, y}, color);
+            setPixel({x, y}, color);
     }
 }
 
@@ -226,6 +228,6 @@ void GrainbowCanvas::fillVertical()
     {
         Color color = Color::fromHSV(0, 1, 100 - 100 * y / h_);
         for(int32_t x = 0; x < w_; ++x)
-            putPixel({x, y}, color);
+            setPixel({x, y}, color);
     }
 }

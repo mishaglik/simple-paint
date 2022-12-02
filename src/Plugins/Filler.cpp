@@ -4,7 +4,7 @@
 #include <set>
 #include "Vector.hpp"
 
-using Point = mgm::Vector2i;
+using Point = mgm::Vector2<int64_t>;
 
 static int cmpColors(const Color& c1, const Color c2)
 {
@@ -46,7 +46,7 @@ void Filler::fill(Image* image, int startX, int startY, Color fillColor)
     while (!q.empty()) {
         Point pt = q.front();
         q.pop();
-        image->putPixel(pt.x, pt.y, fillColor);
+        image->setPixel(pt.x, pt.y, fillColor);
 
         pt.x++;
         if(pt.x < static_cast<int>(image->getW()) && !visited.contains(pt) && cmpColors(startColor, image->getPixel(pt.x, pt.y)) < colorEdge)
@@ -82,4 +82,11 @@ void Filler::fill(Image* image, int startX, int startY, Color fillColor)
 extern "C" void init_module()
 {
     addTool(new Filler);
+}
+
+static const GUID GUID_ = {"0d5aa80-c6b7-4126-ae88-5343a7eaf6b3"};
+
+extern "C" GUID getGUID()
+{
+    return GUID_;
 }

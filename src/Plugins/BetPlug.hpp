@@ -1,13 +1,14 @@
 #ifndef PLUGINS_BETPLUG_HPP
 #define PLUGINS_BETPLUG_HPP
-#include "tools.hpp"
+#include "Elpstd/tools.hpp"
 #include "Signals.hpp"
 #include "Color.hpp"
 #include "Vector.hpp"
 
 namespace bp {
-    using Point = mgm::Vector2i;
+    using Point = mgm::Vector2<int64_t>;
     
+    using booba::GUID;
     using booba::CanvasEventData;
     using booba::MouseButtonEventData;
 
@@ -18,6 +19,8 @@ namespace bp {
     using booba::APPCONTEXT;
 
     class BTool;
+    
+    extern const GUID GUID_;
 
     struct Button
     {
@@ -45,7 +48,7 @@ namespace bp {
         virtual void onMouseRelease(const CanvasEventData* ) {}
         virtual void onMouseMove(const CanvasEventData* )    {}
         
-        void putPixel (Point pt, Color color);
+        void setPixel (Point pt, Color color);
         void putSprite(Point pt, mgm::Vector2u size, const char* sprite);
 
         void clear(Color color);

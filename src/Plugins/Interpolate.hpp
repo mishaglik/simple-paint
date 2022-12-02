@@ -2,9 +2,9 @@
 #define PLUGINS_INTERPOLATE_HPP
 #include "Vector.hpp"
 #include "../Vector/Vector.hpp"
-#include "tools.hpp"
+#include "Elpstd/tools.hpp"
 
-using Point = mgm::Vector2i;
+using Point = mgm::Vector2<int64_t>;
 
 class Interpolator
 {

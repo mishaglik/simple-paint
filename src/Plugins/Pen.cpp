@@ -19,9 +19,9 @@ void Pen::onMousePress  (const MouseButtonEventData* event)
 {
     if(image_->getH() != pixarr_.getH() || image_->getW() != pixarr_.getW())
         usedReset();
-    if(event->button == MouseButton::Left && isOnImage(image_, {event->x, event->y}))
+    Point evPoint(event->x, event->y);
+    if(event->button == MouseButton::Left && isOnImage(image_, evPoint))
     {
-        Point evPoint = {event->x, event->y};
         pressed_ = true;
         if(event->shift)
         {
@@ -51,7 +51,7 @@ void Pen::onMouseMove(const MotionEventData* event)
 {
     if(image_->getH() != pixarr_.getH() || image_->getW() != pixarr_.getW())
         usedReset();
-    Point ePoint = {event->x, event->y};
+    Point ePoint(event->x, event->y);
     if(pressed_ && isOnImage(image_, ePoint))
     {
         for(Point pt : BrezLine(prevDrawn_, ePoint))
@@ -84,7 +84,7 @@ void Pen::applyTool(const Brush::BrushPoint& pt)
     Color color = APPCONTEXT->fgColor;
     color.a(pt.opacity);
     imgColor.ablend(color);
-    image_->putPixel(pt.point.x, pt.point.y, imgColor);
+    image_->setPixel(pt.point.x, pt.point.y, imgColor);
 }
 
 

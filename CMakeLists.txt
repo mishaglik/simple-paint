@@ -14,7 +14,8 @@ set(VP_SOURCE_DIR
 
 
 link_directories(${PROJECT_SOURCE_DIR}/lib)
-include_directories(${PROJECT_SOURCE_DIR}/include)
+# include_directories(${PROJECT_SOURCE_DIR}/include)
+include_directories(${PROJECT_SOURCE_DIR})
 
 set(VP_SOURCES
     ${VP_SOURCE_DIR}/main.cpp
@@ -43,7 +44,7 @@ set(VP_LIBS
 )
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    add_compile_options(-fPIC -Weverything -O1 -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-padded -Wno-weak-vtables -Wno-sign-conversion -Wno-covered-switch-default -Werror=return-type)
+    add_compile_options(-fPIC -Weverything -O1 -Wno-documentation -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-padded -Wno-weak-vtables -Wno-sign-conversion -Wno-covered-switch-default -Werror=return-type)
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     # add_compile_options(-Wall -Wextra -Wno-error=padded -Wno-weak-vtables)
     set (GNU_SANITIZE_FLAGS

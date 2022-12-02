@@ -76,7 +76,7 @@ void drawLine(booba::Image* image, Point p0, Point p1, uint32_t color)
     int y = p0.y;
     while(p1 != Point(x, y))
     {
-        image->putPixel(x, y, color);
+        image->setPixel(x, y, color);
         int e2 = 2 * error;
         if(e2 >= dy)
         {
@@ -91,7 +91,7 @@ void drawLine(booba::Image* image, Point p0, Point p1, uint32_t color)
             y += sy;
         }
     }
-    image->putPixel(x, y, color);
+    image->setPixel(x, y, color);
 }
 
 

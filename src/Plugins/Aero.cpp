@@ -4,6 +4,8 @@
 #include <iostream>
 #include "BrezLine.hpp"
 
+extern const GUID bp::GUID_ = {"61d373f9-ac57-44a2-b38d-1d2ece00c6d0"};
+
 extern "C" void init_module()
 {
     addTool(new Aero);
@@ -15,50 +17,46 @@ Aero::Aero()
     brush = new Brushes::CircleBrush(settts_);
 }
 
-// void Aero::apply(Image* image, const Event* event)
-// {
-//     image_ = image;
-//     if(event->type == EventType::MousePressed) onMousePress   (&event->Oleg.mbedata);
-//     if(event->type == EventType::MouseReleased) onMouseRelease(&event->Oleg.mbedata);
-//     if(event->type == EventType::MouseMoved) onMouseMove      (&event->Oleg.motion);
-//     if(event->type == EventType::ScrollbarMoved) settts_.size = event->Oleg.smedata.value + 1;
-//     image = nullptr;
-// }
 
 void Aero::onMousePress(const MouseButtonEventData* event)
 {
     if(event->button != MouseButton::Left) return;
-    if(!isOnImage(image_, {event->x, event->y})) return;
+    Point evPoint(event->x, event->y);
+    if(!isOnImage(image_, evPoint)) return;
 
     pressed_ = true;
     
 
-    brushDraw({event->x, event->y});
+    brushDraw(evPoint);
     if(event->shift)
     {
-        for(const Point& pt : BrezLine(prevDrawn_, {event->x, event->y}))
+        for(const Point& pt : BrezLine(prevDrawn_, evPoint))
         {
             brushDraw(pt);
         }
-        // drawLine(image_, prevDrawn_, {event->x, event->y}, APPCONTEXT->fgColor);
+        // drawLine(image_, prevDrawn_, evPoint, APPCONTEXT->fgColor);
     }
-    prevDrawn_ = {event->x, event->y};
+    prevDrawn_ = evPoint;
 }
 
 void Aero::onMouseRelease(const MouseButtonEventData* event)
 {
     if(event->button != MouseButton::Left) return;
-    if(!isOnImage(image_, {event->x, event->y})) return;
+    Point evPoint(event->x, event->y);
+
+    if(!isOnImage(image_, evPoint)) return;
     interp_.reset();
 }
 
 void Aero::onMouseMove(const MotionEventData* event)
 {
     if(!pressed_) return;
-    if(!isOnImage(image_, {event->x, event->y})) return;
+    Point evPoint(event->x, event->y);
 
-    interp_.addPoint({event->x, event->y});
-    uint32_t dist = (Point{event->x, event->y} -= prevDrawn_).len2();
+    if(!isOnImage(image_, evPoint)) return;
+
+    interp_.addPoint(evPoint);
+    uint32_t dist = (Point(event->x, event->y) -= prevDrawn_).len2();
     dist /= (settts_.size) * (settts_.size);
     dist = std::max(dist, 1u);
     const int multiplier = 4;
@@ -68,7 +66,7 @@ void Aero::onMouseMove(const MotionEventData* event)
         brushDraw(pt);
     }
     prevLen_ = dist;
-    prevDrawn_ = {event->x, event->y};
+    prevDrawn_ = evPoint;
 }
 
 void Aero::buildSetupWidget()
@@ -98,7 +96,7 @@ void Aero::brushDraw(const Point& pt)
         Color curColor = image_->getPixel(point.point.x, point.point.y);
         curColor.ablend(color);
         
-        image_->putPixel(point.point.x, point.point.y, curColor);
+        image_->setPixel(point.point.x, point.point.y, curColor);
         
         // std::cerr << point.point.x << " " <<  point.point.y << '\n';
     }

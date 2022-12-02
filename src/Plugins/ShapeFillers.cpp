@@ -6,6 +6,12 @@ extern "C" void init_module()
     addTool(new RectFiller{});
     addTool(new EllipseFiller{});
 }
+static const GUID GUID_ = {"356fbf03-d951-4812-bd72-45957b6bcd5a"};
+
+extern "C" GUID getGUID()
+{
+    return GUID_;
+}
 
 void RectFiller::apply(Image* image, const Event* event)
 {
@@ -24,7 +30,7 @@ void RectFiller::apply(Image* image, const Event* event)
             {
                 for(int32_t y = curY; y < prevY_; ++y)
                 {
-                    image->putPixel(x, y, color);
+                    image->setPixel(x, y, color);
                 }
             }
         }
@@ -69,7 +75,7 @@ void EllipseFiller::apply(Image* image, const Event* event)
                     int32_t dx2 = (x - curX - w) * (x - curX - w);
                     int32_t dy2 = (y - curY - h) * (y - curY - h);
                     if(dx2 * h2 + dy2 * w2 <= w2 * h2)
-                        image->putPixel(x, y, color);
+                        image->setPixel(x, y, color);
                 }
             }
         }

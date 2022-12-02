@@ -20,7 +20,7 @@ GEditor::GEditor(int argc, const char* argv[]) :
     mainWindow_->setSkinManager(sm_);
     appState_ = Ready;
 
-    mge::importPlugins();
+    mge::importPlugins(plugins_);
 
     if(tools_.empty())
     {

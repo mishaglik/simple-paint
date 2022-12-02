@@ -10,19 +10,19 @@ namespace bp
         parent->addCanvas(this);
     }
 
-    void Canvas::putPixel (Point pt, Color color)
+    void Canvas::setPixel (Point pt, Color color)
     {
         if(pt.x < 0 || pt.x >= w_) return;
         if(pt.y < 0 || pt.y >= h_) return;
-        booba::putPixel(id_, pt.x, pt.y, color);
+        booba::setPixel(id_, pt.x, pt.y, color);
     }
 
     void Canvas::clear(Color color)
     {
-        for(int x = 0; x < w_; ++x)
-            for(int y = 0; y < h_; ++y)
-                booba::putPixel(id_, x, y, color);
-
+        // for(int x = 0; x < w_; ++x)
+        //     for(int y = 0; y < h_; ++y)
+        //         booba::setPixel(id_, x, y, color);
+        booba::cleanCanvas(id_, color);
     }
 
 
@@ -58,7 +58,7 @@ namespace bp
 
     Scrollbar* BTool::createScrollbar(int32_t x, int32_t y, uint32_t w, uint32_t h, int32_t maxValue, int32_t startValue)
     {
-        uint64_t id = booba::createScrollbar(x, y, w, h, maxValue, startValue);
+        uint64_t id = booba::createSlider(x, y, w, h, 0, maxValue, startValue);
         if(!id) return nullptr;
         scrollbars_.push_back(new Scrollbar{id, startValue, {}});
         // scrollbars_.resize(scrollbars_.size() + 1); //WTF ?
@@ -100,7 +100,7 @@ namespace bp
                 }
         break;
 
-        case booba::EventType::ScrollbarMoved:
+        case booba::EventType::SliderMoved:
             for(Scrollbar* scroll : scrollbars_)
                 if(scroll->id_ == event->Oleg.smedata.id)
                 {
@@ -144,4 +144,7 @@ namespace bp
         }
     }
 
+
 }
+
+extern "C" booba::GUID booba::getGUID() { return bp::GUID_; }

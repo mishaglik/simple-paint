@@ -1,6 +1,7 @@
 #include "Plugins.hpp"
 #include "GEditor/GEditor.hpp"
 #include "Widgets/Label.hpp"
+#include <cstring>
 #include <filesystem>
 #include <dlfcn.h>
 #include <cxxabi.h>
@@ -36,8 +37,9 @@ namespace mge {
         return res;
     }
 
-    void importPlugins()
+    void importPlugins(mvc::Vector<Plugin>& plugins)
     {
+        plugins.clear();
         booba::APPCONTEXT = reinterpret_cast<booba::ApplicationContext* >(&GEditor::app->context);
         mInfo << "isDir " << std::filesystem::is_directory(MODULES_DIRECTORY) << mlg::endl;
         mInfo << "exists " << std::filesystem::exists(MODULES_DIRECTORY) << mlg::endl;
@@ -50,15 +52,36 @@ namespace mge {
                 void* library = dlopen(path.c_str(), RTLD_NOW);
                 if(!library) mInfo << "Error: " << dlerror() << mlg::endl;
                 mAssert(library);
-                void (*startF)(void) = reinterpret_cast<void (*)()>(dlsym(library, "init_module"));
-                mAssert(startF);
-                mInfo << "StartF address: " << reinterpret_cast<void*>(startF) << mlg::endl;
-                (*startF)();
+                GUID (*getGUIDF)(void) = reinterpret_cast<GUID (*)()>(dlsym(library, "getGUID"));
+
+                if(!getGUIDF)
+                {
+                    mError << "Plugin \"" << file.path().filename().c_str() << "\" has no getGUID(). Probably it's using v1.0.0 standart. It's not supported." << mlg::endl;
+                    continue;
+                }
+                GUID guid = (*getGUIDF)();
+                if(guid.str[36] != 0)
+                {
+                    mError << "Plugin \"" << file.path().filename().c_str() << "\" has bad GUID" << mlg::endl;
+                    continue;
+                }
+                plugins.push_back({guid, library});
             }
         }
-        std::cerr.flush();
-        sleep(1);
-    }
+        mInfo << "Plugin loading finished " << mlg::Logger::CoStyle::Green << "successfully" << mlg::Logger::CoStyle::Reset <<". Starting initialization." << mlg::endl;
+        for(Plugin& plugin : plugins)
+        {
+            void (*startF)(void) = reinterpret_cast<void (*)()>(dlsym(plugin.handler, "init_module"));
+            if(!startF)
+            {
+                mError << "Plugin [" << plugin.guid.str << "] has no init function." << mlg::endl;
+                continue;
+            }
+            mInfo << "StartF address: " << reinterpret_cast<void*>(startF) << mlg::endl;
+            (*startF)();
+        }
+        mInfo << "Plugin initialization finished " << mlg::Logger::CoStyle::Green << "successfully." << mlg::endl;
+        }
 
     PluginTool::PluginTool(booba::Tool* tool) : tool_(tool), texName_(texturePath(tool->getTexture())) {}
 
@@ -103,7 +126,7 @@ namespace mge {
     void PluginTool::onScrollMove(int32_t value, const PluginScroll* scroll)
     {
         ToolGuard tg(this);
-        ev.type = booba::EventType::ScrollbarMoved;
+        ev.type = booba::EventType::SliderMoved;
         ev.Oleg.smedata.id    = reinterpret_cast<uint64_t>(scroll);
         ev.Oleg.smedata.value = value;
         tool_->apply(nullptr, &ev); // FIXME: current image.
@@ -145,9 +168,24 @@ namespace mge {
     {
         ToolGuard tg(this);
         // Tool::createPanel(parent, rect);
-        panel_ = new aGL::ContainerWidget({0, 0, 1000, 1000});
         tool_->buildSetupWidget();
     }
+
+    void PluginTool::createDefaultPanel()
+    {
+        mAssert(!panel_);
+        panel_ = new aGL::ContainerWidget(aGL::Rect(0, 0, 1000, 1000));
+    }
+
+
+    bool PluginTool::setToolbarSize(size_t w, size_t h)
+    {
+        if(panel_) return false;
+        if(w > 3000 || h > 3000) return false;
+        panel_ = new aGL::ContainerWidget(aGL::Rect(0, 0, w, h));
+        return panel_;
+    }
+
 
     aGL::EventHandlerState PluginCanvas::onMouseButtonPressEvent(const aGL::Event* event)
     {
@@ -188,16 +226,21 @@ namespace mge {
     }
 
 
-    void PluginCanvas::putPixel (int32_t x, int32_t y, aGL::Color color)
+    void PluginCanvas::setPixel (size_t x, size_t y, aGL::Color color)
     {
         assert(x < surface->getSurfRect().w);
         assert(y < surface->getSurfRect().h);
         assert(x >= 0);
         assert(y >= 0);
-        surface->drawPoint({x, y}, color);
+        surface->drawPoint(aGL::Point(x, y), color);
     }
 
-    void PluginCanvas::putSprite(int32_t x, int32_t y, uint32_t w, uint32_t h, const char* texture)
+    void PluginCanvas::clear(aGL::Color color)
+    {
+        surface->clear(color);
+    }
+
+    void PluginCanvas::putSprite(size_t x, size_t y, size_t w, size_t h, const char* texture)
     {
 
         aGL::Texture tex(texturePath(texture).c_str());
@@ -207,7 +250,7 @@ namespace mge {
             mError << "File: " << texturePath(texture).c_str() << mlg::Logger::CoStyle::Red << " not exists" << mlg::endl;
         }
         tex.setRepeated(true);
-        surface->drawSprite({x, y}, aGL::Sprite(tex, {0, 0, w, h}));
+        surface->drawSprite(aGL::Point(x, y), aGL::Sprite(tex, aGL::Rect(0, 0, w, h)));
     }
 
     void PluginTool::onCanvasEvent(const booba::Event ev)
@@ -220,18 +263,26 @@ namespace mge {
 }
  
 namespace booba {
-    extern "C" uint64_t createButton   (int32_t x, int32_t y, uint32_t w, uint32_t h, const char* name)
+
+    static bool operator==(const GUID& lhs, const GUID& rhs)
+    {
+        return !strncmp(lhs.str, rhs.str, sizeof(GUID));
+    }
+
+    extern "C" uint64_t createButton   (size_t x, size_t y, size_t w, size_t h, const char* name)
     {
         if(mge::PluginTool::currentPlugin == nullptr) return 0;
+        if(!mge::PluginTool::currentPlugin->getPanel()) mge::PluginTool::currentPlugin->createDefaultPanel();
         const uint32_t offs = mge::Design::LeftPanel::ToolPanel::HEAD.h;
         auto button =  new mge::PluginButton(aGL::Rect(x, y + offs, w, h), name, mge::PluginTool::currentPlugin->getPanel());
         aGL::connect(button, &mge::PluginButton::clicked, mge::PluginTool::currentPlugin, &mge::PluginTool::onButtonClick);
         return reinterpret_cast<uint64_t>(button);
     }
 
-    extern "C" uint64_t createLabel(int32_t x, int32_t y, uint32_t w, uint32_t h, const char* name)
+    extern "C" uint64_t createLabel(size_t x, size_t y, size_t w, size_t h, const char* name)
     {
         if(mge::PluginTool::currentPlugin == nullptr) return 0;
+        if(!mge::PluginTool::currentPlugin->getPanel()) mge::PluginTool::currentPlugin->createDefaultPanel();
         const uint32_t offs = mge::Design::LeftPanel::ToolPanel::HEAD.h;
         auto label =  new aGL::Label(name, x, y + offs, w, h, mge::PluginTool::currentPlugin->getPanel());
         if(GEditor::app->sm_)
@@ -244,11 +295,13 @@ namespace booba {
         return reinterpret_cast<uint64_t>(label);
     }
 
-    extern "C" uint64_t createScrollbar(int32_t x, int32_t y, uint32_t w, uint32_t h, int32_t maxValue, int32_t startValue)
+    extern "C" uint64_t createSlider(size_t x, size_t y, size_t w, size_t h, int64_t minValue, int64_t maxValue, int64_t startValue)
     {
         if(mge::PluginTool::currentPlugin == nullptr) return 0;
+        if(!mge::PluginTool::currentPlugin->getPanel()) mge::PluginTool::currentPlugin->createDefaultPanel();
         const uint32_t offs = mge::Design::LeftPanel::ToolPanel::HEAD.h;
         auto scrollbar =  new mge::PluginScroll(aGL::Rect(x, y + offs, w, h), mge::PluginTool::currentPlugin->getPanel());
+        scrollbar->setMinValue(minValue);
         scrollbar->setMaxValue(maxValue);
         scrollbar->setValue(startValue);
         aGL::connect(scrollbar, &mge::PluginScroll::valueChangedPtr, mge::PluginTool::currentPlugin, &mge::PluginTool::onScrollMove);
@@ -256,9 +309,10 @@ namespace booba {
         return reinterpret_cast<uint64_t>(scrollbar);
     }
     
-    extern "C" uint64_t createCanvas(int32_t x, int32_t y, int32_t w, int32_t h)
+    extern "C" uint64_t createCanvas(size_t x, size_t y, size_t w, size_t h)
     {
         if(mge::PluginTool::currentPlugin == nullptr) return 0;
+        if(!mge::PluginTool::currentPlugin->getPanel()) mge::PluginTool::currentPlugin->createDefaultPanel();
         const uint32_t offs = mge::Design::LeftPanel::ToolPanel::HEAD.h;
         auto canvas =  new mge::PluginCanvas(aGL::Rect(x, y + offs, w, h), mge::PluginTool::currentPlugin->getPanel());
         aGL::connect(canvas, &mge::PluginCanvas::mouseMoved, mge::PluginTool::currentPlugin, &mge::PluginTool::onCanvasEvent);
@@ -268,16 +322,24 @@ namespace booba {
         return reinterpret_cast<uint64_t>(canvas);
     }
 
-    extern "C" void putPixel (uint64_t canvasId, int32_t x, int32_t y, uint32_t color)
+    extern "C" void setPixel (uint64_t canvasId, size_t x, size_t y, uint32_t color)
     {
         // mWarning << "Pix putting" << '\n';
         if(canvasId == 0) return;
 
         mge::PluginCanvas* canvas = reinterpret_cast<mge::PluginCanvas* >(canvasId); //FIXME: very unsafe.
-        canvas->putPixel(x, y, color);  
+        canvas->setPixel(x, y, color);  
     }
 
-    extern "C" void putSprite(uint64_t canvasId, int32_t x, int32_t y, uint32_t w, uint32_t h, const char* texture)
+    extern "C" void cleanCanvas (uint64_t canvasId, uint32_t color)
+    {
+        if(canvasId == 0) return;
+
+        mge::PluginCanvas* canvas = reinterpret_cast<mge::PluginCanvas* >(canvasId); //FIXME: very unsafe.
+        canvas->clear(color);
+    }
+
+    extern "C" void putSprite(uint64_t canvasId, size_t x, size_t y, size_t w, size_t h, const char* texture)
     {
         if(canvasId == 0) return;
         mge::PluginCanvas* canvas = reinterpret_cast<mge::PluginCanvas* >(canvasId); //FIXME: very unsafe.
@@ -296,7 +358,25 @@ namespace booba {
         addTool(tool);
     }
 
-    Image::~Image() {}
-    Tool::~Tool() {}
+    extern "C" void* getLibSymbol(GUID guid, const char* name)
+    {
+        mInfo << "Requested lib symbol from [" << guid.str << "] with name \"" << name << "\"" << mlg::endl;
+        for(const mge::Plugin& plugin : GEditor::app->plugins_)
+        {
+            if(guid == plugin.guid)
+            {
+                void* sym = dlsym(plugin.handler, name);
+                return sym;
+            }
+        }
+        return nullptr;
+    }
+
+    extern "C" bool setToolBarSize(size_t w, size_t h)
+    {
+        if(mge::PluginTool::currentPlugin == nullptr) return 0;
+        return mge::PluginTool::currentPlugin->setToolbarSize(w, h);
+    }
+
 }
 

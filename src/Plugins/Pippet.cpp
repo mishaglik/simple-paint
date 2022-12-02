@@ -14,6 +14,13 @@ void Pippet::apply(Image* image, const Event* event)
     }
 }
 
+static const GUID GUID_ = {"dbc917bf-0831-4dab-814e-586bf7bea4f3"};
+
+extern "C" GUID getGUID()
+{
+    return GUID_;
+}
+
 extern "C" void init_module()
 {
     addTool(new Pippet);
