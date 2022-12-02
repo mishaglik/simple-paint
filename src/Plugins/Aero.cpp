@@ -69,6 +69,15 @@ void Aero::onMouseMove(const MotionEventData* event)
     prevDrawn_ = evPoint;
 }
 
+void Aero::onTimerTick(const TimerEventData* event)
+{
+    if(pressed_)
+    {
+        brushDraw(prevDrawn_);
+    }
+}
+
+
 void Aero::buildSetupWidget()
 {
     createLabel(110, 7 , 50, 21, "Size");
@@ -100,4 +109,5 @@ void Aero::brushDraw(const Point& pt)
         
         // std::cerr << point.point.x << " " <<  point.point.y << '\n';
     }
+    prevDrawTime_ = prevMillis_;
 }

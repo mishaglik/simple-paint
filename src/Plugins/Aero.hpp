@@ -13,6 +13,7 @@ public:
     Aero();
     ~Aero() override { delete  brush; }
     Point prevDrawn_ = {};
+    uint64_t prevDrawTime_ = 0;
     uint32_t prevLen_ = 10;
     int32_t density_ = 5;
     KatmulRom interp_;
@@ -23,6 +24,7 @@ public:
     void onMousePress  (const MouseButtonEventData* event) override;
     void onMouseRelease(const MouseButtonEventData* event) override;
     void onMouseMove   (const MotionEventData* event) override;
+    void onTimerTick   (const TimerEventData* event) override;
     void brushDraw(const Point& pt);
     void setBrushSize(int x) {settts_.size = x;}
     void setOpacity  (int x) {settts_.opacity = x;}

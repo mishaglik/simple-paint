@@ -140,7 +140,16 @@ namespace bp
         break;
 
         case booba::EventType::NoEvent:
-          break;
+        break;
+
+        case booba::EventType::CanvasMLeft:
+            onMouseLeave();
+        break;
+
+        case booba::EventType::TimerEvent:
+            onTimerTick(&event->Oleg.tedata);
+            prevMillis_ = event->Oleg.tedata.time;
+        break;
         }
     }
 

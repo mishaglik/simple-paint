@@ -11,6 +11,7 @@ namespace bp {
     using booba::GUID;
     using booba::CanvasEventData;
     using booba::MouseButtonEventData;
+    using booba::TimerEventData;
 
     using booba::MouseButton;
     using booba::init_module;
@@ -73,6 +74,8 @@ namespace bp {
         mvc::Vector<Canvas* > canvases_;
         Image* image_ = nullptr;
         bool pressed_ = false;
+        uint64_t prevMillis_ = 0;
+
     public:
         BTool() {} 
         ~BTool() override;
@@ -83,6 +86,8 @@ namespace bp {
         virtual void onMouseMove(const MotionEventData* )         {}
         virtual void onMousePress(const MouseButtonEventData* )   {}
         virtual void onMouseRelease(const MouseButtonEventData* ) {}
+        virtual void onMouseLeave() {}
+        virtual void onTimerTick(const TimerEventData* ) {}
         virtual void buildSetupWidget() override {}
 
         void addCanvas(Canvas* canvas) { canvases_.push_back(canvas); }

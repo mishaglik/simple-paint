@@ -89,6 +89,7 @@ namespace mge {
     void Canvas::update()
     {
         GEditor::app->getCurrentTool()->onTimerEvent(curAction_);
+        needsRepaint_ = true;
     }
 
 
