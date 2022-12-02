@@ -13,13 +13,17 @@ void Blur::onMousePress(const bp::MouseButtonEventData* e)
 void Blur::buildSetupWidget()
 {
     Pen::buildSetupWidget();
-    Scrollbar* sb = createScrollbar(5, 70, 100, 15, 10, 4);
+    Scrollbar* sb = createScrollbar(5, 70, 100, 15, 100, sigma_);
     sb->valueChanged.connect(this, &Blur::setSigma);
     createLabel(110, 67, 50, 21, "Sigma");
 
     sb = createScrollbar(5, 90, 100, 15, 500, 50);
     sb->valueChanged.connect(this, &Blur::setDegree);
     createLabel(110, 87, 50, 21, "Sharpening degree");
+
+     sb = createScrollbar(5, 110, 100, 15, 1000, treshold_);
+    sb->valueChanged.connect(this, &Blur::setDegree);
+    createLabel(110, 107, 50, 21, "Treshhold");
 
 }
 
@@ -37,9 +41,9 @@ void Blur::applyTool(const Brush::BrushPoint& pt)
 
     double rAvg = 0, gAvg = 0, bAvg = 0, summ =0;
 
-    for(int dx = -sigma_ * SIGMA_LIMIT; dx <= sigma_ * SIGMA_LIMIT; ++dx)
+    for(int dx = -gSize_; dx <= gSize_; ++dx)
     {
-        for(int dy = -sigma_ * SIGMA_LIMIT; dy <= sigma_ * SIGMA_LIMIT; ++dy)
+        for(int dy = -gSize_; dy <= gSize_; ++dy)
         {
             Point point = {pt.point.x + dx, pt.point.y + dy};
             if(!isOnImage(image_, point)) point = pt.point;
@@ -53,22 +57,25 @@ void Blur::applyTool(const Brush::BrushPoint& pt)
         }
     }
 
-    rAvg /= summ;
-    bAvg /= summ;
-    gAvg /= summ;
+    // rAvg /= summ;
+    // bAvg /= summ;
+    // gAvg /= summ;
 
     Color colorAvg = image_->getPixel(pt.point.x, pt.point.y);
     if(!sharpening_)
     {
         colorAvg.rf(rAvg);
-        colorAvg.bf(bAvg);
         colorAvg.gf(gAvg);
+        colorAvg.bf(bAvg);
         // image_->putPixel(pt.point.x, pt.point.y, 0);
     }
     else {
-        colorAvg.rf(std::max(0.,std::min(1., (colorAvg.rf() - rAvg) * degee_ / 10 + rAvg)));
-        colorAvg.gf(std::max(0.,std::min(1., (colorAvg.gf() - gAvg) * degee_ / 10 + gAvg)));
-        colorAvg.bf(std::max(0.,std::min(1., (colorAvg.bf() - bAvg) * degee_ / 10 + bAvg)));
+        if(fabs(colorAvg.gf() - gAvg) > treshold_ / 1000.)
+        {
+            colorAvg.rf(std::max(0.,std::min(1., (colorAvg.rf() - rAvg) * degee_ / 10. + rAvg)));
+            colorAvg.gf(std::max(0.,std::min(1., (colorAvg.gf() - gAvg) * degee_ / 10. + gAvg)));
+            colorAvg.bf(std::max(0.,std::min(1., (colorAvg.bf() - bAvg) * degee_ / 10. + bAvg)));
+        }
     }
     apply_.push_back({pt.point, colorAvg}); 
 }
@@ -87,12 +94,14 @@ void Blur::brushDraw(const Point& pt)
 
 void Blur::fillGayss()
 {
-    double sigma = sigma_;
-    gayss_.resize(SIGMA_LIMIT * sigma_ + 1);
-    for(size_t x = 0; x <= SIGMA_LIMIT * sigma_; ++x)
+    double sigma = sigma_ / 10.;
+    gSize_ = SIGMA_LIMIT * sigma / 10;
+    gSize_ = std::min(gSize_, 20);
+    gayss_.resize(gSize_ + 1);
+    for(size_t x = 0; x <= gSize_; ++x)
     {
-        gayss_[x].resize(SIGMA_LIMIT * sigma_ + 1);
-        for(size_t y = 0; y <= SIGMA_LIMIT * sigma_; ++y)
+        gayss_[x].resize(gSize_ + 1);
+        for(size_t y = 0; y <= gSize_; ++y)
         {
             gayss_[x][y] = std::exp(-static_cast<double>(x*x + y*y) / (2 * sigma * sigma)) / (2 * std::numbers::pi * sigma * sigma);
             // std::cerr << x << " " << y << " " << gayss_[x][y] << '\n';
