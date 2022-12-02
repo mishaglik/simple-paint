@@ -25,6 +25,8 @@ namespace mge {
         virtual void onMousePress  (const ToolAction& action) = 0;
         virtual void onMouseRelease(const ToolAction& action) = 0;
         virtual void onMouseMove   (const ToolAction& action) = 0;
+        virtual void onMouseLeave  (const ToolAction& action) = 0;
+        virtual void onTimerEvent  (const ToolAction& action) = 0;
         virtual void onImageChange() = 0;
         virtual const char* getTexture() const = 0;
         virtual void createPanel() { if(!panel_) panel_ = nullptr; }

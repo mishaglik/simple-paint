@@ -34,6 +34,8 @@ namespace mge {
         void onMousePress  (const ToolAction& action) override;
         void onMouseRelease(const ToolAction& action) override;
         void onMouseMove   (const ToolAction& action) override;
+        void onMouseLeave  (const ToolAction& action) override;
+        void onTimerEvent  (const ToolAction& action) override;
         void onImageChange() override {}
         const char* getTexture() const override {return texName_.c_str();}
         void createPanel() override;

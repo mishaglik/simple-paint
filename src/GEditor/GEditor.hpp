@@ -6,6 +6,7 @@
 #include "GEditorWindow.hpp"
 #include "Widgets/Application.hpp"
 #include "Plugins.hpp"
+#include <chrono>
 
 namespace mge {
     class Tool;
@@ -32,6 +33,8 @@ public:
     ~GEditor();
 
     mvc::Vector<mge::Plugin> plugins_;
+
+    const std::chrono::system_clock::time_point startTime_;
     
     static GEditor* app;
     mge::DrawingContext context = {};

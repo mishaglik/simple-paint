@@ -80,6 +80,18 @@ namespace mge {
         return aGL::Widget::onMouseButtonReleaseEvent(e);
     }
 
+    aGL::EventHandlerState Canvas::onMouseLeaveEvent(const aGL::Event* e)
+    {
+        GEditor::app->getCurrentTool()->onMouseLeave(curAction_);
+        return aGL::Widget::onMouseLeaveEvent(e);
+    }
+
+    void Canvas::update()
+    {
+        GEditor::app->getCurrentTool()->onTimerEvent(curAction_);
+    }
+
+
     aGL::EventHandlerState Canvas::onMouseMoveEvent(const aGL::Event* e)
     {
         if(!isPointOnImage(e->mmed.point)) return aGL::Dropped;

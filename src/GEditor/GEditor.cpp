@@ -6,7 +6,7 @@
 GEditor* GEditor::app = nullptr;
 
 GEditor::GEditor(int argc, const char* argv[]) :
-    aGL::BaseApplication(argc, argv)
+    aGL::BaseApplication(argc, argv), startTime_(std::chrono::high_resolution_clock::now())
 {
     app = this;
 
@@ -16,7 +16,7 @@ GEditor::GEditor(int argc, const char* argv[]) :
 
 
     sm_ = new aGL::SkinManager;
-    sm_->loadSkinset("/home/gms/progs++/vecplot/skins/designed"); //TODO: Better default path.
+    sm_->loadSkinset("./skins/designed"); //TODO: Better default path.
     mainWindow_->setSkinManager(sm_);
     appState_ = Ready;
 
@@ -28,6 +28,7 @@ GEditor::GEditor(int argc, const char* argv[]) :
         throw "No tools";
     }
 
+    setCurrentTool(tools_[0]);
     // createTools();
 
     // dialog_ = new aGL::ColorDialog("Test");

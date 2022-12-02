@@ -30,10 +30,13 @@ namespace mge {
         aGL::EventHandlerState onPaintEvent(const aGL::Event*) override;
         aGL::EventHandlerState onMouseButtonPressEvent(const aGL::Event*) override;
         aGL::EventHandlerState onMouseButtonReleaseEvent(const aGL::Event*) override;
+        aGL::EventHandlerState onMouseLeaveEvent(const aGL::Event*) override;
         aGL::EventHandlerState onKeyPressedEvent(const aGL::Event*) override;
         aGL::EventHandlerState onKeyReleasedEvent(const aGL::Event*) override;
         aGL::EventHandlerState onLoseFocusEvent(const aGL::Event*) override;
         aGL::EventHandlerState onMouseMoveEvent(const aGL::Event*) override;
+        
+        void update() override;
 
         void onSkinChange() override;
 

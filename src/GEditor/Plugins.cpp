@@ -6,6 +6,7 @@
 #include <dlfcn.h>
 #include <cxxabi.h>
 #include <unistd.h>
+#include <chrono>
 
 booba::ApplicationContext* booba::APPCONTEXT = nullptr;
 static const char* MODULES_DIRECTORY = "./modules/";
@@ -143,14 +144,30 @@ namespace mge {
         ev.Oleg.motion.x = action.point.x;
         ev.Oleg.motion.y = action.point.y;
         ev.type = booba::EventType::MouseMoved;
-        currentPlugin = this;
         tool_->apply(&img, &ev);
-        currentPlugin = nullptr;
+    }
+
+    void PluginTool::onMouseLeave(const ToolAction& action)
+    {
+        ToolGuard tg(this);
+        PluginImage img(action.image);
+        ev.type = booba::EventType::CanvasMLeft;
+        tool_->apply(&img, &ev);
+    }
+
+    void PluginTool::onTimerEvent(const ToolAction& action)
+    {
+        ToolGuard tg(this);
+        PluginImage img(action.image);
+        ev.type = booba::EventType::TimerEvent;
+        std::chrono::system_clock::time_point now = std::chrono::high_resolution_clock::now();
+        ev.Oleg.tedata.time = std::chrono::duration_cast<std::chrono::milliseconds>(now - GEditor::app->startTime_).count();
+        tool_->apply(&img, &ev);
     }
 
     PluginTool* PluginTool::currentPlugin = nullptr;
 
-    aGL::EventHandlerState PluginButton::onPaintEvent(const aGL::Event* event)
+    aGL::EventHandlerState PluginButton::onPaintEvent(const aGL::Event* )
     {
         if(!needsRepaint_) return aGL::Accepted;
         
