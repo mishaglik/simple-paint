@@ -169,6 +169,7 @@ namespace mge {
         ToolGuard tg(this);
         // Tool::createPanel(parent, rect);
         tool_->buildSetupWidget();
+        if(!panel_) createDefaultPanel();
     }
 
     void PluginTool::createDefaultPanel()
