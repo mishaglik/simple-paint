@@ -19,6 +19,8 @@ namespace bp {
     using booba::MotionEventData;
     using booba::APPCONTEXT;
 
+    using booba::setToolBarSize;
+
     class BTool;
     
     extern const GUID GUID_;

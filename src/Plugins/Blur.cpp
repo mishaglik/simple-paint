@@ -12,6 +12,9 @@ void Blur::onMousePress(const bp::MouseButtonEventData* e)
 
 void Blur::buildSetupWidget()
 {
+    
+    setToolBarSize(300, 400);
+
     Pen::buildSetupWidget();
     Scrollbar* sb = createScrollbar(5, 70, 100, 15, 100, sigma_);
     sb->valueChanged.connect(this, &Blur::setSigma);
@@ -59,10 +62,10 @@ void Blur::applyTool(const Brush::BrushPoint& pt)
             // std::cerr << dx << " " << dy << gayss_[abs(dx)][abs(dy)] << '\n';
         }
     }
-
+    // std::cerr << summ << '\n';
     // rAvg /= summ;
     // bAvg /= summ;
-    // gAvg /= summ;
+    // gAvg /= summ;    
 
     Color colorAvg = image_->getPixel(pt.point.x, pt.point.y);
     if(!sharpening_)
@@ -80,6 +83,7 @@ void Blur::applyTool(const Brush::BrushPoint& pt)
             colorAvg.bf(std::max(0.,std::min(1., (colorAvg.bf() - bAvg) * degee_ / 10. + bAvg)));
         }
     }
+    // std::cerr << (int)colorAvg.r() << ' ' << (int)colorAvg.g() << ' ' <<  (int)colorAvg.b() << '\n';
     apply_.push_back({pt.point, colorAvg}); 
 }
 
@@ -98,7 +102,7 @@ void Blur::brushDraw(const Point& pt)
 void Blur::fillGayss()
 {
     double sigma = sigma_ / 10.;
-    gSize_ = SIGMA_LIMIT * sigma / 10;
+    gSize_ = SIGMA_LIMIT * sigma;
     gSize_ = std::min(gSize_, 20);
     gayss_.resize(gSize_ + 1);
     for(size_t x = 0; x <= gSize_; ++x)

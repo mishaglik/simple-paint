@@ -5,8 +5,8 @@ using namespace bp;
 
 bool bp::isOnImage(Image* image, const Point& pt)
 {
-    return pt.x >= 0 && pt.x < static_cast<int>(image->getW()) && 
-           pt.y >= 0 && pt.y < static_cast<int>(image->getH());
+    return pt.x >= 0 && pt.x < static_cast<int64_t>(image->getW()) && 
+           pt.y >= 0 && pt.y < static_cast<int64_t>(image->getH());
 }
 
 Pen::Pen() : pixarr_(0, 0)
