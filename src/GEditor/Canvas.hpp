@@ -7,13 +7,15 @@
 namespace mge {
     class Canvas : public aGL::Widget
     {
-        aGL::Image* image_ = nullptr;
+        // aGL::Image* image_ = nullptr;
         aGL::Texture* imageTexture_ = nullptr;
 
         aGL::TexId alphaFiller_ = aGL::NoTexture;
 
         aGL::Vec2i imageStart_ = {};
         bool needsRepaint_ = true;
+
+        aGL::Rect prevDrawnRect = {};
     public:
         Canvas(const aGL::Rect& rect, aGL::Widget* parent = nullptr);
         ~Canvas() override;
@@ -22,6 +24,7 @@ namespace mge {
     private:
         ToolAction curAction_ = {};
         bool isPointOnImage(aGL::Point);
+        void fillRect(bool clear = false);
     public:
         aGL::Signal<const ToolAction&> mousePressed;
         aGL::Signal<const ToolAction&> mouseReleased;

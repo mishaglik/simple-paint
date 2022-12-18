@@ -1,12 +1,15 @@
 #ifndef GEDITOR_PLUGINS_HPP
 #define GEDITOR_PLUGINS_HPP
 
+#define ELPIDIFOR_STANDART_EXTENDED
+#define ELPIDIFOR_HIDDEN_LAYER
 #include "Elpstd/tools.hpp"
 #include "GEditor/GrandDesign.hpp"
 #include "Tool.hpp"
 #include <Widgets/Button.hpp>
 #include <Widgets/Scrollbar.hpp>
 #include "Widgets/Slider.hpp"
+
 
 namespace mge {
 

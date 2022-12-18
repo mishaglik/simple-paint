@@ -14,6 +14,7 @@ namespace mge {
                 const Color backgroundColor  = 0x454545ff;
                 const Color borderLightColor = 0x5b5b5bff;
                 const Color borderDarkColor  = 0x3b3b3bff;
+                const Color hollowColor      = 0x313131ff;
                 const Color ScrollHoleColor  = 0x202020ff;
                 const Color TextColor        = 0xddddddff;
 
@@ -44,7 +45,7 @@ namespace mge {
 
             namespace LeftPanel {
                 const uint32_t X = 0;
-                const uint32_t Y = Menu::RECT.x + Menu::RECT.h;
+                const uint32_t Y = Menu::RECT.y + Menu::RECT.h;
                 const uint32_t W = 210;
                 const uint32_t H = Window::H - Y;
                 const Rect RECT = {X, Y, W, H};
@@ -187,7 +188,20 @@ namespace mge {
                 const uint32_t W = 210;
                 const uint32_t H = Window::H - Menu::RECT.h;
                 const uint32_t X = Window::W - W;
-                const uint32_t Y = Window::H;
+                const uint32_t Y = Menu::RECT.h;
+
+                namespace Layers {
+                    const Rect RECT
+                    {
+                        X, Y + H  - 430, W, 430
+                    };
+
+                    namespace LBar {
+                        const uint32_t W = Layers::RECT.w - 10;
+                        const uint32_t X = 0;
+                        const uint32_t H = 30;
+                    }
+                }
             }
 
     }

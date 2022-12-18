@@ -6,6 +6,7 @@
 #include "GEditorWindow.hpp"
 #include "Widgets/Application.hpp"
 #include "Plugins.hpp"
+#include "Layers.hpp"
 #include <chrono>
 
 namespace mge {
@@ -33,6 +34,12 @@ public:
     ~GEditor();
 
     mvc::Vector<mge::Plugin> plugins_;
+    
+    mvc::Vector<mge::Layer> layers_;
+    aGL::Image* overlayer_ = nullptr;
+    uint32_t imageW_ = 0;
+    uint32_t imageH_ = 0;
+    uint32_t selectedLayer_ = 0;
 
     const std::chrono::system_clock::time_point startTime_;
     

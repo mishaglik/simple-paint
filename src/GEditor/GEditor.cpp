@@ -1,6 +1,6 @@
 #include "GEditor.hpp"
 #include <thread>
-// #include "BasicTools.hpp"
+#include "MoveLayer.hpp"
 #include "GEditor/Plugins.hpp"
 
 GEditor* GEditor::app = nullptr;
@@ -10,16 +10,28 @@ GEditor::GEditor(int argc, const char* argv[]) :
 {
     app = this;
 
+    aGL::Image* image_ = new aGL::Image("Image.jpg");
+    if(!image_->isCreated())
+    {
+        mError << "Failed to open image\n";
+    }
+
+    layers_.push_back({{0, 0, image_->getW(), image_->getH()}, image_, "Background"});
+    
+    imageW_ = image_->getW();
+    imageH_ = image_->getH();
+
+    overlayer_ = new aGL::Image(imageW_, imageH_, 0);
+
+    layers_.push_back({{0, 0, 500, 500}, new aGL::Image(500, 500, 0), "OtherImg"});
+
     mainWindow_ = new mge::MainWindow;
     addWindow(mainWindow_);
     mainWindow_->quited.connect<GEditor>(this, &GEditor::quit);
 
 
-    sm_ = new aGL::SkinManager;
-    sm_->loadSkinset("./skins/designed"); //TODO: Better default path.
-    mainWindow_->setSkinManager(sm_);
-    appState_ = Ready;
 
+    createTools();
     mge::importPlugins(plugins_);
 
     if(tools_.empty())
@@ -29,8 +41,11 @@ GEditor::GEditor(int argc, const char* argv[]) :
     }
 
     setCurrentTool(tools_[0]);
-    // createTools();
 
+    sm_ = new aGL::SkinManager;
+    sm_->loadSkinset("./skins/designed"); //TODO: Better default path.
+    mainWindow_->setSkinManager(sm_);
+    appState_ = Ready;
     // dialog_ = new aGL::ColorDialog("Test");
 }
 
@@ -40,6 +55,10 @@ GEditor::~GEditor()
     for(mge::Tool* tool : tools_ )
     {
         delete tool;
+    }
+    for(auto layer : layers_)
+    {
+        delete layer.image;
     }
 }
 
@@ -58,6 +77,7 @@ void GEditor::addTool(mge::Tool* tool)
 
 void GEditor::createTools()
 {
+    addTool(new mge::MoveLayer());
     // addTool(new mge::tools::Pen);
     // addTool(new mge::tools::RectFiller);
     // addTool(new mge::tools::EllipseFiller);

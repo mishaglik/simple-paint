@@ -396,5 +396,11 @@ namespace booba {
         return mge::PluginTool::currentPlugin->setToolbarSize(w, h);
     }
 
+    extern "C" Image* getHiddenLayerID()
+    {
+        static mge::PluginImage image(GEditor::app->overlayer_);
+        return &image;
+    }
+
 }
 

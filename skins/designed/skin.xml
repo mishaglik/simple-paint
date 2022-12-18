@@ -37,4 +37,7 @@
     <OutButton>
         <image src="OutButt.png"/>
     </OutButton>
+    <VisibleToggler>
+        <image src="Eye.png"/>
+    </VisibleToggler>
 </skin>

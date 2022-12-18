@@ -11,6 +11,8 @@ set (GEDITOR_SOURCES
     ColorSelector.cpp
     ToolPanel.cpp
     Plugins.cpp
+    Layers.cpp
+    MoveLayer.cpp
 )
     
 set (GEDITOR_HEADERS
@@ -24,6 +26,8 @@ set (GEDITOR_HEADERS
     ColorSelector.hpp
     ToolPanel.hpp
     Plugins.hpp
+    Layers.hpp
+    MoveLayer.hpp
 )
 
 add_library(GEditor ${GEDITOR_SOURCES} ${GEDITOR_HEADERS})

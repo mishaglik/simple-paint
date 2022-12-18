@@ -5,6 +5,7 @@
 #include "GEditor/LeftPanel.hpp"
 #include "Widgets/WindowWidget.hpp"
 #include "GEditor/CentralWidget.hpp"
+#include "Layers.hpp"
 
 
 namespace mge {
@@ -17,6 +18,9 @@ namespace mge {
 
         LeftPanel* leftPanel_ = nullptr;
         // Tool* selectedTool_ = nullptr;
+
+        LayerManager* layers_ = nullptr;
+
         void setupMenu();
 
     public:

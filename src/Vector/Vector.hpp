@@ -29,6 +29,7 @@ namespace mvc {
         T& operator*() const {return *ptr_;}
         Iterator& operator++()    {ptr_++; return *this;}
         Iterator  operator++(int) {Iterator retval = *this; ptr_++; return retval;}
+        Iterator& operator+=(size_t n) { ptr_ += n; return *this;}
         T* operator->() {return ptr_;}
         
         T* _getPtr() const { return ptr_; }
@@ -50,6 +51,7 @@ namespace mvc {
         const T& operator*() const {return *ptr_;}
         ConstIterator& operator++()    {ptr_++; return *this;}
         ConstIterator  operator++(int) {ConstIterator retval = *this; ptr_++; return retval;}
+        ConstIterator& operator+=(size_t n)    {ptr_ += n; return *this;}
         T* operator->() {return ptr_;}
         
         template<class U>
