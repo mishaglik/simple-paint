@@ -1,4 +1,5 @@
 #include "BBrushes.hpp"
+#include "BetPlug.hpp"
 #include <iostream>
 
 namespace Brushes {
@@ -32,3 +33,27 @@ namespace Brushes {
     }
 
 }
+
+Brush::BrushSettings BrushSettings{50, 100, 100};
+Brushes::CircleBrush CBrush(BrushSettings);
+
+extern "C" Brush* getCurrentBrush()
+{
+    return &CBrush;
+}
+
+extern "C" Brush::BrushSettings* getCurrentBrushSettings()
+{
+    return &BrushSettings;
+}
+
+extern "C" void booba::init_module()
+{
+
+}
+
+extern const booba::GUID bp::GUID_ = {BRUSHES_GUID};
+// extern "C" booba::GUID booba::getGUID()
+// {
+//     return {BRUSHES_GUID};
+// }

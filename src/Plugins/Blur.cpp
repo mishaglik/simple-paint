@@ -45,7 +45,8 @@ void Blur::applyTool(const Brush::BrushPoint& pt)
 
     // std::cerr << "Overrided\n";
 
-    double rAvg = 0, gAvg = 0, bAvg = 0, summ =0;
+    double rAvg = 0, gAvg = 0, bAvg = 0;
+    // double summ =0;
 
     for(int dx = -gSize_; dx <= gSize_; ++dx)
     {
@@ -58,11 +59,10 @@ void Blur::applyTool(const Brush::BrushPoint& pt)
             rAvg += gayss_[dx < 0 ? -dx : dx][dy < 0 ? -dy : dy] * col.rf();
             gAvg += gayss_[dx < 0 ? -dx : dx][dy < 0 ? -dy : dy] * col.gf();
             bAvg += gayss_[dx < 0 ? -dx : dx][dy < 0 ? -dy : dy] * col.bf();
-            summ += gayss_[dx < 0 ? -dx : dx][dy < 0 ? -dy : dy];
+            // summ += gayss_[dx < 0 ? -dx : dx][dy < 0 ? -dy : dy];
             // std::cerr << dx << " " << dy << gayss_[abs(dx)][abs(dy)] << '\n';
         }
     }
-    // std::cerr << summ << '\n';
     // rAvg /= summ;
     // bAvg /= summ;
     // gAvg /= summ;    
@@ -102,13 +102,13 @@ void Blur::brushDraw(const Point& pt)
 void Blur::fillGayss()
 {
     double sigma = sigma_ / 10.;
-    gSize_ = SIGMA_LIMIT * sigma;
+    gSize_ = static_cast<int>(SIGMA_LIMIT * sigma);
     gSize_ = std::min(gSize_, 20);
     gayss_.resize(gSize_ + 1);
-    for(size_t x = 0; x <= gSize_; ++x)
+    for(int x = 0; x <= gSize_; ++x)
     {
         gayss_[x].resize(gSize_ + 1);
-        for(size_t y = 0; y <= gSize_; ++y)
+        for(int y = 0; y <= gSize_; ++y)
         {
             gayss_[x][y] = std::exp(-static_cast<double>(x*x + y*y) / (2 * sigma * sigma)) / (2 * std::numbers::pi * sigma * sigma);
             // std::cerr << x << " " << y << " " << gayss_[x][y] << '\n';

@@ -1,6 +1,7 @@
 #include "Pen.hpp"
 #include "BrezLine.hpp"
 #include "BBrushes.hpp"
+#include <iostream>
 using namespace bp;
 
 bool bp::isOnImage(Image* image, const Point& pt)
@@ -11,7 +12,17 @@ bool bp::isOnImage(Image* image, const Point& pt)
 
 Pen::Pen() : pixarr_(0, 0)
 {
-    brush_ = new Brushes::CircleBrush(settts_);
+    // brush_ = new Brushes::CircleBrush(settts_);
+    Brush* (*getBr)();
+    Brush::BrushSettings* (*getBrSetts)();
+    getBr = reinterpret_cast<Brush* (*)()>(booba::getLibSymbol({BRUSHES_GUID}, "getCurrentBrush")); 
+    getBrSetts = reinterpret_cast<Brush::BrushSettings* (*)()>(booba::getLibSymbol({BRUSHES_GUID}, "getCurrentBrushSettings")); 
+    if(getBr == nullptr ||getBrSetts == nullptr)
+    {
+        std::cerr << "Not found getCurrentBrush \n";
+    }
+    brush_ = getBr();
+    settts_ = getBrSetts();
 }
 
 
@@ -102,6 +113,7 @@ void Pen::usedReset()
 void Pen::buildSetupWidget()
 {
     Scrollbar* sb = nullptr;
+    setToolBarSize(300, 400);
 
     sb = createScrollbar(5, 10, 100, 15, 200, 10);
     createLabel(110, 7, 50, 21, "Size");

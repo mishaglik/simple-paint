@@ -7,11 +7,11 @@ using namespace bp;
 
 class Aero : public BTool
 {
-    Brush::BrushSettings settts_ = {10, 0, 10};
+    Brush::BrushSettings* settts_ = nullptr;
     Brush* brush;
 public:
     Aero();
-    ~Aero() override { delete  brush; }
+    ~Aero() override {}
     Point prevDrawn_ = {};
     uint64_t prevDrawTime_ = 0;
     uint32_t prevLen_ = 10;
@@ -26,8 +26,8 @@ public:
     void onMouseMove   (const MotionEventData* event) override;
     void onTimerTick   (const TimerEventData* event) override;
     void brushDraw(const Point& pt);
-    void setBrushSize(int x) {settts_.size = x;}
-    void setOpacity  (int x) {settts_.opacity = x;}
+    void setBrushSize(int x) {settts_->size = x;}
+    void setOpacity  (int x) {settts_->opacity = x;}
     void setDensity  (int x) {density_ = x;}
 };
 

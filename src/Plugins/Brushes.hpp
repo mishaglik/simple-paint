@@ -63,5 +63,8 @@ public:
     virtual Iterator getEnd()   { return Iterator(this, true); }
 };
 
+#define BRUSHES_GUID "f3508c68-7ec2-11ed-bea4-d8c0a641c2d7"
+extern "C" Brush* getCurrentBrush();
+extern "C" Brush::BrushSettings* getCurrentBrushSettings();
 
 #endif /* PLUGINS_BRUSHES_HPP */

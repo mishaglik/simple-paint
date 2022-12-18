@@ -14,7 +14,17 @@ extern "C" void init_module()
 
 Aero::Aero()
 {
-    brush = new Brushes::CircleBrush(settts_);
+    // brush = new Brushes::CircleBrush(settts_);
+    Brush* (*getBr)();
+    Brush::BrushSettings* (*getBrSetts)();
+    getBr = reinterpret_cast<Brush* (*)()>(booba::getLibSymbol({BRUSHES_GUID}, "getCurrentBrush")); 
+    getBrSetts = reinterpret_cast<Brush::BrushSettings* (*)()>(booba::getLibSymbol({BRUSHES_GUID}, "getCurrentBrushSettings")); 
+    if(getBr == nullptr ||getBrSetts == nullptr)
+    {
+        std::cerr << "Not found getCurrentBrush \n";
+    }
+    brush = getBr();
+    settts_ = getBrSetts();
 }
 
 
@@ -57,7 +67,7 @@ void Aero::onMouseMove(const MotionEventData* event)
 
     interp_.addPoint(evPoint);
     uint32_t dist = (Point(event->x, event->y) -= prevDrawn_).len2();
-    dist /= (settts_.size) * (settts_.size);
+    dist /= (settts_->size) * (settts_->size);
     dist = std::max(dist, 1u);
     const int multiplier = 4;
     for(uint32_t i = 1; i <= multiplier * prevLen_; ++i)
@@ -80,6 +90,8 @@ void Aero::onTimerTick(const TimerEventData* event)
 
 void Aero::buildSetupWidget()
 {
+    setToolBarSize(300, 400);
+
     createLabel(110, 7 , 50, 21, "Size");
     createLabel(110, 27, 50, 21, "Opacity");
     createLabel(110, 47, 50, 21, "Density");

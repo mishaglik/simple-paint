@@ -9,13 +9,14 @@ namespace bp {
 
     class Pen : public BTool
     {
-        Brush::BrushSettings settts_ = {10, 0, 10};
+        // Brush::BrushSettings settts_ = {10, 0, 10};
+        Brush::BrushSettings* settts_;
         Brush* brush_;
     protected:
         UsedArr pixarr_;
     public:
         Pen();
-        ~Pen() override { delete  brush_; }
+        ~Pen() override {}
         Point prevDrawn_ = {};
         int32_t interval = 10;
         bool keepOpacity = true;
@@ -32,8 +33,8 @@ namespace bp {
 
     private:
         void usedReset();
-        void setBrushSize(int x) {settts_.size = x;}
-        void setOpacity  (int x) {settts_.opacity = x;}
+        void setBrushSize(int x) {settts_->size = x;}
+        void setOpacity  (int x) {settts_->opacity = x;}
         void setInterval (int x) {interval = x;}
     };
 
